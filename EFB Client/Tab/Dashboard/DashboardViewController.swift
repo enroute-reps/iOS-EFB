@@ -140,7 +140,6 @@ class DashboardViewController: UIViewController {
     @IBAction func _MessagesBackButtonTapped(_ sender: Any) {
         self.mMessageBackButton.isHidden = true
         self._Message.popViewController(animated: true)
-        print("test")
     }
     
     @IBAction func _NotificationsBackButtonTapped(_ sender: Any) {
