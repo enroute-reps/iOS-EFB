@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="KohinoorBangla.ttc">
+            <string>KohinoorBangla-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AlertView" customModule="Enroute_EFB" customModuleProvider="target">
+            <connections>
+                <outlet property="mButton" destination="oEw-ge-56v" id="XhG-xM-lEV"/>
+                <outlet property="mMainView" destination="iN0-l3-epB" id="NHX-Bp-6xn"/>
+                <outlet property="mMessage" destination="cqW-OP-mxa" id="gRm-wX-Ep2"/>
+                <outlet property="mTitle" destination="M8N-rS-6Jn" id="blL-Nr-Fv7"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="570" height="167"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M8N-rS-6Jn">
+                    <rect key="frame" x="12" y="15" width="546" height="24"/>
+                    <fontDescription key="fontDescription" name="KohinoorBangla-Semibold" family="Kohinoor Bangla" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.88235294119999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqW-OP-mxa">
+                    <rect key="frame" x="12" y="51" width="546" height="22.5"/>
+                    <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="16"/>
+                    <color key="textColor" red="0.0" green="0.88235294119999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-ge-56v">
+                    <rect key="frame" x="171" y="112" width="228" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="7M1-2M-GhM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="KohinoorBangla-Medium" family="Kohinoor Bangla" pointSize="13"/>
+                    <state key="normal" title="OK!">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="_ButtonTapped:" destination="-1" eventType="touchUpInside" id="ffI-xn-qw5"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.094117647060000004" green="0.1450980392" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="M8N-rS-6Jn" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="15" id="3Zz-5y-2Zj"/>
+                <constraint firstItem="oEw-ge-56v" firstAttribute="top" secondItem="cqW-OP-mxa" secondAttribute="bottom" constant="38.5" id="5cH-Nw-5zF"/>
+                <constraint firstItem="oEw-ge-56v" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.4" id="Bz0-wc-z1u"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="oEw-ge-56v" secondAttribute="bottom" constant="15" id="I6W-rW-SD2"/>
+                <constraint firstItem="cqW-OP-mxa" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="Rnu-tW-cv0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cqW-OP-mxa" secondAttribute="trailing" constant="12" id="Tnn-kd-VMF"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="M8N-rS-6Jn" secondAttribute="trailing" constant="12" id="cCG-VF-D5W"/>
+                <constraint firstItem="cqW-OP-mxa" firstAttribute="top" secondItem="M8N-rS-6Jn" secondAttribute="bottom" constant="12" id="iER-oe-E9T"/>
+                <constraint firstItem="M8N-rS-6Jn" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="12" id="imK-Pt-4Js"/>
+                <constraint firstItem="oEw-ge-56v" firstAttribute="centerX" secondItem="cqW-OP-mxa" secondAttribute="centerX" id="qrD-aq-Kry"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="103.125" y="389.94140625"/>
+        </view>
+    </objects>
+</document>

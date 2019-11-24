@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  EFB Client
+
+  Created by Mr.Zee on 11/4/19.
+  Copyright © 2019 MehrPardaz. All rights reserved.
+*/
+
+// Mark: - Messages
+"time-out" = "Request timed out. Please Try Again.";
+"try-again" = "Please Try Again.";
+"password-changed-s" = "Password changed successfully.";
+"no-connection" = "There was a problem connecting to the server. Please check your connection.";
+"sync-completed" = "Sync completed successfully.";
+"logout-message" = "Are you sure you want to log out?";
+"notification-seen-failed" = "";
+"message-seen-failed" = "";
+"load-manual-failed" = "Could not load the manual";
+"message-not-sent" = "Please check your internet connection and try again.";
+"message-sent" = "The message was sent successfully.";
+"feedback" = "Thank you for your feedback.";
+"logout_failed" = "Log out Failed!";
+"expire_library_message" = "The library module will expire in %d days.";
+"email_not_verified" = "Your email has not been verified.";
+// Mark: - Texts
+"support-mail" = "support@enroute.ir";
+"logout" = "Logout";
+"yes" = "Yes";
+"no" = "No";
+"cancel" = "Cancel";
+"accept" = "Accept";
+"warning" = "Warning!";
+"unknown" = "Unknown";
+"sort-by-name" = "Sort by Name";
+"sort-by-date" = "Sort by Date";

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14903" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Manuals" representedClassName="Manuals" syncable="YES" codeGenerationType="class">
+        <attribute name="aircraft_type" optional="YES" attributeType="String"/>
+        <attribute name="is_folder" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="manual_category" optional="YES" attributeType="String"/>
+        <attribute name="manual_description" optional="YES" attributeType="String"/>
+        <attribute name="manual_file_name" optional="YES" attributeType="String"/>
+        <attribute name="manual_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="manual_status" optional="YES" attributeType="String"/>
+        <attribute name="manual_title" optional="YES" attributeType="String"/>
+        <attribute name="manual_version" optional="YES" attributeType="String"/>
+        <attribute name="upload_date" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Messages" representedClassName="Messages" syncable="YES" codeGenerationType="class">
+        <attribute name="message_date_time" optional="YES" attributeType="String"/>
+        <attribute name="message_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="message_read_date_time" optional="YES" attributeType="String"/>
+        <attribute name="message_status" optional="YES" attributeType="String"/>
+        <attribute name="message_text" optional="YES" attributeType="String"/>
+        <attribute name="reciever_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rfn" optional="YES" attributeType="String"/>
+        <attribute name="rid" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rln" optional="YES" attributeType="String"/>
+        <attribute name="sender_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sfn" optional="YES" attributeType="String"/>
+        <attribute name="sid" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sln" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Notifications" representedClassName="Notifications" syncable="YES" codeGenerationType="class">
+        <attribute name="notification_audiance" optional="YES" attributeType="String"/>
+        <attribute name="notification_date_time" optional="YES" attributeType="String"/>
+        <attribute name="notification_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="notification_status" optional="YES" attributeType="String"/>
+        <attribute name="notification_text" optional="YES" attributeType="String"/>
+        <attribute name="notification_title" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Notifications_Log" representedClassName="Notifications_Log" syncable="YES" codeGenerationType="class">
+        <attribute name="create_date_time" optional="YES" attributeType="String"/>
+        <attribute name="log_description" optional="YES" attributeType="String"/>
+        <attribute name="log_device" optional="YES" attributeType="String"/>
+        <attribute name="log_event" optional="YES" attributeType="String"/>
+        <attribute name="log_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="log_type" optional="YES" attributeType="String"/>
+        <attribute name="log_type_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="logip" optional="YES" attributeType="String"/>
+        <attribute name="user_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="Organizations" representedClassName="Organizations" syncable="YES" codeGenerationType="class">
+        <attribute name="organization_address" optional="YES" attributeType="String"/>
+        <attribute name="organization_cert_validity" optional="YES" attributeType="String"/>
+        <attribute name="organization_email" optional="YES" attributeType="String"/>
+        <attribute name="organization_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="organization_licence" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="organization_logo" optional="YES" attributeType="String"/>
+        <attribute name="organization_name" optional="YES" attributeType="String"/>
+        <attribute name="organization_status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="organization_tel" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Users" representedClassName="Users" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="cell_phone" optional="YES" attributeType="String"/>
+        <attribute name="certificate_issuer" optional="YES" attributeType="String"/>
+        <attribute name="email_address" optional="YES" attributeType="String"/>
+        <attribute name="first_name" optional="YES" attributeType="String"/>
+        <attribute name="job_title" optional="YES" attributeType="String"/>
+        <attribute name="last_name" optional="YES" attributeType="String"/>
+        <attribute name="licence" optional="YES" attributeType="String"/>
+        <attribute name="national_id" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="personel_id" optional="YES" attributeType="String"/>
+        <attribute name="profile_image" optional="YES" attributeType="String"/>
+        <attribute name="role" optional="YES" attributeType="String"/>
+        <attribute name="stationary_phone" optional="YES" attributeType="String"/>
+        <attribute name="user_description" optional="YES" attributeType="String"/>
+        <attribute name="user_id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="user_status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Manuals" positionX="-45" positionY="90" width="128" height="193"/>
+        <element name="Messages" positionX="-54" positionY="-9" width="128" height="238"/>
+        <element name="Notifications" positionX="-36" positionY="0" width="128" height="133"/>
+        <element name="Organizations" positionX="-45" positionY="144" width="128" height="178"/>
+        <element name="Users" positionX="-45" positionY="117" width="128" height="313"/>
+        <element name="Notifications_Log" positionX="-27" positionY="162" width="128" height="178"/>
+    </elements>
+</model>

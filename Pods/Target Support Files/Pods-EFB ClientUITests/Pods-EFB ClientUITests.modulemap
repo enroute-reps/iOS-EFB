@@ -1,0 +1,6 @@
+framework module Pods_EFB_ClientUITests {
+  umbrella header "Pods-EFB ClientUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

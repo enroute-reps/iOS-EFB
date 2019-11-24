@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="KohinoorBangla.ttc">
+            <string>KohinoorBangla-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LibraryListModelViewController" customModule="Enroute_EFB" customModuleProvider="target">
+            <connections>
+                <outlet property="mBackButton" destination="fWT-WP-V3w" id="VRU-qn-k7x"/>
+                <outlet property="mCollectionView" destination="9Fd-uY-m25" id="ALB-4Q-xS4"/>
+                <outlet property="mGridButton" destination="czU-Kx-wgT" id="Ra2-k8-dWO"/>
+                <outlet property="mListButton" destination="x7z-rH-Jgm" id="I8d-KX-Tym"/>
+                <outlet property="mNavigationView" destination="RLB-ut-f9I" id="vsc-6w-NJy"/>
+                <outlet property="mSortButton" destination="DTs-Wq-MpI" id="iej-v6-5ml"/>
+                <outlet property="mSortTitleLabel" destination="kzp-eZ-fe3" id="VHA-uD-8ph"/>
+                <outlet property="mSortView" destination="CXg-ux-KDB" id="kgU-ib-8lu"/>
+                <outlet property="mTableView" destination="Q8C-m5-fal" id="zWa-bu-yxL"/>
+                <outlet property="mTitleLabel" destination="I6I-Hi-6nG" id="3jp-Ig-miX"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RLB-ut-f9I">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="75"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWT-WP-V3w">
+                            <rect key="frame" x="5" y="0.0" width="40" height="75"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="wgX-W5-4Pq"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="back"/>
+                            <connections>
+                                <action selector="_BackButtonTapped:" destination="-1" eventType="touchUpInside" id="J6e-1Z-sqo"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Library" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="I6I-Hi-6nG">
+                            <rect key="frame" x="354" y="25" width="60" height="25.5"/>
+                            <fontDescription key="fontDescription" name="KohinoorBangla-Bold" family="Kohinoor Bangla" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="I9m-xU-3Bq"/>
+                        <constraint firstItem="I6I-Hi-6nG" firstAttribute="centerX" secondItem="RLB-ut-f9I" secondAttribute="centerX" id="R2v-gL-my8"/>
+                        <constraint firstItem="I6I-Hi-6nG" firstAttribute="centerY" secondItem="RLB-ut-f9I" secondAttribute="centerY" id="Sbs-Ml-CYK"/>
+                        <constraint firstItem="fWT-WP-V3w" firstAttribute="leading" secondItem="RLB-ut-f9I" secondAttribute="leading" constant="5" id="SeH-9f-zdO"/>
+                        <constraint firstItem="fWT-WP-V3w" firstAttribute="height" secondItem="RLB-ut-f9I" secondAttribute="height" id="af5-ad-noC"/>
+                        <constraint firstItem="fWT-WP-V3w" firstAttribute="centerY" secondItem="RLB-ut-f9I" secondAttribute="centerY" id="fWk-KW-7Uu"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CXg-ux-KDB">
+                    <rect key="frame" x="0.0" y="83" width="768" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czU-Kx-wgT">
+                            <rect key="frame" x="718" y="5" width="30" height="30"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="grid"/>
+                            <connections>
+                                <action selector="_GridButtonTapped:" destination="-1" eventType="touchUpInside" id="JLD-Uw-WpY"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x7z-rH-Jgm">
+                            <rect key="frame" x="676" y="5" width="30" height="30"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="list"/>
+                            <connections>
+                                <action selector="_ListButtonTapped:" destination="-1" eventType="touchUpInside" id="Luc-56-zdq"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort by Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzp-eZ-fe3">
+                            <rect key="frame" x="12" y="9" width="98" height="22.5"/>
+                            <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zev-MQ-2fZ">
+                            <rect key="frame" x="118" y="8" width="24" height="24"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="down"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DTs-Wq-MpI">
+                            <rect key="frame" x="12" y="0.0" width="130" height="40"/>
+                            <connections>
+                                <action selector="_SortButtonTapped:" destination="-1" eventType="touchUpInside" id="9Qa-jB-obw"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="czU-Kx-wgT" firstAttribute="centerY" secondItem="CXg-ux-KDB" secondAttribute="centerY" id="1xM-aA-Ufl"/>
+                        <constraint firstItem="x7z-rH-Jgm" firstAttribute="centerY" secondItem="CXg-ux-KDB" secondAttribute="centerY" id="6j5-20-3XU"/>
+                        <constraint firstItem="DTs-Wq-MpI" firstAttribute="centerY" secondItem="CXg-ux-KDB" secondAttribute="centerY" id="7LV-Ya-X3C"/>
+                        <constraint firstItem="kzp-eZ-fe3" firstAttribute="leading" secondItem="CXg-ux-KDB" secondAttribute="leading" constant="12" id="7TP-CI-meZ"/>
+                        <constraint firstAttribute="height" constant="40" id="ItC-kR-lSo"/>
+                        <constraint firstItem="DTs-Wq-MpI" firstAttribute="leading" secondItem="kzp-eZ-fe3" secondAttribute="leading" id="MP7-dH-tis"/>
+                        <constraint firstItem="kzp-eZ-fe3" firstAttribute="centerY" secondItem="CXg-ux-KDB" secondAttribute="centerY" id="QQ8-5U-nPL"/>
+                        <constraint firstItem="x7z-rH-Jgm" firstAttribute="width" secondItem="czU-Kx-wgT" secondAttribute="width" id="Str-fa-PHJ"/>
+                        <constraint firstAttribute="trailing" secondItem="czU-Kx-wgT" secondAttribute="trailing" constant="20" id="dbf-lC-Pvj"/>
+                        <constraint firstItem="Zev-MQ-2fZ" firstAttribute="leading" secondItem="kzp-eZ-fe3" secondAttribute="trailing" constant="8" id="gCI-7C-IlP"/>
+                        <constraint firstItem="DTs-Wq-MpI" firstAttribute="trailing" secondItem="Zev-MQ-2fZ" secondAttribute="trailing" id="imb-5S-ktq"/>
+                        <constraint firstItem="Zev-MQ-2fZ" firstAttribute="centerY" secondItem="CXg-ux-KDB" secondAttribute="centerY" id="lPD-n0-Zlv"/>
+                        <constraint firstItem="DTs-Wq-MpI" firstAttribute="height" secondItem="CXg-ux-KDB" secondAttribute="height" id="nQs-tk-rOd"/>
+                        <constraint firstItem="x7z-rH-Jgm" firstAttribute="height" secondItem="czU-Kx-wgT" secondAttribute="height" id="qHy-fF-Qhc"/>
+                        <constraint firstItem="czU-Kx-wgT" firstAttribute="leading" secondItem="x7z-rH-Jgm" secondAttribute="trailing" constant="12" id="ryj-zq-MUv"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Q8C-m5-fal">
+                    <rect key="frame" x="0.0" y="131" width="768" height="893"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="separatorColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Oru-If-IN5"/>
+                        <outlet property="delegate" destination="-1" id="10J-TX-lUM"/>
+                    </connections>
+                </tableView>
+                <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="9Fd-uY-m25">
+                    <rect key="frame" x="0.0" y="131" width="768" height="893"/>
+                    <color key="backgroundColor" red="0.1215686275" green="0.19215686269999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="1" minimumInteritemSpacing="1" id="Wcj-ou-NyL">
+                        <size key="itemSize" width="228" height="299"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <cells/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="aJF-u6-Mgb"/>
+                        <outlet property="delegate" destination="-1" id="aOJ-ib-tLN"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" red="0.1215686275" green="0.19215686269999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Q8C-m5-fal" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="CWR-wI-4X9"/>
+                <constraint firstItem="CXg-ux-KDB" firstAttribute="top" secondItem="RLB-ut-f9I" secondAttribute="bottom" constant="8" id="DfE-oU-7fO"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Q8C-m5-fal" secondAttribute="bottom" id="MKz-ic-Pzz"/>
+                <constraint firstItem="Q8C-m5-fal" firstAttribute="top" secondItem="CXg-ux-KDB" secondAttribute="bottom" constant="8" id="NbB-Ea-OLQ"/>
+                <constraint firstItem="9Fd-uY-m25" firstAttribute="top" secondItem="CXg-ux-KDB" secondAttribute="bottom" constant="8" id="ST0-Ir-czS"/>
+                <constraint firstItem="RLB-ut-f9I" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="UFp-u9-Dac"/>
+                <constraint firstItem="CXg-ux-KDB" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="VkO-Yl-7nu"/>
+                <constraint firstItem="RLB-ut-f9I" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Yd0-rK-uL7"/>
+                <constraint firstItem="CXg-ux-KDB" firstAttribute="width" secondItem="fnl-2z-Ty3" secondAttribute="width" id="alh-Eo-zfW"/>
+                <constraint firstItem="9Fd-uY-m25" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="cpv-sH-PXo"/>
+                <constraint firstItem="9Fd-uY-m25" firstAttribute="width" secondItem="fnl-2z-Ty3" secondAttribute="width" id="dUr-fu-MwW"/>
+                <constraint firstItem="Q8C-m5-fal" firstAttribute="width" secondItem="fnl-2z-Ty3" secondAttribute="width" id="gDc-RF-fbS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="9Fd-uY-m25" secondAttribute="bottom" id="gPD-ip-d4g"/>
+                <constraint firstItem="RLB-ut-f9I" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="mQH-8z-5uO"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="-57" y="141"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="back" width="24" height="24"/>
+        <image name="down" width="24" height="24"/>
+        <image name="grid" width="24" height="24"/>
+        <image name="list" width="30" height="30"/>
+    </resources>
+</document>

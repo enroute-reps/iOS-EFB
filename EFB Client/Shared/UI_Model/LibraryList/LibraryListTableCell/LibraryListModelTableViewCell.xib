@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" id="KGk-i7-Jjw" customClass="LibraryListModelTableViewCell" customModule="Enroute_EFB" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="493" height="85"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="493" height="85"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="pdf" translatesAutoresizingMaskIntoConstraints="NO" id="RUD-gP-Czt">
+                        <rect key="frame" x="12" y="8" width="25" height="25"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="Le0-tk-PTU"/>
+                            <constraint firstAttribute="width" constant="25" id="tKS-9r-WJa"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Operational Manual" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOy-pK-YNu">
+                        <rect key="frame" x="45" y="10" width="134.5" height="21"/>
+                        <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.88235294119999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlw-i4-T59">
+                        <rect key="frame" x="199.5" y="9.5" width="61.5" height="22"/>
+                        <color key="tintColor" red="0.83921568629999999" green="0.019607843140000001" blue="0.019607843140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <state key="normal" image="revision"/>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PART A General / Basic" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4K-V2-Vhq">
+                        <rect key="frame" x="12" y="41" width="109.5" height="15.5"/>
+                        <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="11"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oct 12 , 2018 - 17:36" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n1b-HR-Rsu">
+                        <rect key="frame" x="12" y="64.5" width="74.5" height="13"/>
+                        <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="9"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="n1b-HR-Rsu" firstAttribute="leading" secondItem="f4K-V2-Vhq" secondAttribute="leading" id="4QK-oJ-TJC"/>
+                    <constraint firstItem="f4K-V2-Vhq" firstAttribute="leading" secondItem="RUD-gP-Czt" secondAttribute="leading" id="9yv-rc-d0y"/>
+                    <constraint firstItem="rlw-i4-T59" firstAttribute="centerY" secondItem="RUD-gP-Czt" secondAttribute="centerY" id="LJR-f9-3hv"/>
+                    <constraint firstItem="KOy-pK-YNu" firstAttribute="centerY" secondItem="RUD-gP-Czt" secondAttribute="centerY" id="WRN-ew-0ZN"/>
+                    <constraint firstItem="RUD-gP-Czt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="bBx-V8-Vfb"/>
+                    <constraint firstItem="n1b-HR-Rsu" firstAttribute="top" secondItem="f4K-V2-Vhq" secondAttribute="bottom" constant="8" id="g72-bU-n1z"/>
+                    <constraint firstItem="f4K-V2-Vhq" firstAttribute="top" secondItem="RUD-gP-Czt" secondAttribute="bottom" constant="8" id="ifq-9D-rUV"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="n1b-HR-Rsu" secondAttribute="bottom" constant="6" id="mf2-ei-JaV"/>
+                    <constraint firstItem="RUD-gP-Czt" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="pmQ-NB-toG"/>
+                    <constraint firstItem="rlw-i4-T59" firstAttribute="leading" secondItem="KOy-pK-YNu" secondAttribute="trailing" constant="20" id="qLA-m9-6lt"/>
+                    <constraint firstItem="KOy-pK-YNu" firstAttribute="leading" secondItem="RUD-gP-Czt" secondAttribute="trailing" constant="8" id="yFu-vL-vGE"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.1215686275" green="0.19215686269999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="mCategoryLabel" destination="f4K-V2-Vhq" id="Rs3-TE-121"/>
+                <outlet property="mDateLabel" destination="n1b-HR-Rsu" id="hXK-ea-HSp"/>
+                <outlet property="mNameLabel" destination="KOy-pK-YNu" id="Rhf-MW-AoE"/>
+                <outlet property="mPDFStateButton" destination="rlw-i4-T59" id="hPl-yf-uS5"/>
+                <outlet property="mTypeImage" destination="RUD-gP-Czt" id="hJK-CT-1Ug"/>
+            </connections>
+            <point key="canvasLocation" x="67.391304347826093" y="152.67857142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="pdf" width="26" height="26"/>
+        <image name="revision" width="61.5" height="18"/>
+    </resources>
+</document>
