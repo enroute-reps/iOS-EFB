@@ -58,7 +58,7 @@ extension AlertView{
         view.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         self.mButton.cornerRadius = 5
-        self.mButton.border(1, App_Constants.Instance.Color(.light))
+        self.mButton.border(1, App_Constants.Instance.Color(.dark))
         let width = UIScreen.main.bounds.size.width * 0.4
         self.frame.size.width = width
         self.mTitle.text = _title
@@ -70,17 +70,21 @@ extension AlertView{
         self.center = CGPoint.init(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.height + height)
         self.cornerRadius = 5
         view.cornerRadius = 5
+        view.border(1, App_Constants.Instance.Color(.dark))
         self.isHidden = true
     }
     
     public func show(){
+        if let view = UIApplication.shared.keyWindow?.subviews.first(where: {$0 is AlertView}){
+            view.removeFromSuperview()
+        }
         UIApplication.shared.keyWindow?.addSubview(self)
         changeUserInteraction(false)
         self.animShow()
     }
     
     private func animShow(){
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
             self.center.y = UIScreen.main.bounds.midY
             self.layoutIfNeeded()
         }, completion: nil)

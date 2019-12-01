@@ -16,6 +16,7 @@ public class Api_Names:NSObject{
     
     public static let main = "http://Enrouteservice.com:\(kPort4000)/"
     public static let Main = "http://Enrouteservice.com:\(kPort8080)/"
+    public static let main2 = "http://enrouteservice.com:%d/"
     
     public static var main1:String{
         get {return ((App_Constants.Instance.SettingsLoad(.server) as? String)?.isEmpty ?? true) ? "http://Enrouteservice.com:\(kPort4000)" : App_Constants.Instance.SettingsLoad(.auto_lock) as? String ?? main}
@@ -41,4 +42,7 @@ public class Api_Names:NSObject{
     public static let seened_notifications = "logs/seennotifications"
     public static let logout = "users/logout"
     public static let fcmToken = "users/registernotificationtoken"
+    public static let email_verify = "users/updateemail"
+    public static let legal = "users/lastlegalnotes"
+    public static let legal_content = "assets/legalnotes/%@"
 }

@@ -26,20 +26,32 @@ class ChangePasswordViewController: UIViewController {
     }
     
     @IBAction func _AcceptButtonTapped(_ sender: Any) {
-        self.mAlertLabel.isHidden = mNewPasswordTextField.text == mReNewPasswordTextField.text && !((mOldPasswordTextField.text ?? "").isEmpty)
-        if mNewPasswordTextField.text == mReNewPasswordTextField.text && !((mNewPasswordTextField.text ?? "").isEmpty) && !((mOldPasswordTextField.text ?? "").isEmpty){
-            mAcceptButton.startAnimation()
-            HttpClient.http()._Post(relativeUrl: Api_Names.change_password, body: Change_Password_Body(oldPassword: mOldPasswordTextField.text!, newPassword: mNewPasswordTextField.text!), callback: {(s,m,r:Notification_Model?) in
-                if s{
-                    App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.password_changed_s), in: 3)
-                    self.mAcceptButton.stopAnimation()
-                    self.dismiss(animated: true, completion: nil)
-                }else{
-                    App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.try_again))
-                    self.mAcceptButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
-                }
-            })
+        guard mNewPasswordTextField.text == mReNewPasswordTextField.text && !((mNewPasswordTextField.text ?? "").isEmpty) && !((mOldPasswordTextField.text ?? "").isEmpty)else{
+            mAlertLabel.text = "*Sorry, something went wrong."
+            mAlertLabel.isHidden = false
+            return
         }
+        guard (mNewPasswordTextField.text?.count ?? 0) > 5 else{
+            mAlertLabel.text = "*Password must be 6 character at least."
+            mAlertLabel.isHidden = false
+            return
+        }
+        mAcceptButton.startAnimation()
+        self.mCancelButton.isHidden = true
+        HttpClient.http()._Post(relativeUrl: Api_Names.change_password, body: Change_Password_Body(oldPassword: mOldPasswordTextField.text!, newPassword: mNewPasswordTextField.text!), callback: {(s,m,r:Notification_Model?) in
+            if s{
+                App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.password_changed_s), in: 3)
+                self.mAcceptButton.stopAnimation()
+                self.dismiss(animated: true, completion: nil)
+            }else{
+                App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.try_again))
+                self.mAcceptButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
+            }
+            UIView.animate(withDuration: 0.3, animations: {
+                self.mCancelButton.isHidden = false
+            })
+        })
+        
     }
     
     @IBAction func _CancelButtonTapped(_ sender: Any) {
@@ -54,6 +66,10 @@ extension ChangePasswordViewController{
         self.mMainview.cornerRadius = 10
         self.mCancelButton.cornerRadius = 10
         self.mCancelButton.border(1, self.mAcceptButton.backgroundColor ?? App_Constants.Instance.Color(.light))
+        mOldPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Old Password",attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)])
+        mNewPasswordTextField.attributedPlaceholder = NSAttributedString(string: "New Password",attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)])
+        mReNewPasswordTextField.attributedPlaceholder = NSAttributedString(string: "Re-type New Password",attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)])
     }
     
 }
+

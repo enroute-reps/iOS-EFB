@@ -8,6 +8,8 @@
 
 import UIKit
 import SDWebImage
+import Combine
+import Alamofire
 
 class DashboardViewController: UIViewController {
     
@@ -89,12 +91,12 @@ class DashboardViewController: UIViewController {
     @IBAction func _SyncButtonTapped(_ sender: Any) {
         App_Constants.UI._Rotate(self.mSyncButton)
         self.mSyncButton.isUserInteractionEnabled = false
-        Sync.syncUser({ r in
+        Sync.syncUser({ r,m  in
             if r{
                 self._Initialize()
                 App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.sync_completed))
             }else{
-                App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.try_again))
+                App_Constants.UI.Make_Alert("", m ?? "")
             }
              App_Constants.UI._StopRotate(self.mSyncButton)
             self.mSyncButton.isUserInteractionEnabled = true
@@ -104,9 +106,15 @@ class DashboardViewController: UIViewController {
     @IBAction func _LogoutButtonTapped(_ sender: Any) {
         autoreleasepool{[weak self] in
             guard let weak = self else{return}
-            let alert1 = PopupViewController.init(title: App_Constants.Instance.Text(.logout), message: App_Constants.Instance.Text(.logout_message), leftButtonTitle: App_Constants.Instance.Text(.yes), rightButtonTitle: App_Constants.Instance.Text(.no), leftButtonFunc: { button,controller in
+            let alert1 = PopupViewController.init(title: App_Constants.Instance.Text(.logout), message: App_Constants.Instance.Text(.logout_message), leftButtonTitle: App_Constants.Instance.Text(.no), rightButtonTitle: App_Constants.Instance.Text(.yes), leftButtonFunc: { button,button2,controller in
+                controller?.dismiss(animated: true, completion: nil)
+            }, rightButtonFunc: {button,button2,controller in
                 button.startAnimation()
+                button2.isHidden = true
                 weak._Logout({s in
+                    UIView.animate(withDuration: 0.3, animations: {
+                        button2.isHidden = false
+                    })
                     if s{
                         button.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: {
                             controller?.dismiss(animated: true, completion: nil)
@@ -121,12 +129,10 @@ class DashboardViewController: UIViewController {
                             }
                         })
                     }else{
-                       button.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
+                        button.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
                         App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.logout_failed))
                     }
                 })
-            }, rightButtonFunc: {button,controller in
-                controller?.dismiss(animated: true, completion: nil)
             })
             alert1.modalPresentationStyle = .overCurrentContext
             weak.present(alert1, animated: true, completion: nil)
@@ -194,27 +200,30 @@ extension DashboardViewController{
             self.mNotificationsBackButton.isHidden = false
         })
         NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.syncing), object: nil, queue: nil, using: {notification in
-            App_Constants.UI._Rotate(self.mSyncButton)
-            self.mSyncButton.isUserInteractionEnabled = false
+            DispatchQueue.main.async{
+                App_Constants.UI._Rotate(self.mSyncButton)
+                self.mSyncButton.isUserInteractionEnabled = false
+            }
         })
         NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.sync_finished), object: nil, queue: nil, using: {notification in
-            App_Constants.UI._StopRotate(self.mSyncButton)
-            self.mSyncButton.isUserInteractionEnabled = true
-            self._Initialize()
+            DispatchQueue.main.async{
+                App_Constants.UI._StopRotate(self.mSyncButton)
+                self.mSyncButton.isUserInteractionEnabled = true
+                self._Initialize()
+            }
         })
         
         // Expire Alert
         autoreleasepool{
-            let distance = Calendar.current.dateComponents([.day], from: "\(Date())".toDate(), to: (self._User?.licence?.formattedDate()?.toDate() ?? Date())).day ?? 0
-            self.mExpireAlertLabel.isHidden = !(distance <= 30)
-            self.mExpireAlertLabel.text = String(format: App_Constants.Instance.Text(.expire_library_message), distance)
+            let Days30ToInterval:TimeInterval = 2592000
+            let interval = (self._User?.licence?.defaultToDate() ?? Date()).timeIntervalSinceNow
+            self.mExpireAlertLabel.isHidden = ((interval - Days30ToInterval) / (24*60*60) >= 1)
+            self.mExpireAlertLabel.text = String(format: App_Constants.Instance.Text(.expire_library_message), Int(interval / (24*60*60) + 1))
         }
         //check email verification
         self.mEmailVerificationView.isHidden = !(self._User?.user_status == Constants.kEmailNotVerified)
-        //handle notification data
-        if !NotificationManager.data.isEmpty{
-            
-        }
+        //Legal Check
+        self._CheckLegal()
     }
     
     private func _Logout(_ callback: @escaping (Bool)->Void){
@@ -229,6 +238,31 @@ extension DashboardViewController{
             })
             
         }
+    }
+    
+    private func _PresentTerms(file:String, date: String){
+        if !(self.presentedViewController?.isKind(of: TermsViewController.self) ?? false){
+            let terms = TermsViewController.init(file: file, date: date)
+            terms.modalPresentationStyle = .formSheet
+            terms.modalTransitionStyle = .coverVertical
+            self.present(terms, animated: true, completion: nil)
+        }
+    }
+    
+    private func _CheckLegal(){
+        Sync.LastLegalNotes({s,m,r in
+            if s{
+                guard let lastUpdate = App_Constants.Instance.SettingsLoad(.legal_time) as? String else{
+                    self._PresentTerms(file: r?.licenceAgreement ?? "", date: r?.lastUpdate ?? "")
+                    return
+                }
+                if lastUpdate != (r?.lastUpdate){
+                    self._PresentTerms(file: r?.licenceAgreement ?? "", date: r?.lastUpdate ?? "")
+                }
+            }else{
+                self._CheckLegal()
+            }
+        })
     }
     
 }

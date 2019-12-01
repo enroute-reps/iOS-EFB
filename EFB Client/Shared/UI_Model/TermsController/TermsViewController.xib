@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="KohinoorBangla.ttc">
+            <string>KohinoorBangla-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TermsViewController" customModule="Enroute_EFB" customModuleProvider="target">
+            <connections>
+                <outlet property="mLeftButton" destination="Ld8-KP-3Cc" id="uv6-82-YwN"/>
+                <outlet property="mRightButton" destination="zIB-YH-w6a" id="OnY-BH-tnf"/>
+                <outlet property="mTextView" destination="Saf-e9-j2k" id="5iB-Z0-zV8"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zjf-8s-z6D">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terms &amp; Conditions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xrZ-kc-8Ap">
+                            <rect key="frame" x="308" y="13" width="152" height="24"/>
+                            <fontDescription key="fontDescription" name="KohinoorBangla-Medium" family="Kohinoor Bangla" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.2935086489" green="0.43361431360000002" blue="0.82266616820000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="xrZ-kc-8Ap" firstAttribute="centerY" secondItem="Zjf-8s-z6D" secondAttribute="centerY" id="KPD-fp-uBY"/>
+                        <constraint firstItem="xrZ-kc-8Ap" firstAttribute="centerX" secondItem="Zjf-8s-z6D" secondAttribute="centerX" id="bNi-KO-GGy"/>
+                        <constraint firstAttribute="height" constant="50" id="hYr-fb-zID"/>
+                    </constraints>
+                </view>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Saf-e9-j2k">
+                    <rect key="frame" x="19" y="62" width="730" height="872"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="15"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jQH-Bw-SrT">
+                    <rect key="frame" x="19" y="954" width="730" height="50"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="UfF-95-Eox">
+                            <rect key="frame" x="0.0" y="0.0" width="730" height="50"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ld8-KP-3Cc">
+                                    <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                    <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="16"/>
+                                    <state key="normal" title="Disagree">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="_LeftButtonTapped:" destination="-1" eventType="touchUpInside" id="aFS-40-bOQ"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIB-YH-w6a" customClass="TransitionButton" customModule="TransitionButton">
+                                    <rect key="frame" x="371" y="0.0" width="359" height="50"/>
+                                    <color key="backgroundColor" red="0.29762169719999998" green="0.38640594480000001" blue="0.77487313749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="16"/>
+                                    <state key="normal" title="Agree">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="10"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="_RightButtonTapped:" destination="-1" eventType="touchUpInside" id="6fY-li-uYu"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="UfF-95-Eox" firstAttribute="top" secondItem="jQH-Bw-SrT" secondAttribute="top" id="9Lj-pY-9A0"/>
+                        <constraint firstAttribute="height" constant="50" id="I3r-d8-2wp"/>
+                        <constraint firstItem="UfF-95-Eox" firstAttribute="leading" secondItem="jQH-Bw-SrT" secondAttribute="leading" id="dFW-qn-Ntr"/>
+                        <constraint firstAttribute="trailing" secondItem="UfF-95-Eox" secondAttribute="trailing" id="f5p-U0-59m"/>
+                        <constraint firstAttribute="bottom" secondItem="UfF-95-Eox" secondAttribute="bottom" id="gDg-ZW-QOf"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.094117647060000004" green="0.1450980392" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Zjf-8s-z6D" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="0Jb-15-x2i"/>
+                <constraint firstItem="Zjf-8s-z6D" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="X58-bR-ZBT"/>
+                <constraint firstItem="jQH-Bw-SrT" firstAttribute="top" secondItem="Saf-e9-j2k" secondAttribute="bottom" constant="20" id="YKp-ik-sbZ"/>
+                <constraint firstItem="Saf-e9-j2k" firstAttribute="top" secondItem="Zjf-8s-z6D" secondAttribute="bottom" constant="12" id="a0b-1k-acW"/>
+                <constraint firstItem="jQH-Bw-SrT" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="aQF-Uz-XRz"/>
+                <constraint firstItem="Zjf-8s-z6D" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="hDR-D2-aPR"/>
+                <constraint firstItem="Saf-e9-j2k" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="jJh-co-qoo"/>
+                <constraint firstItem="jQH-Bw-SrT" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.95" id="mIc-zQ-XQD"/>
+                <constraint firstItem="Saf-e9-j2k" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.95" id="wEY-Yo-b5P"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="jQH-Bw-SrT" secondAttribute="bottom" constant="20" id="zf8-wf-Aeg"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="139" y="137"/>
+        </view>
+    </objects>
+</document>

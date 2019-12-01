@@ -51,10 +51,6 @@ class LibraryListViewController: UIViewController {
     private var _FileManager = FilesManager.default
     private var _App_Constants = App_Constants.Instance
     private var _Download_Manager = Download_Manager.default
-    private var _Timer:Timer!
-    private var prevDownloadedBytes: Int = 0
-    private var totalDownloadedBytes: Int = 0
-    private var speed:Int = 0
     private var kMain = "Main"
     private var kLibrary = "library"
     private var kManual = "manual"
@@ -72,6 +68,8 @@ class LibraryListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
+        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden: false])
+        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [kIsHidden: false])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -251,20 +249,6 @@ extension LibraryListViewController{
         }
     }
     
-    private func _SetTimer(){
-        _Timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: {_ in
-            self.speed = (self.totalDownloadedBytes - self.prevDownloadedBytes) / 2
-            self.prevDownloadedBytes = self.totalDownloadedBytes
-        })
-    }
-    
-    public func _StopTimer(){
-        if _Timer != nil {
-            _Timer.invalidate()
-            _Timer = nil
-        }
-    }
-    
     private func _RemoveDuplicateManual(){
         autoreleasepool{
             let files = _FileManager.getAllManuals(Constants.kManualDirectory)
@@ -276,7 +260,7 @@ extension LibraryListViewController{
                     if file1.manual_title == file2.manual_title{
                         if (file1.manual_version ?? "1").compare((file2.manual_version ?? "1")) == ComparisonResult.orderedDescending{
                             _FileManager.deleteManual("\(Constants.kManualDirectory)/\(file2.manual_category ?? "")", "\(file2.manual_version ?? "")_\(file2.manual_file_name ?? "")_\(file2.upload_date ?? "")_\(file2.manual_description ?? "").pdf")
-                            if (_FileManager.getFilesInDirectory(file2.manual_category ?? "") ?? []).isEmpty{
+                            if let d = _FileManager.getFilesInDirectory(file2.manual_category ?? ""){
                                 _FileManager.deleteManual(Constants.kManualDirectory, file2.manual_category ?? "")
                             }
                         }
@@ -421,7 +405,6 @@ extension LibraryListViewController:DownloadDelegate{
         switch _Type{
         case .downloads:
             self._HighlightIndex = -1
-            self._SetTimer()
             if let indexPath = self.mTableView.indexPath(for: cell){
                 self.mTableView.reloadRows(at: [indexPath], with: .automatic)
                 let manual = _Downloads[indexPath.row]
@@ -442,25 +425,24 @@ extension LibraryListViewController:DownloadDelegate{
                             self.mTableView.reloadSections(IndexSet(integer: 0), with: .none)
                             self.mCollectionView.reloadSections(IndexSet(integer: 0))
                         }
-                        self._StopTimer()
                         Sync.Log_Event(event: .manual_downloaded, type: .manual, id: "\(manual.manual_id ?? 0)", {s,m in})
                     }
                 }
-                _Download_Manager.didWriteData = {session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite in
+                _Download_Manager.didWriteData = {session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite,speed in
                     guard let sourceURL = downloadTask.originalRequest?.url else { return }
                     let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
-                    self.totalDownloadedBytes = Int(totalBytesWritten)
-                    if self.speed == 0 {
-                        self.speed = 1
+                    var estimatedTime:Double = 0
+                    if speed != 0{
+                        estimatedTime = Double(totalBytesExpectedToWrite - totalBytesWritten) / Double(speed)
+                    }else{
+                        estimatedTime = 0
                     }
-                    
-                    let estimatedTime = Double(totalBytesExpectedToWrite - totalBytesWritten) / Double(self.speed)
                     DispatchQueue.main.async{
                         if let cell = self.mCollectionView.cellForItem(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListCollectionViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, estimatedTime.toString())
+                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
                         }
                         if let cell = self.mTableView.cellForRow(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListTableViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, estimatedTime.toString())
+                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
                         }
                     }
                 }
@@ -581,7 +563,6 @@ extension LibraryListViewController:CollectionDownloadDelegate{
         switch _Type{
         case .downloads:
             self._HighlightIndex = -1
-            self._SetTimer()
             if let indexPath = self.mCollectionView.indexPath(for: cell){
                 self.mCollectionView.reloadItems(at: [indexPath])
                 let manual = _Downloads[indexPath.row]
@@ -602,25 +583,24 @@ extension LibraryListViewController:CollectionDownloadDelegate{
                             self.mCollectionView.reloadSections(IndexSet.init(integer: 0))
                             self.mTableView.reloadSections(IndexSet(integer: 0), with: .none)
                         }
-                        self._StopTimer()
                         Sync.Log_Event(event: .manual_downloaded, type: .manual, id: "\(download?.manual.manual_id ?? 0)", {s,m in})
                     }
                 }
-                _Download_Manager.didWriteData = {session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite in
+                _Download_Manager.didWriteData = {session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite,speed in
                     guard let sourceURL = downloadTask.originalRequest?.url else { return }
                     let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
-                    self.totalDownloadedBytes = Int(totalBytesWritten)
-                    if self.speed == 0 {
-                        self.speed = 1
+                    var estimatedTime:Double = 0
+                    if speed != 0{
+                        estimatedTime = Double(totalBytesExpectedToWrite - totalBytesWritten) / Double(speed)
+                    }else{
+                        estimatedTime = 0
                     }
-                    
-                    let estimatedTime = Double(totalBytesExpectedToWrite - totalBytesWritten) / Double(self.speed)
                     DispatchQueue.main.async{
                         if let cell = self.mCollectionView.cellForItem(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListCollectionViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, estimatedTime.toString())
+                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
                         }
                         if let cell = self.mTableView.cellForRow(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListTableViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, estimatedTime.toString())
+                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
                         }
                     }
                 }

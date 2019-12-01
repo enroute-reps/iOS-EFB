@@ -32,20 +32,35 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9a-sr-ITw">
-                            <rect key="frame" x="12" y="13" width="24" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9a-sr-ITw">
+                            <rect key="frame" x="12" y="0.0" width="77" height="50"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="back"/>
                             <connections>
                                 <action selector="_BackButtonTapped:" destination="-1" eventType="touchUpInside" id="xdV-gY-zCA"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYO-73-NiB">
+                            <rect key="frame" x="679" y="0.0" width="77" height="50"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" image="close"/>
+                            <connections>
+                                <action selector="_BackButtonTapped:" destination="-1" eventType="touchUpInside" id="W04-zn-mY9"/>
+                                <action selector="_CloseButtonTapped:" destination="-1" eventType="touchUpInside" id="yot-zV-8hd"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.29762169719999998" green="0.38640594480000001" blue="0.77487313749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="FnU-Fh-7oq" firstAttribute="centerX" secondItem="S6o-Gd-8c5" secondAttribute="centerX" id="20I-3T-Z3d"/>
+                        <constraint firstItem="YYO-73-NiB" firstAttribute="width" secondItem="S6o-Gd-8c5" secondAttribute="width" multiplier="0.1" id="3oS-4a-Igk"/>
+                        <constraint firstItem="M9a-sr-ITw" firstAttribute="height" secondItem="S6o-Gd-8c5" secondAttribute="height" id="6k8-Tf-zdo"/>
                         <constraint firstItem="M9a-sr-ITw" firstAttribute="leading" secondItem="S6o-Gd-8c5" secondAttribute="leading" constant="12" id="87I-PO-nWl"/>
+                        <constraint firstItem="M9a-sr-ITw" firstAttribute="width" secondItem="S6o-Gd-8c5" secondAttribute="width" multiplier="0.1" id="Fja-fg-HJQ"/>
+                        <constraint firstAttribute="trailing" secondItem="YYO-73-NiB" secondAttribute="trailing" constant="12" id="G9J-PR-Awd"/>
+                        <constraint firstItem="YYO-73-NiB" firstAttribute="height" secondItem="S6o-Gd-8c5" secondAttribute="height" id="QBv-Yr-62Q"/>
                         <constraint firstAttribute="height" constant="50" id="Vd9-Bn-4nU"/>
+                        <constraint firstItem="YYO-73-NiB" firstAttribute="centerY" secondItem="S6o-Gd-8c5" secondAttribute="centerY" id="dfz-TU-ytL"/>
                         <constraint firstItem="FnU-Fh-7oq" firstAttribute="centerY" secondItem="S6o-Gd-8c5" secondAttribute="centerY" id="eac-bc-ZF3"/>
                         <constraint firstItem="M9a-sr-ITw" firstAttribute="centerY" secondItem="S6o-Gd-8c5" secondAttribute="centerY" id="zzi-HC-Tdm"/>
                     </constraints>
@@ -122,5 +137,6 @@
     </objects>
     <resources>
         <image name="back" width="24" height="24"/>
+        <image name="close" width="24" height="24"/>
     </resources>
 </document>

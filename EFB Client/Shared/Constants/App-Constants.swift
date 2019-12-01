@@ -27,7 +27,6 @@ class App_Constants:NSObject{
         self.RegisterForNotification()
         self.Reachability()
         SettingBundleManager.shared.settingInit()
-        
     }
     
     //MARK: - Network Reachability
@@ -36,7 +35,7 @@ class App_Constants:NSObject{
             let reachability = NetworkReachabilityManager()
             reachability?.listener = {_ in
                 if (reachability?.isReachable ?? false){
-                    Sync.syncUser({r in })
+                    Sync.syncUser({r,m in })
                 }else{
                     App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.no_connection))
                 }
@@ -93,11 +92,13 @@ class App_Constants:NSObject{
         SettingsRemove(.IsFirstStart)
         SettingsRemove(.UserId)
         SettingsRemove(.UserInfo)
+        SettingsRemove(.legal_time)
         ClearEntity(.manual)
         ClearEntity(.message)
         ClearEntity(.notification)
         ClearEntity(.organization)
         ClearEntity(.user)
+        FilesManager.default.clearAll(Constants.kManualDirectory)
         _Token = self.Token_Return()
     }
     
@@ -291,7 +292,7 @@ class UI_Constants:NSObject{
         }
     }
     
-    public func Make_Toast(with title: String, in duration: Double = 2.5, in position: ToastPosition = .bottom){
+    public func Make_Toast(with title: String, in duration: Double = 2.5, in position: ToastPosition = .top){
         autoreleasepool{
             var style = ToastStyle()
             style.messageColor = App_Constants.Instance.Color(.light)

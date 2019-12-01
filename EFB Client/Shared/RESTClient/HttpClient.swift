@@ -17,16 +17,18 @@ class HttpClient:NSObject{
     private var _HttpMethod_Get = "GET"
     private var _HttpMethod_Put = "PUT"
     private var _HttpMethod_Delete = "DELETE"
+    private var port:Int = kPort4000
     
-    convenience init(_ hasToken: Bool){
+    convenience init(_ hasToken: Bool,_ port: Int){
         self.init()
+        self.port = port
         if hasToken{
             self._Default_Headers = ["Content-Type":"application/json","Authorization":"Bearer \(App_Constants.Instance.Token_Return())"]
         }
     }
     
-    public static func http()->HttpClient{
-        return HttpClient.init(true)
+    public static func http(_ token: Bool = true, port: Int = kPort4000)->HttpClient{
+        return HttpClient.init(token,port)
     }
     
     public func _Post<T:Codable,Y:Codable>(relativeUrl:String,body:T,callback: @escaping (Bool,String,Y?)->Void){
@@ -44,8 +46,7 @@ class HttpClient:NSObject{
                     do{
                         result = try JSONDecoder().decode(Global<Y>.self, from: response.data!)
                         callback(true,"",result?.data)
-                    }catch (let err){
-                        print(err)
+                    }catch{
                         callback(false,App_Constants.Instance.Text(.try_again),nil)
                     }
                 case .failure:
@@ -231,6 +232,36 @@ class HttpClient:NSObject{
         }
     }
     
+    public func _GetDefault<T:Codable>(relativeUrl:String,callback:@escaping (Bool,String,T?)->Void){
+        autoreleasepool{
+            var result:T!
+            Alamofire.request(String(format:Api_Names.main2,port) + relativeUrl,method: .get, encoding: JSONEncoding.default,headers: _Default_Headers).validate(statusCode: 200..<300).responseJSON(completionHandler: {response in
+                switch response.result{
+                case .success:
+                    do{
+                        result = try JSONDecoder().decode(T.self, from: response.data!)
+                        callback(true,"",result)
+                    }catch (let err){
+                        callback(false,String(describing:err),nil)
+                    }
+                    
+                case .failure:
+                    if response.response == nil{
+                        callback(false,App_Constants.Instance.Text(.time_out),nil)
+                    }else{
+                        callback(false,App_Constants.Instance.Text(.try_again),nil)
+                    }
+                    if(response.response?.statusCode == 401) {
+                        App_Constants.Instance.RemoveAllRecords()
+                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
+                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                    }
+                    
+                }
+            })
+        }
+    }
+    
     public func _GetArray<T:Codable>(relativeUrl:String,callback:@escaping (Bool,String,[T]?)->Void){
         autoreleasepool{
             var result:GlobalArray<T>!
@@ -245,7 +276,11 @@ class HttpClient:NSObject{
                     }
                     
                 case .failure:
-                    callback(false,App_Constants.Instance.Text(.try_again),nil)
+                    if response.response?.statusCode == nil {
+                        callback(false,App_Constants.Instance.Text(.no_connection),nil)
+                    }else{
+                        callback(false,App_Constants.Instance.Text(.try_again),nil)
+                    }
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
                         let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController

@@ -86,7 +86,7 @@ extension EFBTabbar {
         self.mSpaceView2.cornerRadius = 10
         
         self.user = App_Constants.Instance.LoadUser()
-        self.isLibraryAvailable = (user?.licence?.formattedDate()?.toDate() ?? Date()) >= Date() && user?.user_status != 2
+//        self.isLibraryAvailable = (user?.licence?.formattedDate()?.toDate() ?? Date()) >= Date() && user?.user_status != 2
         if !self.isLibraryAvailable{
             self.mLibraryImage.tintColor = .gray
             self.mLibraryLabel.textColor = .gray

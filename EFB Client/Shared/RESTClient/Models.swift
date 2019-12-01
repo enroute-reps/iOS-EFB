@@ -148,6 +148,12 @@ struct Organization:Codable{
     public var organization_logo:String?
 }
 
+struct Legal:Codable{
+    public var lastUpdate:String?
+    public var privacyPolicy:String?
+    public var licenceAgreement:String?
+}
+
 struct LoginBody:Codable{
     public var username:String
     public var password:String
@@ -180,4 +186,8 @@ struct Feedback_Body:Codable{
 
 struct FCMToken_Body:Codable{
     public var token:String
+}
+
+struct Email_Body:Codable{
+    public var email:String
 }

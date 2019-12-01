@@ -42,7 +42,19 @@ class SupportViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func _CloseButtonTapped(_ sender: Any) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func _SendButtonTapped(_ sender: Any) {
+        guard (mTitle.text?.count ?? 0)  > 3 else{
+            App_Constants.UI.Make_Alert("", "*Subject must be 3 character at least.")
+            return
+        }
+        guard (mTextView.text?.count ?? 0) > 5 else{
+            App_Constants.UI.Make_Alert("", "*Text must be 5 character at least.")
+            return
+        }
         self.mSendButton.startAnimation()
         HttpClient.http()._Post(relativeUrl: Api_Names.feedback, body: Feedback_Body(title: "\(self._Type.rawValue)-\(self.mSubjectTextField.text ?? "")", text: self.mTextView.text ?? ""), callback: {(s,m,r:String?) in
             if s{

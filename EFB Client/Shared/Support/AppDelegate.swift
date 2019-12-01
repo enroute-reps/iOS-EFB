@@ -14,6 +14,7 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var backgroundTaskCompletionHandler:(()->Void)?
 
     override init() {
         App_Constants.Instance._Initialize()
@@ -64,11 +65,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        App_Constants.Instance._BGSessionCompletion = completionHandler
+        self.backgroundTaskCompletionHandler = completionHandler
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Sync.syncUser({s in})
+        Sync.syncUser({s,m in})
     }
     
     // MARK: - Core Data stack
@@ -142,8 +143,8 @@ extension AppDelegate: MessagingDelegate{
         Sync.syncMessages(completed: {
             Sync.syncNotifications(completed: {
                 Sync.syncBadgeIcon()
-            }, errorHandle: {})
-        }, errorHandle: {})
+            }, errorHandle: {m in})
+        }, errorHandle: {m in})
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

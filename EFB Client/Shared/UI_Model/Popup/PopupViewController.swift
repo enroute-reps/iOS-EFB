@@ -46,10 +46,10 @@ class PopupViewController: UIViewController {
     }
     
     
-    public var leftButtonFunc:((TransitionButton,UIViewController?)->Void)?
-    public var rightButtonFunc:((TransitionButton,UIViewController?)->Void)?
+    public var leftButtonFunc:((TransitionButton,TransitionButton,UIViewController?)->Void)?
+    public var rightButtonFunc:((TransitionButton,TransitionButton,UIViewController?)->Void)?
     
-    convenience init(title: String, message: String, leftButtonTitle: String, rightButtonTitle: String, leftButtonFunc: ((TransitionButton,UIViewController?)->Void)?, rightButtonFunc: ((TransitionButton,UIViewController?)->Void)?){
+    convenience init(title: String, message: String, leftButtonTitle: String, rightButtonTitle: String, leftButtonFunc: ((TransitionButton,TransitionButton,UIViewController?)->Void)?, rightButtonFunc: ((TransitionButton,TransitionButton,UIViewController?)->Void)?){
         self.init()
         self._title = title
         self.message = message
@@ -66,11 +66,11 @@ class PopupViewController: UIViewController {
     
     
     @IBAction func _LeftButtonTapped(_ sender: Any) {
-        leftButtonFunc?(mLeftButton,self)
+        leftButtonFunc?(mLeftButton,mRightButton,self)
     }
     
     @IBAction func _RightButtonTapped(_ sender: Any) {
-        rightButtonFunc?(mRightButton,self)
+        rightButtonFunc?(mRightButton,mLeftButton,self)
     }
     
 }

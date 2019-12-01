@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,16 +32,16 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OlJ-Na-m3y">
-                            <rect key="frame" x="12" y="13" width="24" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OlJ-Na-m3y">
+                            <rect key="frame" x="12" y="0.0" width="77" height="50"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="back"/>
                             <connections>
                                 <action selector="_BackButtonTapped:" destination="-1" eventType="touchUpInside" id="19J-Cf-EHo"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zSh-WP-8Dx">
-                            <rect key="frame" x="732" y="13" width="24" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zSh-WP-8Dx">
+                            <rect key="frame" x="679" y="0.0" width="77" height="50"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="close"/>
                             <connections>
@@ -55,9 +55,13 @@
                         <constraint firstItem="OlJ-Na-m3y" firstAttribute="centerY" secondItem="c3q-6a-P8e" secondAttribute="centerY" id="Anh-Ir-N8U"/>
                         <constraint firstItem="h8T-7V-BZq" firstAttribute="centerX" secondItem="c3q-6a-P8e" secondAttribute="centerX" id="G2H-td-Ah7"/>
                         <constraint firstAttribute="height" constant="50" id="Hge-Yy-R0c"/>
+                        <constraint firstItem="zSh-WP-8Dx" firstAttribute="width" secondItem="c3q-6a-P8e" secondAttribute="width" multiplier="0.1" id="Ke1-aJ-Xd5"/>
                         <constraint firstAttribute="trailing" secondItem="zSh-WP-8Dx" secondAttribute="trailing" constant="12" id="Rz8-df-w17"/>
+                        <constraint firstItem="zSh-WP-8Dx" firstAttribute="height" secondItem="c3q-6a-P8e" secondAttribute="height" id="SkZ-SH-rat"/>
+                        <constraint firstItem="OlJ-Na-m3y" firstAttribute="height" secondItem="c3q-6a-P8e" secondAttribute="height" id="TjY-JE-z6T"/>
                         <constraint firstItem="OlJ-Na-m3y" firstAttribute="leading" secondItem="c3q-6a-P8e" secondAttribute="leading" constant="12" id="Xdc-kJ-gi1"/>
                         <constraint firstItem="zSh-WP-8Dx" firstAttribute="centerY" secondItem="c3q-6a-P8e" secondAttribute="centerY" id="hdW-EF-6dw"/>
+                        <constraint firstItem="OlJ-Na-m3y" firstAttribute="width" secondItem="c3q-6a-P8e" secondAttribute="width" multiplier="0.1" id="vI0-vI-OOi"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" indicatorStyle="white" bouncesZoom="NO" keyboardDismissMode="onDrag" style="plain" separatorInsetReference="fromAutomaticInsets" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="40" sectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="SWm-Jq-GrX">

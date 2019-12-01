@@ -17,6 +17,7 @@ public enum SettingsApp: String{
     case version_app
     case server
     case FCMToken
+    case legal_time
 }
 
 public enum Images:String{
@@ -27,6 +28,7 @@ public enum Images:String{
     case revision = "revision"
     case check = "check"
     case folder = "folder"
+    case forward = "forward"
 }
 
 public enum Cell:String{
@@ -96,6 +98,7 @@ public enum Text:String{
     case logout_failed = "logout_failed"
     case expire_library_message = "expire_library_message"
     case email_not_verified = "email_not_verified"
+    case email_not_valid = "email_not_valid"
 }
 
 public enum SegueId:String{
@@ -122,6 +125,7 @@ public enum Log_Event:String{
     case logout = "LOGOUT"
     case manual_downloaded = "MANUAL_DOWNLOADED"
     case sync = "DATA_SYNCED"
+    case legal_accepted = "LEGAL_ACCEPTED"
 }
 
 public enum Log_Event_Type:String{
@@ -130,4 +134,5 @@ public enum Log_Event_Type:String{
     case logout = "logout"
     case manual = "manual"
     case sync = "sync"
+    case legal = "legal"
 }

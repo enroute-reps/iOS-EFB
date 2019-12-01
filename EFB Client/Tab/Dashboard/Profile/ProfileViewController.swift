@@ -87,7 +87,8 @@ extension ProfileViewController{
         self.mEmailLabel.text = self._User?.email_address ?? kUnrecorded
         self.mCerExpireDateLabel.text = (self._User?.licence ?? "").formattedDate() ?? kUnrecorded
         autoreleasepool{
-            let distance = Calendar.current.dateComponents([.day], from: "\(Date())".toDate(), to: (self._User?.licence?.formattedDate()?.toDate() ?? Date())).day ?? 0
+            let interval = (self._User?.licence?.defaultToDate() ?? Date()).timeIntervalSinceNow
+            let distance = abs(Int((interval) / (24*60*60)))
             self.mCerExpireDateLabel.textColor = (distance <= 30 && distance > 10) ? (.orange) : (distance <= 10 ? (App_Constants.Instance.Color(.red)) : (.white))
         }
         self.mCerIssue.text = self._Org?.organization_name ?? kUnrecorded

@@ -28,7 +28,6 @@ class PDFViewerViewController: UIViewController {
     @IBOutlet weak var mSearchView: UIView!
     @IBOutlet weak var mSearchTextField: UITextField!
     @IBOutlet weak var mSearchButton: UIButton!
-    @IBOutlet weak var mSearchLabel: UILabel!
     @IBOutlet weak var mSearchNextButton: UIButton!
     @IBOutlet weak var mSearchPrevButton: UIButton!
     @IBOutlet weak var mSearchViewBottom: NSLayoutConstraint!
@@ -40,7 +39,6 @@ class PDFViewerViewController: UIViewController {
             self.mSearchNextButton.isEnabled ? (self.mSearchNextButton.tintColor = .white) : (self.mSearchNextButton.tintColor = .gray)
             self.mSearchPrevButton.isEnabled = self._CurrentSearchedPageIndex > 0
             self.mSearchPrevButton.isEnabled ? (self.mSearchPrevButton.tintColor = .white) : (self.mSearchPrevButton.tintColor = .gray)
-            self.mSearchLabel.text = self._Selections.isEmpty ? "No Result" : "\(self._CurrentSearchedPageIndex + 1) of \(self._Selections.count)"
             
         }
     }
@@ -70,16 +68,21 @@ class PDFViewerViewController: UIViewController {
     
     @IBAction func _SearchButtonTapped(_ sender: Any) {
         UIView.animate(withDuration: 0.5, animations: {
-            self.mSearchView.isHidden = !self.mSearchView.isHidden
+            self.mSearchView.isHidden = false
         }, completion: {f in
-            if self.mSearchView.isHidden{
-                self._RemoveAllAnnotations()
-                self.mSearchTextField.text = ""
-                self.view.endEditing(true)
-            }else{
-                self.mSearchTextField.becomeFirstResponder()
-            }
+            self.mSearchTextField.becomeFirstResponder()
         })
+    }
+    
+    @IBAction func _SearchCloseButtonTapped(_ sender: Any) {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.mSearchView.isHidden = true
+        }, completion: {f in
+            self._RemoveAllAnnotations()
+            self.mSearchTextField.text = ""
+            self.view.endEditing(true)
+        })
+        
     }
     
     @IBAction func _SearchNextButtonTapped(_ sender: Any) {
@@ -198,10 +201,6 @@ extension PDFViewerViewController{
 
 
 extension PDFViewerViewController: UITextFieldDelegate{
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        self._Search(textField.text)
-        return true
-    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self._Search(textField.text)

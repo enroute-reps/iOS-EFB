@@ -43,16 +43,16 @@ class LoginViewController: UIViewController {
         HttpClient.default._PostHeader(relativeUrl: Api_Names.login, body: LoginBody(username:usernameField.text ?? "",password: passwordField.text ?? ""), callback: {(s,m,r) in
             if s{
                 App_Constants.Instance.SettingsSave(.Token, r!)
-                Sync.syncUser({success in
+                Sync.syncUser({success,message in
                     if success{
-                        if App_Constants.Instance.LoadUser()?.user_status == Constants.kEmailNotVerified{
+                        let user = App_Constants.Instance.LoadUser()?.user_status
+                        if user == Constants.kEmailNotVerified{
                             self._BeginVerifyEmail()
                         }else{
                           App_Constants.UI.performSegue(self, .login)
                         }
-
                     }else{
-                        App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.no_connection))
+                        App_Constants.UI.Make_Toast(with: message ?? "")
                     }
                     DispatchQueue.main.async{
                         self.mLoginButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
@@ -66,11 +66,23 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func _VerifyEmailButtonTapped(_ sender: Any) {
-        guard mEmailTextField.text == mRetypeEmailTextField.text && !((mEmailTextField.text ?? "").isEmpty) && (mEmailTextField.text ?? "").isEmail else{return}
+        guard mEmailTextField.text == mRetypeEmailTextField.text && !((mEmailTextField.text ?? "").isEmpty) && (mEmailTextField.text ?? "").isEmail else{
+            App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.email_not_valid))
+            return
+        }
         self.mVerifyEmailButton.startAnimation()
         self.view.endEditing(true)
         //verify email ???
-        App_Constants.UI.performSegue(self, .login)
+        HttpClient.http()._Post(relativeUrl: Api_Names.email_verify, body: Email_Body(email: mEmailTextField.text ?? ""), callback: {(s,m,r:Edit?) in
+            if s{
+                self.mVerifyEmailButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
+                App_Constants.UI.performSegue(self, .login)
+            }else{
+                self.mVerifyEmailButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
+                App_Constants.UI.Make_Alert("", m)
+            }
+        })
+        
     }
     
 override func didReceiveMemoryWarning() {
@@ -87,6 +99,11 @@ extension LoginViewController{
         mEmailView.cornerRadius = 10
         mEmailView.border(2, App_Constants.Instance.Color(.dark).withAlphaComponent(0.12))
         self.mCopyRightLabel.text = "Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)"
+        self.view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(_EndEditing(_:))))
+        mEmailTextField.delegate = self
+        mRetypeEmailTextField.delegate = self
+        usernameField.delegate = self
+        passwordField.delegate = self
     }
     
     private func _BeginVerifyEmail(){
@@ -97,4 +114,26 @@ extension LoginViewController{
         }, completion: nil)
     }
     
+    @objc private func _EndEditing(_ sender: UITapGestureRecognizer){
+        self.view.endEditing(true)
+    }
+    
+}
+
+extension LoginViewController:UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == mEmailTextField{
+            textField.resignFirstResponder()
+            mRetypeEmailTextField.becomeFirstResponder()
+        }else if textField == mRetypeEmailTextField{
+            textField.resignFirstResponder()
+        }else if textField == usernameField{
+            textField.resignFirstResponder()
+            passwordField.becomeFirstResponder()
+        }else if textField == passwordField{
+            passwordField.resignFirstResponder()
+        }
+        
+        return true
+    }
 }

@@ -16,73 +16,73 @@ class Sync {
     private static var kToken = "Token"
     private static var kAuthorization = "Authorization"
     
-    static func syncUser(_ completed: @escaping(Bool)->Void){
+    static func syncUser(_ completed: @escaping(Bool,String?)->Void){
         NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.syncing), object: nil)
         syncUserInfo(completed: {
             syncNotifications(completed: {
                 syncMessages(completed:{
                     syncManualsList(completed: {
-                        syncOrganizationInfo({s in
+                        syncOrganizationInfo({s,m in
                             if s{
-                                syncSeenedNotifications({s in
+                                syncSeenedNotifications({s,m in
                                     if s{
                                         syncBadgeIcon()
                                         NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.sync_all), object: nil)
                                         NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.sync_finished), object: nil)
-                                        completed(true)
+                                        completed(true,nil)
                                     }else{
                                         NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.sync_finished), object: nil)
-                                        completed(false)
+                                        completed(false,m)
                                     }
                                 })
                             }else{
                                 NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.sync_finished), object: nil)
-                                completed(false)
+                                completed(false,m)
                             }
                         })
-                    }, errorHandle: {completed(false)})}, errorHandle: {completed(false)})
-            }, errorHandle: {completed(false)})
-        }, errorHandle: {completed(false)})
+                    }, errorHandle: {m in completed(false,m)})}, errorHandle: {m in completed(false,m)})
+            }, errorHandle: {m in completed(false,m)})
+        }, errorHandle: {m in completed(false,m)})
     }
     
-    static func syncNotifications(completed: @escaping ()->Void, errorHandle: @escaping ()->Void) {
+    static func syncNotifications(completed: @escaping ()->Void, errorHandle: @escaping (String)->Void) {
         HttpClient.http()._GetArray(relativeUrl: Api_Names.notifications, callback: {(s,m,r:[Notification_Model]?) in
             if s{
                 App_Constants.Instance.SaveArrayToCore(r!, .notification)
                 completed()
             }else{
-                errorHandle()
+                errorHandle(m)
             }
         })
     }
     
-    static func syncSeenedNotifications(_ callback: @escaping (Bool)->Void){
+    static func syncSeenedNotifications(_ callback: @escaping (Bool,String?)->Void){
         HttpClient.http()._GetArray(relativeUrl: Api_Names.seened_notifications, callback: {(s,m,r:[Log]?) in
             if s{
                 App_Constants.Instance.SaveArrayToCore(r ?? [], .log_notification)
             }
-            callback(s)
+            callback(s,m)
         })
     }
     
-    static func syncMessages(completed: @escaping ()->Void, errorHandle: @escaping ()->Void) {
+    static func syncMessages(completed: @escaping ()->Void, errorHandle: @escaping (String)->Void) {
         HttpClient.http()._GetArray(relativeUrl: Api_Names.messages, callback: {(s,m,r:[Message]?) in
             if s{
                 App_Constants.Instance.SaveArrayToCore(r!, .message)
                 completed()
             }else{
-                errorHandle()
+                errorHandle(m)
             }
         })
     }
     
-    static func syncUserInfo(completed: @escaping ()->Void, errorHandle: @escaping ()->Void) {
+    static func syncUserInfo(completed: @escaping ()->Void, errorHandle: @escaping (String)->Void) {
         HttpClient.http()._GetArray(relativeUrl: Api_Names.info, callback: {(s,m,r:[EFBUser]?) in
             if s{
                 App_Constants.Instance.SaveUser((r?.first) ?? EFBUser())
                 completed()
             }else{
-                errorHandle()
+                errorHandle(m)
             }
         })
     }
@@ -128,13 +128,13 @@ class Sync {
         }
     }
     
-    static func syncManualsList(completed: @escaping ()->Void, errorHandle: @escaping ()->Void) {
+    static func syncManualsList(completed: @escaping ()->Void, errorHandle: @escaping (String)->Void) {
         HttpClient.http()._GetArray(relativeUrl: Api_Names.manuals, callback: {(s,m,r:[Manual]?) in
             if s{
                 App_Constants.Instance.SaveArrayToCore(r ?? [], .manual)
                 completed()
             }else{
-                errorHandle()
+                errorHandle(m)
             }
         })
     }
@@ -145,13 +145,13 @@ class Sync {
         })
     }
     
-    static func syncOrganizationInfo(_ callback: @escaping (Bool)->Void){
+    static func syncOrganizationInfo(_ callback: @escaping (Bool,String?)->Void){
         HttpClient.http()._GetArray(relativeUrl: Api_Names.organization, callback: {(s,m,r:[Organization]?) in
             if s{
                 App_Constants.Instance.SaveToCore(r?.first ?? Organization(), .organization)
-                callback(true)
+                callback(true,nil)
             }else{
-                callback(false)
+                callback(false,m)
             }
         })
     }
@@ -161,17 +161,20 @@ class Sync {
             App_Constants.Instance.SettingsSave(.FCMToken, token?.token ?? "")
             // should sync with server
             HttpClient.http()._Post(relativeUrl: Api_Names.fcmToken, body: FCMToken_Body(token: token?.token ?? ""), callback: {(s,m,r:String?) in
-                if !s{
-                    App_Constants.UI.Make_Alert("", m)
-                }
+                
             })
         })
     }
     
     static func Logout(_ callback: @escaping (Bool)->Void){
-        //should sync with server
         HttpClient.http()._Get(relativeUrl: Api_Names.logout, callback: {(s,m,r:String?) in
             callback(s)
+        })
+    }
+    
+    static func LastLegalNotes(_ callback: @escaping (Bool,String,Legal?)->Void){
+        HttpClient.http(false,port: kPort4000)._GetDefault(relativeUrl: Api_Names.legal, callback: {(s,m,r:Legal?) in
+            callback(s,m,r)
         })
     }
     

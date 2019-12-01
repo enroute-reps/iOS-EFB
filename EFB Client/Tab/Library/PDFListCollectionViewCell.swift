@@ -59,10 +59,10 @@ extension PDFListCollectionViewCell{
         self.mPDFStateButton.isHidden = (download?.isDownloading ?? false)
     }
     
-    func _UpdateDisplay(_ bytesWritten: Int64,_ totalBytesWritten: Int64,_ totalBytesExpectedToWrite: Int64,_ time: String){
+    func _UpdateDisplay(_ bytesWritten: Int64,_ totalBytesWritten: Int64,_ totalBytesExpectedToWrite: Int64,_ speed: Int,_ time: String){
         DispatchQueue.main.async{
             self.mProgressView.updateProgress(CGFloat(Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)))
-            self.mProgressDetail.text = "\(String(format: "%.1f", Float(totalBytesWritten)/1000000)) MB of \(String(format: "%.1f", Float(totalBytesExpectedToWrite)/1000000)) MB (\(String(format: "%.1f", Float(bytesWritten)/1000)) KB/s) - \(time) remaining"
+            self.mProgressDetail.text = "\(String(format: "%.1f", Float(totalBytesWritten)/1000000)) MB of \(String(format: "%.1f", Float(totalBytesExpectedToWrite)/1000000)) MB (\(String(format: "%.1f", (Float(speed)/1000) > Float(1024) ? (Float(speed) / 1000000) : (Float(speed) / 1000))) \((Float(speed)/1000) > Float(1024) ? "MB/s" : "KB/s"))) - \(time) remaining"
             if totalBytesWritten == totalBytesExpectedToWrite{
                 self.mProgressView.enableIndeterminate(false, completion: nil)
             }

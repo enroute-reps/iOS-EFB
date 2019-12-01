@@ -22,6 +22,7 @@
 "logout_failed" = "Log out Failed!";
 "expire_library_message" = "The library module will expire in %d days.";
 "email_not_verified" = "Your email has not been verified.";
+"email_not_valid" = "Please enter a valid email address.";
 // Mark: - Texts
 "support-mail" = "support@enroute.ir";
 "logout" = "Logout";

@@ -91,9 +91,11 @@ extension String{
     func formattedDate() -> String? {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        inputFormatter.timeZone = TimeZone.init(identifier: "UTC")
         if let date = inputFormatter.date(from: self) {
             let outputFormatter = DateFormatter()
-            outputFormatter.dateFormat = "MMM dd ',' YYYY '-' HH:mm'Z'"
+            outputFormatter.timeZone = TimeZone.init(identifier: "UTC")
+            outputFormatter.dateFormat = "MMM dd ',' yyyy '-' HH:mm'Z'"
             return outputFormatter.string(from: date)
         }
         return nil
@@ -133,7 +135,17 @@ extension String{
     func toDate()->Date{
         return autoreleasepool{()->Date in
             let formatter = DateFormatter()
+            formatter.timeZone = TimeZone.init(identifier: "UTC")
             formatter.dateFormat = "MMM dd ',' YYYY '-' HH:mm'Z'"
+            return formatter.date(from: self) ?? Date()
+        }
+    }
+    
+    func defaultToDate()-> Date{
+        return autoreleasepool{()->Date in
+            let formatter = DateFormatter()
+            formatter.timeZone = TimeZone.init(identifier: "UTC")
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
             return formatter.date(from: self) ?? Date()
         }
     }

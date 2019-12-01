@@ -10,8 +10,13 @@
 		1672FCAEB69F90B47B42C285 /* Pods_EFB_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720B0639234A14B399CFD4C5 /* Pods_EFB_Client.framework */; };
 		3F1B6BB6238A71D1003C62D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B6BB5238A71D1003C62D7 /* GoogleService-Info.plist */; };
 		3F2530082357528E00CBED2A /* PDFListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2530072357528E00CBED2A /* PDFListTableViewCell.swift */; };
+		3F4A5E23238D2BEF0058E743 /* ExpandableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A5E22238D2BEF0058E743 /* ExpandableTableView.swift */; };
+		3F4A5E25238D2E0B0058E743 /* ExpandableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A5E24238D2E0B0058E743 /* ExpandableTableViewCell.swift */; };
+		3F4A5E27238D32B40058E743 /* ExpandableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A5E26238D32B40058E743 /* ExpandableHeaderView.swift */; };
 		3F4C1A6B236FF74E0056473F /* Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4C1A6A236FF74D0056473F /* Sync.swift */; };
 		3F5062EF237001C600C69287 /* intro.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3F5062EE237001C500C69287 /* intro.gif */; };
+		3F702B7C239390C500F750D6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F702B7A239390C500F750D6 /* TermsViewController.swift */; };
+		3F702B7D239390C500F750D6 /* TermsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F702B7B239390C500F750D6 /* TermsViewController.xib */; };
 		3F9C34B1236EA1C500C871BB /* HelpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C34B0236EA1C500C871BB /* HelpTableViewCell.swift */; };
 		3F9C34B5236EA3C100C871BB /* HelpContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C34B3236EA3C100C871BB /* HelpContentViewController.swift */; };
 		3F9C34B6236EA3C100C871BB /* HelpContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F9C34B4236EA3C100C871BB /* HelpContentViewController.xib */; };
@@ -98,8 +103,13 @@
 		3EC53FABBC11307E093A4C10 /* Pods-EFB Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EFB Client.debug.xcconfig"; path = "Target Support Files/Pods-EFB Client/Pods-EFB Client.debug.xcconfig"; sourceTree = "<group>"; };
 		3F1B6BB5238A71D1003C62D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3F2530072357528E00CBED2A /* PDFListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFListTableViewCell.swift; sourceTree = "<group>"; };
+		3F4A5E22238D2BEF0058E743 /* ExpandableTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTableView.swift; sourceTree = "<group>"; };
+		3F4A5E24238D2E0B0058E743 /* ExpandableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableTableViewCell.swift; sourceTree = "<group>"; };
+		3F4A5E26238D32B40058E743 /* ExpandableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableHeaderView.swift; sourceTree = "<group>"; };
 		3F4C1A6A236FF74D0056473F /* Sync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sync.swift; sourceTree = "<group>"; };
 		3F5062EE237001C500C69287 /* intro.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = intro.gif; sourceTree = "<group>"; };
+		3F702B7A239390C500F750D6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		3F702B7B239390C500F750D6 /* TermsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TermsViewController.xib; sourceTree = "<group>"; };
 		3F9C34B0236EA1C500C871BB /* HelpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTableViewCell.swift; sourceTree = "<group>"; };
 		3F9C34B3236EA3C100C871BB /* HelpContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpContentViewController.swift; sourceTree = "<group>"; };
 		3F9C34B4236EA3C100C871BB /* HelpContentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelpContentViewController.xib; sourceTree = "<group>"; };
@@ -205,6 +215,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F4A5E1F238D29D60058E743 /* ExpandableTableView */ = {
+			isa = PBXGroup;
+			children = (
+				3F4A5E22238D2BEF0058E743 /* ExpandableTableView.swift */,
+				3F4A5E24238D2E0B0058E743 /* ExpandableTableViewCell.swift */,
+				3F4A5E26238D32B40058E743 /* ExpandableHeaderView.swift */,
+			);
+			path = ExpandableTableView;
+			sourceTree = "<group>";
+		};
+		3F702B7723938F3F00F750D6 /* TermsController */ = {
+			isa = PBXGroup;
+			children = (
+				3F702B7A239390C500F750D6 /* TermsViewController.swift */,
+				3F702B7B239390C500F750D6 /* TermsViewController.xib */,
+			);
+			path = TermsController;
+			sourceTree = "<group>";
+		};
 		3F9C34B2236EA37600C871BB /* Help_Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +333,8 @@
 		3FE513752354578700AE6E9B /* UI_Model */ = {
 			isa = PBXGroup;
 			children = (
+				3F702B7723938F3F00F750D6 /* TermsController */,
+				3F4A5E1F238D29D60058E743 /* ExpandableTableView */,
 				3FC4A776237C3C42008E0A5E /* AlertView */,
 				3FDB1E8F2376A01800966888 /* LibraryList */,
 				3F9C34BF236ED55000C871BB /* Support */,
@@ -669,6 +700,7 @@
 				3FD33F9A235729FE00CA1FF6 /* ChangePasswordViewController.xib in Resources */,
 				3F9C34B6236EA3C100C871BB /* HelpContentViewController.xib in Resources */,
 				3F5062EF237001C600C69287 /* intro.gif in Resources */,
+				3F702B7D239390C500F750D6 /* TermsViewController.xib in Resources */,
 				3FE5137C235457C500AE6E9B /* EFBTabbar.xib in Resources */,
 				3FDB1E952376A0A200966888 /* LibraryListModelViewController.xib in Resources */,
 				3FD33F872356F32200CA1FF6 /* PopupViewController.xib in Resources */,
@@ -810,6 +842,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F4A5E27238D32B40058E743 /* ExpandableHeaderView.swift in Sources */,
 				3FDB1E942376A0A200966888 /* LibraryListModelViewController.swift in Sources */,
 				8EB9C45A2144444900AEF545 /* LoginViewController.swift in Sources */,
 				3F4C1A6B236FF74E0056473F /* Sync.swift in Sources */,
@@ -833,6 +866,7 @@
 				3FDB1E9B2376AEBE00966888 /* LibraryListModelCollectionViewCell.swift in Sources */,
 				3FD33F99235729FE00CA1FF6 /* ChangePasswordViewController.swift in Sources */,
 				3F9C34C2236ED56B00C871BB /* SupportViewController.swift in Sources */,
+				3F4A5E25238D2E0B0058E743 /* ExpandableTableViewCell.swift in Sources */,
 				3FD33F862356F32200CA1FF6 /* PopupViewController.swift in Sources */,
 				3F9C34C8236EDFDB00C871BB /* TitleContentTableViewCell.swift in Sources */,
 				8EB9C4582144444800AEF545 /* AppDelegate.swift in Sources */,
@@ -842,6 +876,8 @@
 				3FFF5865236416DB00D8892C /* PDFListCollectionViewCell.swift in Sources */,
 				3F9C34BB236EA6DF00C871BB /* HelpContentTableViewCell.swift in Sources */,
 				3FE513952354958C00AE6E9B /* MessagesViewController.swift in Sources */,
+				3F702B7C239390C500F750D6 /* TermsViewController.swift in Sources */,
+				3F4A5E23238D2BEF0058E743 /* ExpandableTableView.swift in Sources */,
 				3FB7F419235597F500AC6C30 /* EFBClient.xcdatamodeld in Sources */,
 				3FB9BEA12389631300BE8F4B /* WeatherViewController.swift in Sources */,
 				3FDB1E9F2376AEDC00966888 /* LibraryListModelTableViewCell.swift in Sources */,

@@ -70,7 +70,7 @@ extension SplashViewController{
     }
     
     private func _Sync(){
-        Sync.syncUser({ completed in
+        Sync.syncUser({ completed,m in
             self.syncDidEnd = true
         })
     }
