@@ -55,13 +55,13 @@ extension MessagesPreviewViewController{
     
     private func _SeenMessage(){
         if !((_Message?.message_read_date_time ?? "").isEmpty){
-            return
+//            return
         }
         HttpClient.http()._Post(relativeUrl: Api_Names.message_seen, body: Message_Seen_Body(messageId: self._Message?.message_id ?? 0), callback: {(s,m,r:Edit?) in
             if s{
                 Sync.Log_Event(event: .message_seen, type: .message, id: "\(self._Message?.message_id ?? 0)", {s,m1 in
                     if s{
-                        App_Constants.Instance.UpdateEntity(.message, self._Message?.message_read_date_time ?? "", (self._Message?.message_read_date_time ?? "") == "" ? "\("\(Date())".formattedDate() ?? "")":(self._Message?.message_read_date_time ?? ""), self.kMessageReadDateTime)
+                        App_Constants.Instance.UpdateEntity(.message, self._Message,"\("\(Date())".defaultToDate())", self.kMessageReadDateTime, "message_id", self._Message?.message_id ?? 0)
                         NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.msg_seened), object: nil)
                     }
                 })

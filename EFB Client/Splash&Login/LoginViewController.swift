@@ -76,6 +76,7 @@ class LoginViewController: UIViewController {
         HttpClient.http()._Post(relativeUrl: Api_Names.email_verify, body: Email_Body(email: mEmailTextField.text ?? ""), callback: {(s,m,r:Edit?) in
             if s{
                 self.mVerifyEmailButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
+                App_Constants.UI.Make_Toast(with: "Verification email was sent to you.", in: 4, in: .top)
                 App_Constants.UI.performSegue(self, .login)
             }else{
                 self.mVerifyEmailButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)

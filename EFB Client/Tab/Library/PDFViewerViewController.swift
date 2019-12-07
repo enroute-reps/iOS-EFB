@@ -115,7 +115,7 @@ extension PDFViewerViewController{
         self.mPDFView.pageBreakMargins = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         self.mPDFView.autoScales = true
         self.mPDFThumbnailView.pdfView = mPDFView
-        self.mPDFThumbnailView.thumbnailSize = CGSize.init(width: 50, height: 50)
+        self.mPDFThumbnailView.thumbnailSize = CGSize.init(width: 30, height: self.mPDFThumbnailView.frame.height-20)
         self.mPDFThumbnailView.layoutMode = .horizontal
         self.mCurrentPageView.round = true
         self._CurrentSearchedPageIndex = -1
@@ -143,12 +143,13 @@ extension PDFViewerViewController{
     }
     
     @objc private func _ViewTapped(_ sender: UITapGestureRecognizer){
-        UIView.animate(withDuration: 0.3, animations: {
+        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [self.kIsHidden: (self.mTopView.alpha != 0.0)])
+        UIView.animate(withDuration: 0.5, animations: {
             self.mTopView.alpha = self.mTopView.alpha == 1 ? 0 : 1
             self.mPDFThumbnailView.alpha = self.mPDFThumbnailView.alpha == 1 ? 0 : 1
             self.mCurrentPageView.alpha = self.mCurrentPageView.alpha == 1 ? 0 : 1
         },completion: {finished in
-            NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [self.kIsHidden: (self.mTopView.alpha == 0.0)])
+            
         })
     }
     
@@ -171,6 +172,11 @@ extension PDFViewerViewController{
             weak.mPDFView.goToFirstPage(self)
             weak.mPDFView.autoScales = true
             weak.mPageLabel.text = String(format: weak.kPageCounter, 1, doc.pageCount)
+            let table = ExpandableView.init(dataSource: doc.outlineRoot ?? PDFOutline(), delegate: weak)
+            table.frame.size = CGSize.init(width: weak.view.frame.size.width * 0.5, height: weak.view.frame.size.height * 0.5)
+            table.center = weak.view.center
+            weak.view.addSubview(table)
+            weak.view.bringSubviewToFront(table)
         }
     }
     
@@ -210,9 +216,10 @@ extension PDFViewerViewController: UITextFieldDelegate{
 }
 
 extension PDFViewerViewController: UINavigationControllerDelegate{
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if viewController is LibraryListModelViewController{
             NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden: false])
+            NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [self.kIsHidden: false])
         }else if viewController is PDFViewerViewController{
             NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden: true])
             self.mPDFView.autoScales = true
@@ -220,4 +227,11 @@ extension PDFViewerViewController: UINavigationControllerDelegate{
             self.view.layoutIfNeeded()
         }
     }
+}
+
+extension PDFViewerViewController: ExpandableViewDelegate{
+    func goToOutline(_ outline: PDFOutline) {
+        self.mPDFView.go(to: outline.destination ?? PDFDestination.init())
+    }
+    
 }

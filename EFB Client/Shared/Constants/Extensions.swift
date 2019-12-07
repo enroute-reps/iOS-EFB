@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import PDFKit
 import QuickLookThumbnailing
+import AudioToolbox
 
 extension UIColor{
     
@@ -60,11 +61,12 @@ extension UIView{
     
     public var round:Bool{
         get{
-            return self.layer.cornerRadius == self.frame.size.height / 2
+            return self.layer.cornerRadius == self.frame.height / 2
         }
         
         set{
-            self.cornerRadius = self.frame.size.height / 2
+            self.cornerRadius = self.frame.height / 2
+            self.layoutIfNeeded()
         }
     }
     
@@ -212,4 +214,13 @@ extension String{
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
         return ceil(boundingBox.height)
     }
+}
+
+extension UIDevice{
+    
+    func vibrate(){
+        UIImpactFeedbackGenerator.init(style: .medium).impactOccurred()
+    }
+    
+    
 }

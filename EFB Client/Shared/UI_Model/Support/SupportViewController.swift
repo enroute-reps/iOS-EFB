@@ -47,7 +47,7 @@ class SupportViewController: UIViewController {
     }
     
     @IBAction func _SendButtonTapped(_ sender: Any) {
-        guard (mTitle.text?.count ?? 0)  > 3 else{
+        guard (mSubjectTextField.text?.count ?? 0)  > 2 else{
             App_Constants.UI.Make_Alert("", "*Subject must be 3 character at least.")
             return
         }

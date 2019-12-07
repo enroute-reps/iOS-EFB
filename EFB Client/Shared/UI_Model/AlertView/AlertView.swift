@@ -15,6 +15,7 @@ class AlertView: UIView {
     
     private var _title:String?
     private var message:String?
+    private var doneButtonTapped:(()->Void)?
     
     @IBOutlet var mMainView: UIView!
     @IBOutlet weak var mTitle: UILabel!
@@ -22,10 +23,12 @@ class AlertView: UIView {
     @IBOutlet weak var mButton: UIButton!
     
     
-    convenience init(title: String, message: String){
+    
+    convenience init(title: String, message: String, done: (()->Void)?){
         self.init()
         self._title = title
         self.message = message
+        doneButtonTapped = done
         _Initialize()
     }
     
@@ -39,6 +42,7 @@ class AlertView: UIView {
     
     @IBAction func _ButtonTapped(_ sender: Any) {
         changeUserInteraction(true)
+        doneButtonTapped?()
         self.animHide()
     }
     
@@ -63,15 +67,14 @@ extension AlertView{
         self.frame.size.width = width
         self.mTitle.text = _title
         self.mMessage.text = message
-        let titleHeight = _title?.height(withConstrainedWidth: mTitle.frame.size.width, font: App_Constants.Instance.Font(.semiBold, 17)) ?? 0
-        let messageHeight = message?.height(withConstrainedWidth: mMessage.frame.size.width, font: App_Constants.Instance.Font(.regular, 16)) ?? 0
+        let titleHeight = _title?.height(withConstrainedWidth: width - 24, font: App_Constants.Instance.Font(.semiBold, 17)) ?? 0
+        let messageHeight = message?.height(withConstrainedWidth: width - 24, font: App_Constants.Instance.Font(.regular, 15)) ?? 0
         let height = titleHeight + messageHeight + 120
         self.frame.size.height = height
         self.center = CGPoint.init(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.height + height)
         self.cornerRadius = 5
         view.cornerRadius = 5
         view.border(1, App_Constants.Instance.Color(.dark))
-        self.isHidden = true
     }
     
     public func show(){
@@ -84,19 +87,16 @@ extension AlertView{
     }
     
     private func animShow(){
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
             self.center.y = UIScreen.main.bounds.midY
-            self.layoutIfNeeded()
         }, completion: nil)
-        self.isHidden = false
     }
     
     private func animHide(){
-        UIView.animate(withDuration: 0.75, delay: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
             self.center.y += UIScreen.main.bounds.height
             self.layoutIfNeeded()
         }, completion: {f in
-            self.isHidden = true
             self.removeFromSuperview()
         })
     }

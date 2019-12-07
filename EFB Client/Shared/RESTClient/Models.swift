@@ -86,7 +86,11 @@ struct EFBUser : Codable{
     public var profile_image:String?
 }
 
-struct Message:Codable{
+struct Message:Codable, Equatable{
+    static func ==(lhs: Message, rhs: Message) -> Bool {
+        return lhs.message_id == rhs.message_id
+    }
+    
     public var message_id:Int?
     public var message_date_time:String?
     public var message_read_date_time:String? = ""

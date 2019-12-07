@@ -55,13 +55,26 @@ class DashboardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self._Initialize()
+        self._Notifications()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self._RemoveNotificationObservers()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.mUserImageView.round = true
+        self.mUserImage.round = true
+        self.mAirlineImageView.round = true
+        self.mAirlineImage.round = true
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.mUserImage.round = true
         self.mUserImageView.round = true
+        self.mUserImage.round = true
         self.mAirlineImageView.round = true
         self.mAirlineImage.round = true
     }
@@ -94,11 +107,10 @@ class DashboardViewController: UIViewController {
         Sync.syncUser({ r,m  in
             if r{
                 self._Initialize()
-                App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.sync_completed))
             }else{
                 App_Constants.UI.Make_Alert("", m ?? "")
             }
-             App_Constants.UI._StopRotate(self.mSyncButton)
+            App_Constants.UI._StopRotate(self.mSyncButton)
             self.mSyncButton.isUserInteractionEnabled = true
         })
     }
@@ -120,12 +132,12 @@ class DashboardViewController: UIViewController {
                             controller?.dismiss(animated: true, completion: nil)
                             App_Constants.Instance.RemoveAllRecords()
                             autoreleasepool{
-                                guard let window = UIApplication.shared.keyWindow else{return}
+                                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else{return}
                                 let storyboard = UIStoryboard.init(name: weak.kMain, bundle: nil)
                                 let vc = storyboard.instantiateViewController(withIdentifier: weak.kSplash) as! UINavigationController
-                                window.rootViewController = vc
-                                window.makeKeyAndVisible()
-                                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {}, completion: nil)
+                                appDelegate.window?.rootViewController = vc
+                                appDelegate.window?.makeKeyAndVisible()
+                                
                             }
                         })
                     }else{
@@ -154,7 +166,7 @@ class DashboardViewController: UIViewController {
     }
     
     deinit{
-        NotificationCenter.default.removeObserver(self)
+        _RemoveNotificationObservers()
     }
     
 }
@@ -170,8 +182,8 @@ extension DashboardViewController{
         self.mEmailVerificationView.cornerRadius = 5
         self.mEmailVerificationView.border(1, .red)
         self.mUserImageView.border()
-        self.mUserImage.round = true
         self.mUserImageView.round = true
+        self.mUserImage.round = true
         self.mAirlineImageView.border()
         self.mAirlineImageView.round = true
         self.mAirlineImage.round = true
@@ -188,31 +200,6 @@ extension DashboardViewController{
         (self._Notification.viewControllers.first as! MessagesViewController)._Type = .notification
         App_Constants.UI.AddChildView(mother: self, self.mMessagesMainView, _Message)
         App_Constants.UI.AddChildView(mother: self, self.mNotificationsMainView, _Notification)
-        //notifications
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.msg_seen), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notif_seen), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.syncing), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.sync_finished), object: nil)
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.msg_seen), object: nil, queue: nil, using: {nf in
-            self.mMessageBackButton.isHidden = false
-        })
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.notif_seen), object: nil, queue: nil, using: {nf in
-            self.mNotificationsBackButton.isHidden = false
-        })
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.syncing), object: nil, queue: nil, using: {notification in
-            DispatchQueue.main.async{
-                App_Constants.UI._Rotate(self.mSyncButton)
-                self.mSyncButton.isUserInteractionEnabled = false
-            }
-        })
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.sync_finished), object: nil, queue: nil, using: {notification in
-            DispatchQueue.main.async{
-                App_Constants.UI._StopRotate(self.mSyncButton)
-                self.mSyncButton.isUserInteractionEnabled = true
-                self._Initialize()
-            }
-        })
-        
         // Expire Alert
         autoreleasepool{
             let Days30ToInterval:TimeInterval = 2592000
@@ -223,7 +210,39 @@ extension DashboardViewController{
         //check email verification
         self.mEmailVerificationView.isHidden = !(self._User?.user_status == Constants.kEmailNotVerified)
         //Legal Check
-        self._CheckLegal()
+        _CheckLegal()
+    }
+    
+    private func _Notifications(){
+        self._RemoveNotificationObservers()
+        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.msg_seen), object: nil, queue: nil, using: {nf in
+            self.mMessageBackButton.isHidden = false
+        })
+        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.notif_seen), object: nil, queue: nil, using: {nf in
+            self.mNotificationsBackButton.isHidden = false
+        })
+        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.syncing), object: nil, queue: nil, using: {notification in
+            DispatchQueue.main.async{
+                App_Constants.UI._Rotate(self.mSyncButton)
+                UIDevice.current.vibrate()
+                self.mSyncButton.isUserInteractionEnabled = false
+            }
+        })
+        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.sync_finished), object: nil, queue: nil, using: {notification in
+            DispatchQueue.main.async{
+                App_Constants.UI._StopRotate(self.mSyncButton)
+                App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.sync_completed))
+                self.mSyncButton.isUserInteractionEnabled = true
+                self._Initialize()
+            }
+        })
+    }
+    
+    private func _RemoveNotificationObservers(){
+        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.msg_seen), object: nil)
+        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notif_seen), object: nil)
+        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.syncing), object: nil)
+        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.sync_finished), object: nil)
     }
     
     private func _Logout(_ callback: @escaping (Bool)->Void){
@@ -250,8 +269,10 @@ extension DashboardViewController{
     }
     
     private func _CheckLegal(){
+        self.view.superview?.superview?.isUserInteractionEnabled = false
         Sync.LastLegalNotes({s,m,r in
             if s{
+                self.view.superview?.superview?.isUserInteractionEnabled = true
                 guard let lastUpdate = App_Constants.Instance.SettingsLoad(.legal_time) as? String else{
                     self._PresentTerms(file: r?.licenceAgreement ?? "", date: r?.lastUpdate ?? "")
                     return
@@ -260,7 +281,11 @@ extension DashboardViewController{
                     self._PresentTerms(file: r?.licenceAgreement ?? "", date: r?.lastUpdate ?? "")
                 }
             }else{
-                self._CheckLegal()
+                if let _ = App_Constants.Instance.SettingsLoad(.legal_time) as? String{
+                    self.view.superview?.superview?.isUserInteractionEnabled = true
+                }else{
+                    App_Constants.UI.Make_Alert("Terms & Conditions", "You must agree to Enroute EFB's Terms and Conditions in order to activate this application.\n \(App_Constants.Instance.Text(.no_connection))", {self._CheckLegal()})
+                }
             }
         })
     }

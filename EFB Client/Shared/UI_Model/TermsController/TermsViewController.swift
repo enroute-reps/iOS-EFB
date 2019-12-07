@@ -40,7 +40,7 @@ class TermsViewController: UIViewController {
     }
     
     @IBAction func _LeftButtonTapped(_ sender: Any) {
-        App_Constants.UI.Make_Alert("", "Using application need Agreement")
+        App_Constants.UI.Make_Alert("Terms & Conditions", "You must agree to Enroute EFB's Terms and Conditions in order to activate this application.")
     }
     
     @IBAction func _RightButtonTapped(_ sender: Any) {
@@ -73,12 +73,11 @@ extension TermsViewController{
     
     private func getFile(){
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-        .userDomainMask, true)[0]
-        let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
+            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                    .userDomainMask, true)[0]
+            let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
             let fileURL = documentsURL.appendingPathComponent(self.fileName ?? "")
-        return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
-        
+            return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
         Alamofire.download(URL(string: String(format: Api_Names.main2, kPort8080) + String(format: Api_Names.legal_content, self.fileName ?? ""))!,method: .get,encoding: JSONEncoding.default,headers: nil,to: destination).validate(statusCode: 200..<300).responseString{response in
             switch response.result{
             case .success:

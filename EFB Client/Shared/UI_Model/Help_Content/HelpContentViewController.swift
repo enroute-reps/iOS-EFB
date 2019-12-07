@@ -104,6 +104,7 @@ extension HelpContentViewController:UITableViewDelegate,UITableViewDataSource{
             cell.mTitle.text = content?.content?[indexPath.row].title
             cell.mDescription.text = content?.content?[indexPath.row].description
             cell.mImage.image = UIImage(named: content?.content?[indexPath.row].image ?? "") ?? UIImage()
+            print(cell.mImage.frame.width,cell.mImage.frame.height)
             return cell
         }
     }

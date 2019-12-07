@@ -248,14 +248,14 @@ class App_Constants:NSObject{
         }
     }
     
-    func UpdateEntity<T:Equatable>(_ entity: EntityName, _ oldValue: T, _ newValue: Any, _ key: String){
+    func UpdateEntity<T:Equatable>(_ entity: EntityName, _ oldValue: T, _ newValue: Any, _ key: String, _ equatableKey: String,_ equatableValue: Int){
         autoreleasepool{
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: entity.rawValue)
             do{
                 let test:[NSManagedObject] = try context.fetch(fetchRequest) as! [NSManagedObject]
-                let object = test.first(where: {$0.value(forKey: key) as! T == oldValue})
+                let object = test.first(where: {$0.value(forKey: equatableKey) as! Int == equatableValue})
                 object?.setValue(newValue, forKey: key)
                 do{
                     try context.save()
@@ -305,12 +305,12 @@ class UI_Constants:NSObject{
             ToastManager.shared.isTapToDismissEnabled = true
             ToastManager.shared.isQueueEnabled = true
             ToastManager.shared.duration = duration
-            UIApplication.shared.keyWindow!.makeToast(title, duration: duration, position: position , title: nil, image: nil, style: style, completion: nil)
+            UIApplication.shared.keyWindow?.makeToast(title, duration: duration, position: position , title: nil, image: nil, style: style, completion: nil)
         }
     }
     
-    public func Make_Alert(_ title: String, _ message: String){
-        AlertView.init(title: title, message: message).show()
+    public func Make_Alert(_ title: String, _ message: String,_ doneButton: (()->Void)? = {}){
+        AlertView.init(title: title, message: message, done: doneButton).show()
     }
     
     func RemoveChildView(_ controller:[UIViewController]){

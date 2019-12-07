@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,7 +37,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="768" height="75"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWT-WP-V3w">
-                            <rect key="frame" x="5" y="0.0" width="40" height="75"/>
+                            <rect key="frame" x="12" y="0.0" width="40" height="75"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="wgX-W5-4Pq"/>
                             </constraints>
@@ -59,7 +59,7 @@
                         <constraint firstAttribute="height" constant="75" id="I9m-xU-3Bq"/>
                         <constraint firstItem="I6I-Hi-6nG" firstAttribute="centerX" secondItem="RLB-ut-f9I" secondAttribute="centerX" id="R2v-gL-my8"/>
                         <constraint firstItem="I6I-Hi-6nG" firstAttribute="centerY" secondItem="RLB-ut-f9I" secondAttribute="centerY" id="Sbs-Ml-CYK"/>
-                        <constraint firstItem="fWT-WP-V3w" firstAttribute="leading" secondItem="RLB-ut-f9I" secondAttribute="leading" constant="5" id="SeH-9f-zdO"/>
+                        <constraint firstItem="fWT-WP-V3w" firstAttribute="leading" secondItem="RLB-ut-f9I" secondAttribute="leading" constant="12" id="SeH-9f-zdO"/>
                         <constraint firstItem="fWT-WP-V3w" firstAttribute="height" secondItem="RLB-ut-f9I" secondAttribute="height" id="af5-ad-noC"/>
                         <constraint firstItem="fWT-WP-V3w" firstAttribute="centerY" secondItem="RLB-ut-f9I" secondAttribute="centerY" id="fWk-KW-7Uu"/>
                     </constraints>

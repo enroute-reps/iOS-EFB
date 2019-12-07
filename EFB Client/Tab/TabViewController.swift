@@ -38,6 +38,12 @@ class TabViewController: UIViewController {
         super.viewDidLoad()
         self._Initialize()
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        App_Constants.UI.RemoveChildView([self._Library, self._Dashboard])
+    }
+    
 }
 
 extension TabViewController{
@@ -66,7 +72,9 @@ extension TabViewController{
     @objc private func _StatusBarNotification(_ notification: Notification){
         if let isHidden = notification.userInfo?[kIsHidden] as? Bool{
             self.statusBarIsHidden = isHidden
-            self.setNeedsStatusBarAppearanceUpdate()
+            UIView.animate(withDuration: 0.5, animations: {
+                self.setNeedsStatusBarAppearanceUpdate()
+            })
         }
     }
     
