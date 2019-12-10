@@ -1,10 +1,4 @@
-//
-//  TabViewController.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/14/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 
@@ -28,8 +22,8 @@ class TabViewController: UIViewController {
     
     private var statusBarIsHidden:Bool = false
     private var _User:EFBUser?
-    private var _Dashboard:DashboardViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dashboard") as! DashboardViewController
-    private var _Library:UINavigationController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "fileManager") as! UINavigationController
+    private var _Dashboard:DashboardViewController?
+    private var _Library:UINavigationController?
     private let kIsHidden = "isHidden"
     
     
@@ -39,9 +33,13 @@ class TabViewController: UIViewController {
         self._Initialize()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        App_Constants.UI.RemoveChildView([self._Library, self._Dashboard])
     }
     
 }
@@ -50,14 +48,18 @@ extension TabViewController{
     
     private func _Initialize(){
         self._User = App_Constants.Instance.LoadUser()
+        self._Dashboard = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dashboard") as? DashboardViewController
+        self._Library = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "fileManager") as? UINavigationController
         self.mTabbar.delegate = self
-        App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Dashboard)
+        App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Dashboard!)
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_TabBarNotification(_:)), name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil)
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_StatusBarNotification(_:)), name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil)
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notification_recieved), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_NotificationRecieved), name: App_Constants.Instance.Notification_Name(.notification_recieved), object: nil)
+        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.logout), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(_NotificationLogout(_:)), name: App_Constants.Instance.Notification_Name(.logout), object: nil)
     }
     
     @objc private func _TabBarNotification(_ notification: NSNotification){
@@ -86,17 +88,25 @@ extension TabViewController{
         }
     }
     
+    @objc private func _NotificationLogout(_ notification: NSNotification){
+        self.navigationController?.popToRootViewController(animated: true)
+        NotificationCenter.default.removeObserver(self._Dashboard!)
+        NotificationCenter.default.removeObserver(self._Library!)
+        NotificationCenter.default.removeObserver(self)
+        App_Constants.Instance.RemoveAllRecords()
+    }
+    
 }
 
 extension TabViewController: EFBBarDelegate{
     func TabBar(_ index: Int) {
         switch index{
         case 0:
-            App_Constants.UI.RemoveChildView([self._Library])
-            App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Dashboard)
+            App_Constants.UI.RemoveChildView([self._Library!])
+            App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Dashboard!)
         case 1:
-            App_Constants.UI.RemoveChildView([self._Dashboard])
-            App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Library)
+            App_Constants.UI.RemoveChildView([self._Dashboard!])
+            App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Library!)
         case 2:
             App_Constants.UI.RemoveChildView([])
         default:

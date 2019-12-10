@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1672FCAEB69F90B47B42C285 /* Pods_EFB_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720B0639234A14B399CFD4C5 /* Pods_EFB_Client.framework */; };
-		3F1B6BB6238A71D1003C62D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F1B6BB5238A71D1003C62D7 /* GoogleService-Info.plist */; };
 		3F2530082357528E00CBED2A /* PDFListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2530072357528E00CBED2A /* PDFListTableViewCell.swift */; };
 		3F4135AA239B87DE00DC7ADC /* Files.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F41359F239B87DB00DC7ADC /* Files.png */; };
 		3F4135AB239B87DE00DC7ADC /* Logout.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F4135A0239B87DB00DC7ADC /* Logout.png */; };
@@ -25,6 +24,7 @@
 		3F5062EF237001C600C69287 /* intro.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3F5062EE237001C500C69287 /* intro.gif */; };
 		3F5CF1482396722A00B8C9AC /* ExpandableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5CF1472396722A00B8C9AC /* ExpandableView.swift */; };
 		3F5CF14C239686BE00B8C9AC /* HeaderExpandableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5CF14B239686BE00B8C9AC /* HeaderExpandableView.swift */; };
+		3F644973239CCCF200178B83 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F644972239CCCF200178B83 /* OutlineViewController.swift */; };
 		3F702B7C239390C500F750D6 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F702B7A239390C500F750D6 /* TermsViewController.swift */; };
 		3F702B7D239390C500F750D6 /* TermsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F702B7B239390C500F750D6 /* TermsViewController.xib */; };
 		3F9C34B1236EA1C500C871BB /* HelpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C34B0236EA1C500C871BB /* HelpTableViewCell.swift */; };
@@ -36,10 +36,11 @@
 		3F9C34C3236ED56B00C871BB /* SupportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F9C34C1236ED56B00C871BB /* SupportViewController.xib */; };
 		3F9C34C8236EDFDB00C871BB /* TitleContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9C34C6236EDFDB00C871BB /* TitleContentTableViewCell.swift */; };
 		3F9C34C9236EDFDB00C871BB /* TitleContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F9C34C7236EDFDB00C871BB /* TitleContentTableViewCell.xib */; };
+		3FAFA258239E322B009F1883 /* AuthKey_245U7D5K23.p8 in Resources */ = {isa = PBXBuildFile; fileRef = 3FAFA257239E322B009F1883 /* AuthKey_245U7D5K23.p8 */; };
+		3FAFA25A239E3376009F1883 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FAFA259239E3376009F1883 /* GoogleService-Info.plist */; };
 		3FB7F419235597F500AC6C30 /* EFBClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3FB7F417235597F500AC6C30 /* EFBClient.xcdatamodeld */; };
 		3FB7F41B2355F85900AC6C30 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB7F41A2355F85900AC6C30 /* ProfileViewController.swift */; };
 		3FB9BEA12389631300BE8F4B /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB9BEA02389631300BE8F4B /* WeatherViewController.swift */; };
-		3FBE4DD4238A611D002BC47B /* AuthKey_29K93R3MB7.p8 in Resources */ = {isa = PBXBuildFile; fileRef = 3FBE4DD3238A611D002BC47B /* AuthKey_29K93R3MB7.p8 */; };
 		3FC4A778237C3C62008E0A5E /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC4A777237C3C62008E0A5E /* AlertView.swift */; };
 		3FC4A77A237C3D3D008E0A5E /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FC4A779237C3D3D008E0A5E /* AlertView.xib */; };
 		3FC6595623702E1600E5F460 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FC6595523702E1600E5F460 /* Localizable.strings */; };
@@ -108,7 +109,6 @@
 /* Begin PBXFileReference section */
 		2821CFBEE55FF25D28EBFE04 /* Pods-EFB ClientUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EFB ClientUITests.release.xcconfig"; path = "Target Support Files/Pods-EFB ClientUITests/Pods-EFB ClientUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3EC53FABBC11307E093A4C10 /* Pods-EFB Client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EFB Client.debug.xcconfig"; path = "Target Support Files/Pods-EFB Client/Pods-EFB Client.debug.xcconfig"; sourceTree = "<group>"; };
-		3F1B6BB5238A71D1003C62D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3F2530072357528E00CBED2A /* PDFListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFListTableViewCell.swift; sourceTree = "<group>"; };
 		3F41359F239B87DB00DC7ADC /* Files.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Files.png; sourceTree = "<group>"; };
 		3F4135A0239B87DB00DC7ADC /* Logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logout.png; sourceTree = "<group>"; };
@@ -125,6 +125,7 @@
 		3F5062EE237001C500C69287 /* intro.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = intro.gif; sourceTree = "<group>"; };
 		3F5CF1472396722A00B8C9AC /* ExpandableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableView.swift; sourceTree = "<group>"; };
 		3F5CF14B239686BE00B8C9AC /* HeaderExpandableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderExpandableView.swift; sourceTree = "<group>"; };
+		3F644972239CCCF200178B83 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		3F702B7A239390C500F750D6 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		3F702B7B239390C500F750D6 /* TermsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TermsViewController.xib; sourceTree = "<group>"; };
 		3F9C34B0236EA1C500C871BB /* HelpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTableViewCell.swift; sourceTree = "<group>"; };
@@ -136,11 +137,12 @@
 		3F9C34C1236ED56B00C871BB /* SupportViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SupportViewController.xib; sourceTree = "<group>"; };
 		3F9C34C6236EDFDB00C871BB /* TitleContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleContentTableViewCell.swift; sourceTree = "<group>"; };
 		3F9C34C7236EDFDB00C871BB /* TitleContentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleContentTableViewCell.xib; sourceTree = "<group>"; };
+		3FAFA257239E322B009F1883 /* AuthKey_245U7D5K23.p8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AuthKey_245U7D5K23.p8; sourceTree = "<group>"; };
+		3FAFA259239E3376009F1883 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3FB7F418235597F500AC6C30 /* EFBClient.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EFBClient.xcdatamodel; sourceTree = "<group>"; };
 		3FB7F41A2355F85900AC6C30 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		3FB9BEA02389631300BE8F4B /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		3FBE4DD2238A5AD5002BC47B /* Enroute EFB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Enroute EFB.entitlements"; sourceTree = "<group>"; };
-		3FBE4DD3238A611D002BC47B /* AuthKey_29K93R3MB7.p8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AuthKey_29K93R3MB7.p8; sourceTree = "<group>"; };
 		3FC4A777237C3C62008E0A5E /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		3FC4A779237C3D3D008E0A5E /* AlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
 		3FC6595523702E1600E5F460 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			children = (
 				3F5CF1472396722A00B8C9AC /* ExpandableView.swift */,
 				3F5CF14B239686BE00B8C9AC /* HeaderExpandableView.swift */,
+				3F644972239CCCF200178B83 /* OutlineViewController.swift */,
 			);
 			path = ExpandableTableView;
 			sourceTree = "<group>";
@@ -436,7 +439,7 @@
 				3FF4240523531F2C00E19F8C /* Fonts */,
 				3FF4240423531F2500E19F8C /* Images */,
 				8EB9C4572144444800AEF545 /* AppDelegate.swift */,
-				3FBE4DD3238A611D002BC47B /* AuthKey_29K93R3MB7.p8 */,
+				3FAFA257239E322B009F1883 /* AuthKey_245U7D5K23.p8 */,
 				8EB9C45E2144444900AEF545 /* Assets.xcassets */,
 				8EB9C4632144444900AEF545 /* Info.plist */,
 				3FB7F417235597F500AC6C30 /* EFBClient.xcdatamodeld */,
@@ -561,7 +564,7 @@
 			isa = PBXGroup;
 			children = (
 				3FBE4DD2238A5AD5002BC47B /* Enroute EFB.entitlements */,
-				3F1B6BB5238A71D1003C62D7 /* GoogleService-Info.plist */,
+				3FAFA259239E3376009F1883 /* GoogleService-Info.plist */,
 				3FF423F923530E4000E19F8C /* Shared */,
 				3FF423FB23530E6A00E19F8C /* StoryBoard */,
 				3FF423FC23530F1C00E19F8C /* Splash&Login */,
@@ -611,7 +614,7 @@
 				8EB9C4512144444800AEF545 /* Frameworks */,
 				8EB9C4522144444800AEF545 /* Resources */,
 				BA53E2A1051EBA896E6DA9D5 /* [CP] Embed Pods Frameworks */,
-				3FC6595923704CA700E5F460 /* ShellScript */,
+				3F64497B239D276500178B83 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -720,7 +723,6 @@
 				3F4135AE239B87DE00DC7ADC /* Message.png in Resources */,
 				3F4135B3239B87DE00DC7ADC /* Licence.png in Resources */,
 				3FF4240F23532DB000E19F8C /* KohinoorBangla.ttc in Resources */,
-				3FBE4DD4238A611D002BC47B /* AuthKey_29K93R3MB7.p8 in Resources */,
 				3FD33F9A235729FE00CA1FF6 /* ChangePasswordViewController.xib in Resources */,
 				3F4135AC239B87DE00DC7ADC /* Profile.png in Resources */,
 				3F4135AF239B87DE00DC7ADC /* Downloads.png in Resources */,
@@ -732,14 +734,15 @@
 				3F702B7D239390C500F750D6 /* TermsViewController.xib in Resources */,
 				3FE5137C235457C500AE6E9B /* EFBTabbar.xib in Resources */,
 				3FDB1E952376A0A200966888 /* LibraryListModelViewController.xib in Resources */,
+				3FAFA258239E322B009F1883 /* AuthKey_245U7D5K23.p8 in Resources */,
 				3FD33F872356F32200CA1FF6 /* PopupViewController.xib in Resources */,
 				3F9C34C3236ED56B00C871BB /* SupportViewController.xib in Resources */,
 				3FC6595623702E1600E5F460 /* Localizable.strings in Resources */,
 				8EB9C45F2144444900AEF545 /* Assets.xcassets in Resources */,
+				3FAFA25A239E3376009F1883 /* GoogleService-Info.plist in Resources */,
 				3F4135B2239B87DE00DC7ADC /* Login.png in Resources */,
 				3F9C34C9236EDFDB00C871BB /* TitleContentTableViewCell.xib in Resources */,
 				3F9C34BC236EA6DF00C871BB /* HelpContentTableViewCell.xib in Resources */,
-				3F1B6BB6238A71D1003C62D7 /* GoogleService-Info.plist in Resources */,
 				3FFB708F23780FD300A4055C /* Settings.bundle in Resources */,
 				8EB9C45D2144444900AEF545 /* Main.storyboard in Resources */,
 				3FC4A77A237C3D3D008E0A5E /* AlertView.xib in Resources */,
@@ -763,15 +766,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3FC6595923704CA700E5F460 /* ShellScript */ = {
+		3F64497B239D276500178B83 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/EFB Client/Shared/Support/Info.plist",
 			);
 			outputFileListPaths = (
 			);
@@ -890,6 +892,7 @@
 				3FE5137F23546A1D00AE6E9B /* TabViewController.swift in Sources */,
 				3FF424132353515400E19F8C /* Api_Names.swift in Sources */,
 				3FC4A778237C3C62008E0A5E /* AlertView.swift in Sources */,
+				3F644973239CCCF200178B83 /* OutlineViewController.swift in Sources */,
 				3F9C34B1236EA1C500C871BB /* HelpTableViewCell.swift in Sources */,
 				3FF423FF2353132D00E19F8C /* App-Constants.swift in Sources */,
 				3FDB1E9B2376AEBE00966888 /* LibraryListModelCollectionViewCell.swift in Sources */,
@@ -1086,7 +1089,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "EFB Client/Enroute EFB.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2APS2R3872;
 				INFOPLIST_FILE = "EFB Client/Shared/Support/Info.plist";
@@ -1095,8 +1100,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = aero.enroute.efb;
+				PRODUCT_BUNDLE_IDENTIFIER = enroute.aero.efb;
 				PRODUCT_NAME = "Enroute EFB";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -1108,7 +1114,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "EFB Client/Enroute EFB.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2APS2R3872;
 				INFOPLIST_FILE = "EFB Client/Shared/Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1116,8 +1124,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = aero.enroute.efb;
+				PRODUCT_BUNDLE_IDENTIFIER = enroute.aero.efb;
 				PRODUCT_NAME = "Enroute EFB";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};

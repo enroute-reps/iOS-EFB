@@ -1,10 +1,4 @@
-//
-//  SourceViewExpandable.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 12/3/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 import PDFKit
@@ -153,6 +147,7 @@ extension SourceExpandableView{
         openButton = UIButton()
         openButton.setImage(App_Constants.Instance.Image(.forward), for: .normal)
         openButton.setTitle("", for: .normal)
+        openButton.tintColor = .white
         openButton.translatesAutoresizingMaskIntoConstraints = false
         openButton.addTarget(self, action: #selector(_OpenButtonTapped(_:)), for: .touchUpInside)
         self.addSubview(openButton)

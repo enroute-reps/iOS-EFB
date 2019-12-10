@@ -1,15 +1,12 @@
-//
-//  DashboardViewController.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/14/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 import SDWebImage
 import Combine
 import Alamofire
+
+let kMain = "Main"
+let kSplash = "login"
 
 class DashboardViewController: UIViewController {
     
@@ -39,29 +36,19 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var mExpireAlertLabel: UILabel!
     @IBOutlet weak var mEmailVerificationView: UIView!
     
-    private var _Message:UINavigationController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "messages") as! UINavigationController
-    private var _Notification:UINavigationController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "messages") as! UINavigationController
+    private var _Message:UINavigationController?
+    private var _Notification:UINavigationController?
     private var _User:EFBUser?
     private var _Org:Organization?
-    private let kMain = "Main"
-    private let kSplash = "login"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self._Initialize()
+        _Notifications()
         //fcm token
         Sync.syncFCMToken()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self._Notifications()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self._RemoveNotificationObservers()
-    }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -128,21 +115,17 @@ class DashboardViewController: UIViewController {
                         button2.isHidden = false
                     })
                     if s{
-                        button.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: {
-                            controller?.dismiss(animated: true, completion: nil)
-                            App_Constants.Instance.RemoveAllRecords()
-                            autoreleasepool{
-                                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else{return}
-                                let storyboard = UIStoryboard.init(name: weak.kMain, bundle: nil)
-                                let vc = storyboard.instantiateViewController(withIdentifier: weak.kSplash) as! UINavigationController
-                                appDelegate.window?.rootViewController = vc
-                                appDelegate.window?.makeKeyAndVisible()
-                                
-                            }
-                        })
+                        weak._RemoveNotificationObservers()
+                        button.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
+                        controller?.dismiss(animated: true, completion: nil)
+                        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.logout), object: nil)
                     }else{
                         button.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
-                        App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.logout_failed))
+                        if NetworkReachabilityManager()?.isReachable ?? false{
+                            App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.logout_failed))
+                        }else{
+                            App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.no_connection))
+                        }
                     }
                 })
             })
@@ -157,16 +140,12 @@ class DashboardViewController: UIViewController {
     
     @IBAction func _MessagesBackButtonTapped(_ sender: Any) {
         self.mMessageBackButton.isHidden = true
-        self._Message.popViewController(animated: true)
+        self._Message?.popViewController(animated: true)
     }
     
     @IBAction func _NotificationsBackButtonTapped(_ sender: Any) {
         self.mNotificationsBackButton.isHidden = true
-        self._Notification.popViewController(animated: true)
-    }
-    
-    deinit{
-        _RemoveNotificationObservers()
+        self._Notification?.popViewController(animated: true)
     }
     
 }
@@ -175,6 +154,8 @@ extension DashboardViewController{
     
     private func _Initialize(){
         //UI
+        self._Message = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "messages") as? UINavigationController
+        self._Notification = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "messages") as? UINavigationController
         self.mMessagesView.cornerRadius = 5
         self.mNotificationsView.cornerRadius = 5
         self.mMessagesMainView.cornerRadius = 5
@@ -196,10 +177,10 @@ extension DashboardViewController{
         self.mUsernameLabel.text = "\(self._User?.first_name ?? "") \(self._User?.last_name ?? "")"
         self.mAirlineLabel.text = "\(self._Org?.organization_name ?? App_Constants.Instance.Text(.unknown))"
         self.mUserRoleLabel.text = "\(self._User?.job_title ?? App_Constants.Instance.Text(.unknown))"
-        (self._Message.viewControllers.first as! MessagesViewController)._Type = .message
-        (self._Notification.viewControllers.first as! MessagesViewController)._Type = .notification
-        App_Constants.UI.AddChildView(mother: self, self.mMessagesMainView, _Message)
-        App_Constants.UI.AddChildView(mother: self, self.mNotificationsMainView, _Notification)
+        (self._Message?.viewControllers.first as! MessagesViewController)._Type = .message
+        (self._Notification?.viewControllers.first as! MessagesViewController)._Type = .notification
+        App_Constants.UI.AddChildView(mother: self, self.mMessagesMainView, _Message!)
+        App_Constants.UI.AddChildView(mother: self, self.mNotificationsMainView, _Notification!)
         // Expire Alert
         autoreleasepool{
             let Days30ToInterval:TimeInterval = 2592000
@@ -231,7 +212,7 @@ extension DashboardViewController{
         NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.sync_finished), object: nil, queue: nil, using: {notification in
             DispatchQueue.main.async{
                 App_Constants.UI._StopRotate(self.mSyncButton)
-                App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.sync_completed))
+                App_Constants.UI.Make_Toast(on: self.view, with: App_Constants.Instance.Text(.sync_completed))
                 self.mSyncButton.isUserInteractionEnabled = true
                 self._Initialize()
             }
@@ -243,6 +224,7 @@ extension DashboardViewController{
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notif_seen), object: nil)
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.syncing), object: nil)
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.sync_finished), object: nil)
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func _Logout(_ callback: @escaping (Bool)->Void){
@@ -264,7 +246,9 @@ extension DashboardViewController{
             let terms = TermsViewController.init(file: file, date: date)
             terms.modalPresentationStyle = .formSheet
             terms.modalTransitionStyle = .coverVertical
-            self.present(terms, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                self.present(terms, animated: true, completion: nil)
+            })
         }
     }
     

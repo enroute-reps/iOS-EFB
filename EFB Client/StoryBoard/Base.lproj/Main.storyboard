@@ -317,7 +317,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="QtD-Yk-8Pj">
-                                <rect key="frame" x="249.5" y="183" width="168.5" height="112"/>
+                                <rect key="frame" x="249.5" y="183" width="169" height="112"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ew4-JO-cvP">
                                         <rect key="frame" x="0.0" y="0.0" width="83.5" height="20"/>
@@ -337,7 +337,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="wys-kk-br7">
-                                        <rect key="frame" x="0.0" y="23" width="84.5" height="20"/>
+                                        <rect key="frame" x="0.0" y="23" width="84" height="20"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Personal ID:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xoe-Vu-Xj3">
                                                 <rect key="frame" x="0.0" y="0.0" width="73.5" height="20"/>
@@ -346,7 +346,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eIb-3K-QLe">
-                                                <rect key="frame" x="77.5" y="0.0" width="7" height="20"/>
+                                                <rect key="frame" x="77.5" y="0.0" width="6.5" height="20"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -354,7 +354,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="dkc-x6-0aF">
-                                        <rect key="frame" x="0.0" y="46" width="87.5" height="20"/>
+                                        <rect key="frame" x="0.0" y="46" width="86.5" height="20"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cell Phone:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aS3-FQ-oMq">
                                                 <rect key="frame" x="0.0" y="0.0" width="69" height="20"/>
@@ -363,7 +363,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="34" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PgD-F5-M6o">
-                                                <rect key="frame" x="73" y="0.0" width="14.5" height="20"/>
+                                                <rect key="frame" x="73" y="0.0" width="13.5" height="20"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -371,7 +371,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="AqF-U3-WvD">
-                                        <rect key="frame" x="0.0" y="69" width="125.5" height="20"/>
+                                        <rect key="frame" x="0.0" y="69" width="124.5" height="20"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fixed Line Phone:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RT-On-gCC">
                                                 <rect key="frame" x="0.0" y="0.0" width="108.5" height="20"/>
@@ -380,7 +380,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZ7-WO-oVh">
-                                                <rect key="frame" x="112.5" y="0.0" width="13" height="20"/>
+                                                <rect key="frame" x="112.5" y="0.0" width="12" height="20"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -388,7 +388,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="NRH-ZF-u54">
-                                        <rect key="frame" x="0.0" y="92" width="168.5" height="20"/>
+                                        <rect key="frame" x="0.0" y="92" width="169" height="20"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6X-OW-4mm">
                                                 <rect key="frame" x="0.0" y="0.0" width="37.5" height="20"/>
@@ -397,7 +397,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mrmstfv@gmail.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afJ-eI-d6e">
-                                                <rect key="frame" x="41.5" y="0.0" width="127" height="20"/>
+                                                <rect key="frame" x="41.5" y="0.0" width="127.5" height="20"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -407,10 +407,10 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7e-oD-wIR">
-                                <rect key="frame" x="0.0" y="355.5" width="285" height="38"/>
+                                <rect key="frame" x="0.0" y="355.5" width="285.5" height="38"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EFB Licence Information" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uGU-ov-Fg2">
-                                        <rect key="frame" x="40.5" y="6" width="203.5" height="25.5"/>
+                                        <rect key="frame" x="41" y="6" width="204" height="25.5"/>
                                         <fontDescription key="fontDescription" name="KohinoorBangla-Semibold" family="Kohinoor Bangla" pointSize="18"/>
                                         <color key="textColor" red="0.094117647060000004" green="0.1450980392" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -425,25 +425,25 @@
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="certificate" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XgK-Zq-o0n">
-                                <rect key="frame" x="40.5" y="433.5" width="64" height="64"/>
+                                <rect key="frame" x="41" y="433.5" width="63.5" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="XgK-Zq-o0n" secondAttribute="height" multiplier="1:1" id="rmh-p9-BhK"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="Oqa-TV-mU5">
-                                <rect key="frame" x="134.5" y="440" width="345" height="51"/>
+                                <rect key="frame" x="134.5" y="440" width="334.5" height="51"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="e2a-us-bVm">
-                                        <rect key="frame" x="0.0" y="0.0" width="345" height="22.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="334.5" height="22.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Certificate Valid Until:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUe-kp-bEu">
-                                                <rect key="frame" x="0.0" y="0.0" width="156.5" height="22.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Certificate valid until:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUe-kp-bEu">
+                                                <rect key="frame" x="0.0" y="0.0" width="153.5" height="22.5"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 - 10 - 2019T 17:36:50:615" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arv-XM-n2O">
-                                                <rect key="frame" x="160.5" y="0.0" width="184.5" height="22.5"/>
+                                                <rect key="frame" x="157.5" y="0.0" width="177" height="22.5"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -451,16 +451,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="i6d-kL-fIl">
-                                        <rect key="frame" x="0.0" y="28.5" width="260.5" height="22.5"/>
+                                        <rect key="frame" x="0.0" y="28.5" width="260" height="22.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Certificate Issued By:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3r-vc-RPF">
-                                                <rect key="frame" x="0.0" y="0.0" width="149" height="22.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Certificate issued by:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3r-vc-RPF">
+                                                <rect key="frame" x="0.0" y="0.0" width="148.5" height="22.5"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Qeshm Airlines" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUG-sw-aqT">
-                                                <rect key="frame" x="153" y="0.0" width="107.5" height="22.5"/>
+                                                <rect key="frame" x="152.5" y="0.0" width="107.5" height="22.5"/>
                                                 <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -1079,7 +1079,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oct 12 ,2018 - 17:36" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ayz-fL-Xri">
-                                                            <rect key="frame" x="30" y="43" width="101" height="17"/>
+                                                            <rect key="frame" x="30" y="43" width="98" height="17"/>
                                                             <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -1330,14 +1330,14 @@
                                 <rect key="frame" x="0.0" y="83" width="768" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgl-uz-K8n">
-                                        <rect key="frame" x="718" y="5" width="30" height="30"/>
+                                        <rect key="frame" x="688" y="-10" width="60" height="60"/>
                                         <state key="normal" image="grid"/>
                                         <connections>
                                             <action selector="_GridButtonTapped:" destination="h9s-36-a38" eventType="touchUpInside" id="Omv-ez-f1s"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnT-cu-8iB">
-                                        <rect key="frame" x="676" y="5" width="30" height="30"/>
+                                        <rect key="frame" x="616" y="-10" width="60" height="60"/>
                                         <state key="normal" image="list"/>
                                         <connections>
                                             <action selector="_ListButtonTapped:" destination="h9s-36-a38" eventType="touchUpInside" id="aCi-dY-GZj"/>
@@ -1350,11 +1350,11 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtY-yw-rn4">
-                                        <rect key="frame" x="118" y="8" width="24" height="24"/>
+                                        <rect key="frame" x="118" y="-4" width="48" height="48"/>
                                         <state key="normal" image="down"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="opj-Kw-7an">
-                                        <rect key="frame" x="12" y="0.0" width="130" height="40"/>
+                                        <rect key="frame" x="12" y="0.0" width="154" height="40"/>
                                         <connections>
                                             <action selector="_SortButtonTapped:" destination="h9s-36-a38" eventType="touchUpInside" id="u6V-K4-w7g"/>
                                         </connections>
@@ -1405,7 +1405,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q67-Ge-Zvx">
-                                                    <rect key="frame" x="732" y="12" width="24" height="24"/>
+                                                    <rect key="frame" x="708" y="12" width="48" height="48"/>
                                                     <color key="tintColor" red="0.83921568629999999" green="0.019607843140000001" blue="0.019607843140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <state key="normal" image="check"/>
                                                     <connections>
@@ -1524,7 +1524,7 @@
                                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fzn-gn-0aA">
-                                                            <rect key="frame" x="128.5" y="2" width="61.5" height="22"/>
+                                                            <rect key="frame" x="67" y="2" width="123" height="36"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" image="revision">
@@ -1725,32 +1725,47 @@
                                             <action selector="_BackButtonTapped:" destination="5q1-3H-isX" eventType="touchUpInside" id="9R2-0S-XX6"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ms-5t-Py0">
-                                        <rect key="frame" x="679" y="5" width="77" height="75"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ms-5t-Py0">
+                                        <rect key="frame" x="715" y="5" width="45" height="75"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="45" id="gfD-Q0-2qV"/>
+                                        </constraints>
                                         <state key="normal" image="search"/>
                                         <connections>
                                             <action selector="_SearchButtonTapped:" destination="5q1-3H-isX" eventType="touchUpInside" id="eak-Bz-TN3"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zZB-zz-4KU">
+                                        <rect key="frame" x="662" y="5" width="45" height="75"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="45" id="ECf-J2-VeE"/>
+                                        </constraints>
+                                        <state key="normal" image="outline"/>
+                                        <connections>
+                                            <action selector="_OutlineButtonTapped:" destination="5q1-3H-isX" eventType="touchUpInside" id="xRn-7M-hcb"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.1215686275" green="0.19215686269999999" blue="0.3294117647" alpha="0.8005672089041096" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="1Ms-5t-Py0" firstAttribute="height" secondItem="EWb-nG-oLh" secondAttribute="height" id="7Tl-8f-L4L"/>
-                                    <constraint firstItem="1Ms-5t-Py0" firstAttribute="width" secondItem="EWb-nG-oLh" secondAttribute="width" multiplier="0.1" id="M28-H6-X5V"/>
+                                    <constraint firstItem="zZB-zz-4KU" firstAttribute="height" secondItem="EWb-nG-oLh" secondAttribute="height" id="Btx-Ra-ec2"/>
                                     <constraint firstItem="Tp6-0l-EXW" firstAttribute="centerY" secondItem="EWb-nG-oLh" secondAttribute="centerY" constant="5" id="R9J-jo-Enl"/>
+                                    <constraint firstItem="zZB-zz-4KU" firstAttribute="centerY" secondItem="EWb-nG-oLh" secondAttribute="centerY" constant="5" id="cx3-ze-rm9"/>
                                     <constraint firstItem="Tp6-0l-EXW" firstAttribute="height" secondItem="EWb-nG-oLh" secondAttribute="height" id="gok-Xg-BRE"/>
                                     <constraint firstAttribute="height" constant="75" id="hPP-5T-6Eq"/>
                                     <constraint firstItem="1Ms-5t-Py0" firstAttribute="centerY" secondItem="EWb-nG-oLh" secondAttribute="centerY" constant="5" id="iiw-Kv-clw"/>
-                                    <constraint firstAttribute="trailing" secondItem="1Ms-5t-Py0" secondAttribute="trailing" constant="12" id="lt2-s3-ygM"/>
+                                    <constraint firstAttribute="trailing" secondItem="1Ms-5t-Py0" secondAttribute="trailing" constant="8" id="lt2-s3-ygM"/>
                                     <constraint firstItem="Tp6-0l-EXW" firstAttribute="leading" secondItem="EWb-nG-oLh" secondAttribute="leading" constant="12" id="pJn-6o-n8n"/>
                                     <constraint firstItem="Tp6-0l-EXW" firstAttribute="width" secondItem="EWb-nG-oLh" secondAttribute="width" multiplier="0.1" id="r1l-TN-Wfu"/>
+                                    <constraint firstItem="1Ms-5t-Py0" firstAttribute="leading" secondItem="zZB-zz-4KU" secondAttribute="trailing" constant="8" id="szr-Kl-vzu"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ww-0F-SWp">
-                                <rect key="frame" x="291.5" y="858.5" width="185" height="33.5"/>
+                                <rect key="frame" x="293" y="858.5" width="182" height="33.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Page: 1 Total: 966" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t4V-qG-tLV">
-                                        <rect key="frame" x="31" y="5.5" width="123.5" height="22.5"/>
+                                        <rect key="frame" x="30.5" y="5.5" width="121.5" height="22.5"/>
                                         <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -1858,6 +1873,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="mCurrentPageView" destination="3ww-0F-SWp" id="a04-Qf-RHq"/>
+                        <outlet property="mPDFOutlineButton" destination="zZB-zz-4KU" id="HiI-ka-bUh"/>
                         <outlet property="mPDFThumbnailView" destination="0JN-c0-Uww" id="Vcc-a0-Oeq"/>
                         <outlet property="mPDFView" destination="6ss-l6-o9W" id="WGr-E6-6oR"/>
                         <outlet property="mPageLabel" destination="t4V-qG-tLV" id="QbU-u2-ZOT"/>
@@ -2000,6 +2016,7 @@
         <image name="logout" width="125" height="125"/>
         <image name="message" width="24" height="24"/>
         <image name="nav-info" width="1250" height="1250"/>
+        <image name="outline" width="24" height="24"/>
         <image name="pdf" width="26" height="26"/>
         <image name="previous" width="24" height="24"/>
         <image name="profile" width="24" height="33"/>

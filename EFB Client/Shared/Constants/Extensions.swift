@@ -1,10 +1,4 @@
-//
-//  Extensions.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/13/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import Foundation
 import UIKit

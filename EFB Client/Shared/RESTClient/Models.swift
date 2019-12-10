@@ -1,10 +1,4 @@
-//
-//  Models.swift
-//  EFB Client
-//
-//  Created by Mohammadreza Mostafavi on 10/9/18.
-//  Copyright © 2018 MehrPardaz. All rights reserved.
-//
+
 
 import Foundation
 

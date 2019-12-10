@@ -1,10 +1,4 @@
-//
-//  LibraryListViewController.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/23/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 import PDFKit

@@ -17,11 +17,19 @@ High performance & easy to use Gif engine
 - [x] Allow control CPU/memory tradeoff via 'memoryLimit' 
 
 ## Installation
+
 #### With CocoaPods
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 pod 'SwiftyGif'
+```
+
+#### With Carthage
+Follow the usual Carthage instructions on how to [add a framework to an application](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application). When adding SwiftyGif among the frameworks listed in `Cartfile`, apply its syntax for [GitHub repositories](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#github-repositories):
+
+```
+github "kirualex/SwiftyGif"
 ```
 
 ## How to Use
@@ -36,11 +44,11 @@ SwiftyGif uses familiar `UIImage` and `UIImageView`  to display gifs.
 import SwiftyGif
 
 do {
-    let gif = UIImage(gifName: "MyImage.gif")
+    let gif = try UIImage(gifName: "MyImage.gif")
     let imageview = UIImageView(gifImage: gif, loopCount: 3) // Use -1 for infinite loop
     imageview.frame = view.bounds
     view.addSubview(imageview)
-} catch error {
+} catch {
     print(error)
 }
 ```
@@ -64,8 +72,8 @@ Setting a lower level of integrity will allow for frame skipping, lowering both 
 
 ```swift
 do {
-    let gif = UIImage(gifName: "MyImage.gif", levelOfIntegrity:0.5)
-} catch error {
+    let gif = try UIImage(gifName: "MyImage.gif", levelOfIntegrity:0.5)
+} catch {
     print(error)
 }
 ```

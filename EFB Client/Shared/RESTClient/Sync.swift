@@ -1,10 +1,4 @@
-//
-//  Sync.swift
-//  EFB Client
-//
-//  Created by Mohammadreza Mostafavi on 10/9/18.
-//  Copyright © 2018 MehrPardaz. All rights reserved.
-//
+
 
 import Foundation
 import Alamofire
@@ -159,7 +153,6 @@ class Sync {
     static func syncFCMToken(){
         InstanceID.instanceID().instanceID(handler: {token,err in
             App_Constants.Instance.SettingsSave(.FCMToken, token?.token ?? "")
-            // should sync with server
             HttpClient.http()._Post(relativeUrl: Api_Names.fcmToken, body: FCMToken_Body(token: token?.token ?? ""), callback: {(s,m,r:String?) in
                 
             })

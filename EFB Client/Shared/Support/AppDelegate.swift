@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  EFB Client
-//
-//  Created by Mohammadreza Mostafavi on 9/8/18.
-//  Copyright © 2018 MehrPardaz. All rights reserved.
-//
 
 import UIKit
 import CoreData
@@ -65,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        self.backgroundTaskCompletionHandler = completionHandler
+//        self.backgroundTaskCompletionHandler = completionHandler
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {

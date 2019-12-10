@@ -1,10 +1,4 @@
-//
-//  LibraryListModelTableViewCell.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 11/9/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 

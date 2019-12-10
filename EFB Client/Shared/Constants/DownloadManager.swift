@@ -1,10 +1,4 @@
-//
-//  DownloadManager_New.swift
-//  Axbox
-//
-//  Created by Mr.Zee on 12/11/18.
-//  Copyright © 2018 Axbox. All rights reserved.
-//
+
 
 import Foundation
 import UIKit

@@ -1,10 +1,4 @@
-//
-//  LibraryViewController.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/14/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 import PDFKit
@@ -31,6 +25,7 @@ class PDFViewerViewController: UIViewController {
     @IBOutlet weak var mSearchNextButton: UIButton!
     @IBOutlet weak var mSearchPrevButton: UIButton!
     @IBOutlet weak var mSearchViewBottom: NSLayoutConstraint!
+    @IBOutlet weak var mPDFOutlineButton: UIButton!
     
     private var _Selections:[PDFSelection] = []
     private var _CurrentSearchedPageIndex = -1{
@@ -72,6 +67,19 @@ class PDFViewerViewController: UIViewController {
         }, completion: {f in
             self.mSearchTextField.becomeFirstResponder()
         })
+    }
+    
+    @IBAction func _OutlineButtonTapped(_ sender: Any) {
+        let outlineController = OutlineViewController.init(outline: self.mPDFView.document?.outlineRoot ?? PDFOutline(), delegate: self)
+        let nav = UINavigationController.init(rootViewController: outlineController)
+        nav.modalPresentationStyle = .popover
+        let pop = nav.popoverPresentationController
+        outlineController.preferredContentSize = CGSize.init(width: self.view.frame.size.width*0.5, height: self.view.frame.size.height*0.5)
+        pop?.backgroundColor = App_Constants.Instance.Color(.light)
+        pop?.sourceView = self.mPDFOutlineButton
+        pop?.sourceRect = self.mPDFOutlineButton.bounds
+        pop?.permittedArrowDirections = [.up]
+        self.present(nav, animated: true, completion: nil)
     }
     
     @IBAction func _SearchCloseButtonTapped(_ sender: Any) {
@@ -172,11 +180,6 @@ extension PDFViewerViewController{
             weak.mPDFView.goToFirstPage(self)
             weak.mPDFView.autoScales = true
             weak.mPageLabel.text = String(format: weak.kPageCounter, 1, doc.pageCount)
-            let table = ExpandableView.init(dataSource: doc.outlineRoot ?? PDFOutline(), delegate: weak)
-            table.frame.size = CGSize.init(width: weak.view.frame.size.width * 0.5, height: weak.view.frame.size.height * 0.5)
-            table.center = weak.view.center
-            weak.view.addSubview(table)
-            weak.view.bringSubviewToFront(table)
         }
     }
     
@@ -231,7 +234,8 @@ extension PDFViewerViewController: UINavigationControllerDelegate{
 
 extension PDFViewerViewController: ExpandableViewDelegate{
     func goToOutline(_ outline: PDFOutline) {
-        self.mPDFView.go(to: outline.destination ?? PDFDestination.init())
+        self.presentedViewController?.dismiss(animated: true, completion: nil)
+        self.mPDFView.go(to: outline.destination ?? PDFDestination())
     }
     
 }

@@ -1,10 +1,3 @@
-//
-//  App-Constants.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/13/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
 
 import Foundation
 import Alamofire
@@ -292,7 +285,7 @@ class UI_Constants:NSObject{
         }
     }
     
-    public func Make_Toast(with title: String, in duration: Double = 2.5, in position: ToastPosition = .top){
+    public func Make_Toast(on view: UIView? = UIApplication.shared.keyWindow,with title: String, in duration: Double = 2.5, in position: ToastPosition = .top){
         autoreleasepool{
             var style = ToastStyle()
             style.messageColor = App_Constants.Instance.Color(.light)
@@ -305,7 +298,7 @@ class UI_Constants:NSObject{
             ToastManager.shared.isTapToDismissEnabled = true
             ToastManager.shared.isQueueEnabled = true
             ToastManager.shared.duration = duration
-            UIApplication.shared.keyWindow?.makeToast(title, duration: duration, position: position , title: nil, image: nil, style: style, completion: nil)
+            view?.makeToast(title, duration: duration, position: position , title: nil, image: nil, style: style, completion: nil)
         }
     }
     
@@ -315,9 +308,9 @@ class UI_Constants:NSObject{
     
     func RemoveChildView(_ controller:[UIViewController]){
         for i in controller {
+            i.willMove(toParent: nil)
             i.view.removeFromSuperview()
             i.removeFromParent()
-            i.didMove(toParent: nil)
         }
     }
     

@@ -1,10 +1,4 @@
-//
-//  ViewController.swift
-//  EFB Client
-//
-//  Created by Mohammadreza Mostafavi on 9/8/18.
-//  Copyright © 2018 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 import TransitionButton
@@ -45,6 +39,8 @@ class LoginViewController: UIViewController {
                 App_Constants.Instance.SettingsSave(.Token, r!)
                 Sync.syncUser({success,message in
                     if success{
+                        self.usernameField.text = ""
+                        self.passwordField.text = ""
                         let user = App_Constants.Instance.LoadUser()?.user_status
                         if user == Constants.kEmailNotVerified{
                             self._BeginVerifyEmail()
@@ -75,6 +71,8 @@ class LoginViewController: UIViewController {
         //verify email ???
         HttpClient.http()._Post(relativeUrl: Api_Names.email_verify, body: Email_Body(email: mEmailTextField.text ?? ""), callback: {(s,m,r:Edit?) in
             if s{
+                self.mEmailTextField.text = ""
+                self.mRetypeEmailTextField.text = ""
                 self.mVerifyEmailButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
                 App_Constants.UI.Make_Toast(with: "Verification email was sent to you.", in: 4, in: .top)
                 App_Constants.UI.performSegue(self, .login)

@@ -1,10 +1,4 @@
-//
-//  Enums.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/13/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import Foundation
 
@@ -62,6 +56,7 @@ public enum Notification_Name:String{
     case sync_finished = "sync_finished"
     case to_login = "to_login"
     case notification_recieved = "notification_recieved"
+    case logout = "logout"
 }
 
 public enum FontType:String{

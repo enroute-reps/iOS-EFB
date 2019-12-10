@@ -1,10 +1,4 @@
-//
-//  LibraryListModelViewController.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 11/9/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 
@@ -88,6 +82,7 @@ class LibraryListModelViewController: UIViewController {
         controller.addAction(name)
         controller.addAction(date)
         if let popup = controller.popoverPresentationController{
+            popup.backgroundColor = App_Constants.Instance.Color(.light)
             popup.sourceView = sender as? UIButton
             popup.permittedArrowDirections = [.up]
             popup.sourceRect = CGRect.init(x: (sender as! UIButton).frame.maxX - 20, y: self.mSortButton.frame.maxY, width: 0, height: 0)

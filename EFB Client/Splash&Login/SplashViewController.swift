@@ -1,10 +1,4 @@
-//
-//  SplashViewController.swift
-//  EFB Client
-//
-//  Created by Mr.Zee on 10/13/19.
-//  Copyright © 2019 MehrPardaz. All rights reserved.
-//
+
 
 import UIKit
 import SwiftyGif
@@ -39,15 +33,22 @@ class SplashViewController: UIViewController {
     private var canGoDirect = false
     private let kIntroGif = "intro.gif"
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self._Initialize()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self._Initialize()
     }
 }
 
 extension SplashViewController{
     
     private func _Initialize(){
+        self.canGoDirect = false
+        self.gifDidEnd = false
+        self.syncDidEnd = false
         self._LoadGif()
         if App_Constants.Instance.Account_Check(){
             self._Sync()
@@ -79,7 +80,6 @@ extension SplashViewController{
         SwiftyGifManager.defaultManager.clear()
         self.mImage.delegate = nil
         self.mImage.stopAnimatingGif()
-        self.mImage = nil
     }
 }
 
