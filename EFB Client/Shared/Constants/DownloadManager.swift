@@ -12,8 +12,18 @@ class Download_Model{
     var task:URLSessionDownloadTask?
     var isDownloading = false
     var resumeData:Data?
-    
+    var speed:Speed_Model = Speed_Model.init(speed: 0, prevDownloadedBytes: 0, totalDownloadBytes: 0, bytesWritten: 0, totalBytesWritten: 0, totalBytesExpectedToWrite: 0, T: nil)
     var progress:Float = 0
+}
+
+struct Speed_Model{
+    var speed:Int = 0
+    var prevDownloadedBytes:Int = 0
+    var totalDownloadBytes:Int = 0
+    var bytesWritten:Int64 = 0
+    var totalBytesWritten:Int64 = 0
+    var totalBytesExpectedToWrite:Int64 = 0
+    weak var T:Timer!
 }
 
 let kTimeConstant:Double = 1
@@ -26,10 +36,13 @@ class DownloadService_New {
     func startDownload(_ manual: Manual,_ relUrl:String) ->Download_Model{
         return autoreleasepool{()-> Download_Model in
             let download = Download_Model(manual: manual)
-            
             download.task = downloadsSession.downloadTask(with:URL(string:Api_Names.Main + relUrl)!)
             download.task!.resume()
             download.isDownloading = true
+            download.speed.T = Timer.scheduledTimer(withTimeInterval: kTimeConstant, repeats: true, block: {_ in
+                download.speed.speed = ((download.speed.totalDownloadBytes) - (download.speed.prevDownloadedBytes)) / Int(kTimeConstant)
+                download.speed.prevDownloadedBytes = download.speed.totalDownloadBytes
+            })
             return download
         }
     }
@@ -42,6 +55,10 @@ class DownloadService_New {
                     download.resumeData = data
                 })
                 download.isDownloading = false
+                if download.speed.T != nil{
+                    download.speed.T.invalidate()
+                    download.speed.T = nil
+                }
             }
         }
     }
@@ -53,6 +70,10 @@ class DownloadService_New {
                 download.task?.suspend()
                 download.task = nil
                 download.isDownloading = false
+                if download.speed.T != nil {
+                    download.speed.T.invalidate()
+                    download.speed.T = nil
+                }
             }
         }
     }
@@ -62,12 +83,14 @@ class DownloadService_New {
             guard let download = activeDownloads[URL(string:Api_Names.Main + relUrl)!] else{return}
             if let resumeData = download.resumeData{
                 download.task = downloadsSession.downloadTask(withResumeData: resumeData)
-            }else{
-                download.task = downloadsSession.downloadTask(with: URL(string:Api_Names.Main + relUrl)!)
             }
             download.task!.resume()
             download.isDownloading = true
             download.resumeData = nil
+            download.speed.T = Timer.scheduledTimer(withTimeInterval: kTimeConstant, repeats: true, block: {_ in
+                download.speed.speed = ((download.speed.totalDownloadBytes) - (download.speed.prevDownloadedBytes)) / Int(kTimeConstant)
+                download.speed.prevDownloadedBytes = download.speed.totalDownloadBytes
+            })
         }
     }
     
@@ -79,18 +102,10 @@ class Download_Manager:NSObject{
     
     let downloadService = DownloadService_New()
     var didFinishishDownload:((URLSession,URLSessionDownloadTask,URL,Bool)->Void)?
-    var didWriteData:((URLSession,URLSessionDownloadTask,Int64,Int64,Int64,Int)->Void)?
-    private weak var T:Timer!
-    private var speed:Int = 0
-    private var prevDownloadedBytes:Int = 0
-    private var totalDownloadedBytes:Int = 0
+    var didWriteData:((URLSession,URLSessionDownloadTask,Int64,Int64,Int64)->Void)?
     
     public func startDownload(_ Manual:Manual, _ relUrl:String){
         self.downloadService.activeDownloads[URL(string:Api_Names.Main + relUrl)!] = self.downloadService.startDownload(Manual, relUrl)
-        T = Timer.scheduledTimer(withTimeInterval: kTimeConstant, repeats: true, block: {_ in
-            self.speed = (self.totalDownloadedBytes - self.prevDownloadedBytes) / Int(kTimeConstant)
-            self.prevDownloadedBytes = self.totalDownloadedBytes
-        })
     }
     
     public func cancelDownload(_ Manual:Manual, _ relUrl:String){
@@ -98,12 +113,14 @@ class Download_Manager:NSObject{
         self.downloadService.activeDownloads[URL(string:Api_Names.Main + relUrl)!] = nil
     }
     
-    private func _CloseTimer(){
-        if T != nil {
-            T.invalidate()
-            T = nil
-        }
+    public func pauseDownload(_ Manual: Manual, _ relUrl: String){
+        downloadService.pauseDownload(Manual, relUrl)
     }
+    
+    public func resumeDownload(_ manual: Manual, _ relUrl: String){
+        downloadService.resumeDownload(manual, relUrl)
+    }
+    
 }
 
 extension Download_Manager:URLSessionDownloadDelegate{
@@ -113,25 +130,46 @@ extension Download_Manager:URLSessionDownloadDelegate{
                 let manual = downloadService.activeDownloads[(downloadTask.originalRequest?.url)!]?.manual
                 FilesManager.default.createDirectory("\(Constants.kManualDirectory)/\((manual?.manual_category ?? ""))")
                 let to = FilesManager.default.path("\(manual?.manual_category ?? "")/\(manual?.manual_version ?? "")_\(manual?.manual_title ?? "")_\(manual?.upload_date ?? "")_\(manual?.manual_description ?? "").pdf")!
-                if FileManager.default.fileExists(atPath: to.absoluteString){
+                let status = (downloadTask.response as? HTTPURLResponse)?.statusCode
+                if FileManager.default.fileExists(atPath: to.path){
                     let _ = try FileManager.default.replaceItemAt(location, withItemAt: to)
                 }else{
                     try FileManager.default.moveItem(at: location, to: to)
                 }
-                didFinishishDownload?(session,downloadTask,location, (downloadTask.response as? HTTPURLResponse)?.statusCode == 200)
+                didFinishishDownload?(session,downloadTask,location, status == 200 || status == 206)
+                if status == 200 || status == 206{
+                    let download = self.downloadService.activeDownloads[(downloadTask.originalRequest?.url)!]
+                    if download?.speed.T != nil{
+                        download?.speed.T.invalidate()
+                        download?.speed.T = nil
+                    }
+                    self.downloadService.activeDownloads[(downloadTask.originalRequest?.url)!] = nil
+                }
             }catch(let err){
                 print(err.localizedDescription)
             }
         }
     }
     
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
+        print("did resume")
+    }
+    
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        _CloseTimer()
+        let download = downloadService.activeDownloads[(task.originalRequest?.url)!]
+        if download?.speed.T != nil {
+            download?.speed.T.invalidate()
+            download?.speed.T = nil
+        }
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        self.totalDownloadedBytes = Int(totalBytesWritten)
-        didWriteData?(session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite,speed)
+        let download = downloadService.activeDownloads[(downloadTask.originalRequest?.url)!]
+        download?.speed.totalDownloadBytes = Int(totalBytesWritten)
+        download?.speed.bytesWritten = bytesWritten
+        download?.speed.totalBytesWritten = totalBytesWritten
+        download?.speed.totalBytesExpectedToWrite = totalBytesExpectedToWrite
+        didWriteData?(session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite)
     }
     
     

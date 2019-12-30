@@ -38,7 +38,7 @@ class ChangePasswordViewController: UIViewController {
                 self.mAcceptButton.stopAnimation()
                 self.dismiss(animated: true, completion: nil)
             }else{
-                App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.try_again))
+                App_Constants.UI.Make_Alert("", m)
                 self.mAcceptButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
             }
             UIView.animate(withDuration: 0.3, animations: {

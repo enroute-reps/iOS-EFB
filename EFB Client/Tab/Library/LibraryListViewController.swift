@@ -2,6 +2,8 @@
 
 import UIKit
 import PDFKit
+import RxSwift
+import RxCocoa
 
 public enum ArrangeType{
     case grid,list
@@ -32,6 +34,7 @@ class LibraryListViewController: UIViewController {
     @IBOutlet weak var mSampleSortButton: UIButton!
     @IBOutlet weak var mManualTypeSegmentView: UIView!
     @IBOutlet weak var mBackButton: UIButton!
+    @IBOutlet weak var mDownloadAllButton: UIButton!
     
     private var path:String = Constants.kManualDirectory
     private var _Manuals:[Manual] = []
@@ -39,19 +42,25 @@ class LibraryListViewController: UIViewController {
     private var _Downloads:[Manual] = []
     private var _SelectedIndex:IndexPath = [0,0]
     private var _HighlightIndex:Int = -1
-    private var _Type:ManualType = .files
+    private var _Type:ManualType = .files{
+        didSet{
+            self.mDownloadAllButton.isHidden = _Type == .files || self._Downloads.isEmpty
+            self.mCollectionView.reloadData()
+            self.mTableView.reloadData()
+        }
+    }
     private var _ArrangeType:ArrangeType = .grid
     private var _SortType:SortType = .name
     private var _FileManager = FilesManager.default
     private var _App_Constants = App_Constants.Instance
     private var _Download_Manager = Download_Manager.default
+    private var disposeBag = DisposeBag()
     private var kMain = "Main"
     private var kLibrary = "library"
     private var kManual = "manual"
     private var kPDFReader = "pdfViewer"
     private var kName = "Name"
     private var kDate = "Date"
-    private var kIsHidden = "isHidden"
     private var kManualNotificationId = "manual"
 
     override func viewDidLoad() {
@@ -61,9 +70,8 @@ class LibraryListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
-        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden: false])
-        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [kIsHidden: false])
+        App_Constants.UI.tabbarIsHidden.accept(false)
+        App_Constants.UI.statusBarIsHidden.accept(false)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -102,6 +110,7 @@ class LibraryListViewController: UIViewController {
         self.mListButton.backgroundColor = .clear
         self._HighlightIndex = -1
         self.mCollectionView.isHidden = _ArrangeType != .grid
+        self.mCollectionView.reloadData()
     }
     
     @IBAction func _ListButtonTapped(_ sender: Any) {
@@ -110,6 +119,7 @@ class LibraryListViewController: UIViewController {
         self.mListButton.backgroundColor = App_Constants.Instance.Color(.selected)
         self._HighlightIndex = -1
         self.mCollectionView.isHidden = _ArrangeType != .grid
+        self.mTableView.reloadData()
     }
     
     @IBAction func _SortButtonTapped(_ sender: Any) {
@@ -143,6 +153,18 @@ class LibraryListViewController: UIViewController {
         }
     }
     
+    @IBAction func _DownloadAllButtonTapped(_ sender: Any) {
+        for (i,dl) in self._Downloads.enumerated(){
+            let indexPath:IndexPath = [0,i]
+            let relURL = Api_Names.download_manual + (dl.manual_file_name ?? "")
+            if let _ = self._Download_Manager.downloadService.activeDownloads[URL(string: String(format: Api_Names.main2, kPort8080) + relURL)!]{
+                _Download_Manager.resumeDownload(dl, relURL)
+            }else{
+                _Download_Manager.startDownload(dl, relURL)
+            }
+            self._ReloadCells(at: [indexPath])
+        }
+    }
 }
 
 extension LibraryListViewController{
@@ -156,11 +178,14 @@ extension LibraryListViewController{
             _Download_Manager.downloadService.downloadsSession = URLSession.init(configuration: config!, delegate: _Download_Manager, delegateQueue: nil)
             config = nil
         }
+        self.navigationController?.isNavigationBarHidden = true
         self.mManualTypeSegment.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: _App_Constants.Font(.regular, 14)], for: .normal)
         self.mManualTypeSegment.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: _App_Constants.Font(.regular, 14)], for: .selected)
-        self._Reload()
-        NotificationCenter.default.removeObserver(self, name: _App_Constants.Notification_Name(.sync_all), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self._Reload), name: _App_Constants.Notification_Name(.sync_all), object: nil)
+        Sync.shared.manuals.asObservable().subscribe(onNext: {[weak self] manuals in
+            guard let weak = self else {return}
+            weak._Manuals = manuals ?? []
+            weak._Reload()
+        }).disposed(by: self.disposeBag)
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.revision), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self._HightlightRevision(_:)), name: App_Constants.Instance.Notification_Name(.revision), object: nil)
         //UI
@@ -181,6 +206,7 @@ extension LibraryListViewController{
             layout.itemSize = CGSize.init(width: self.view.frame.size.width / 4, height: (self.view.frame.size.width / 4) * 1.4)
             self.mCollectionView.collectionViewLayout = layout
         }
+        self._ManageDownload()
     }
     
     @objc private func _HightlightRevision(_ notification: Notification){
@@ -209,7 +235,6 @@ extension LibraryListViewController{
     
     private func _GenerateManuals(){
         autoreleasepool{
-            self._Manuals = _App_Constants.LoadAllFormCore(.manual) ?? []
             self._Downloads = []
             self._Files = _FileManager.get_manuals(at: self.path)
             let all_files = _FileManager.getAllManuals(Constants.kManualDirectory)
@@ -237,8 +262,11 @@ extension LibraryListViewController{
             }
             self._SortType == .name ? self._SortByName() : self._SortByDate()
             DispatchQueue.main.async{
-                self.mTableView.reloadData()
-                self.mCollectionView.reloadData()
+                if self._ArrangeType == .grid{
+                    self.mCollectionView.reloadData()
+                }else{
+                    self.mTableView.reloadData()
+                }
             }
         }
     }
@@ -254,7 +282,7 @@ extension LibraryListViewController{
                     if file1.manual_title == file2.manual_title{
                         if (file1.manual_version ?? "1").compare((file2.manual_version ?? "1")) == ComparisonResult.orderedDescending{
                             _FileManager.deleteManual("\(Constants.kManualDirectory)/\(file2.manual_category ?? "")", "\(file2.manual_version ?? "")_\(file2.manual_file_name ?? "")_\(file2.upload_date ?? "")_\(file2.manual_description ?? "").pdf")
-                            if let d = _FileManager.getFilesInDirectory(file2.manual_category ?? ""){
+                            if let d = _FileManager.getFilesInDirectory(file2.manual_category ?? ""), !d.isEmpty{
                                 _FileManager.deleteManual(Constants.kManualDirectory, file2.manual_category ?? "")
                             }
                         }
@@ -305,6 +333,53 @@ extension LibraryListViewController{
     private func _SortByDate(){
         self._Files = self._Files.sorted(by: {($0.upload_date ?? "").toDate() < ($1.upload_date ?? "").toDate()})
         self._Downloads = self._Downloads.sorted(by: {($0.upload_date ?? "").toDate() < ($1.upload_date ?? "").toDate()})
+    }
+    
+    private func _ManageDownload(){
+        _Download_Manager.didFinishishDownload = {session,downloadTask,location,success in
+            guard let sourceURL = downloadTask.originalRequest?.url else { return }
+            let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
+            self._Download_Manager.downloadService.activeDownloads[sourceURL] = nil
+            let indexPath: IndexPath = [0, self._Downloads.firstIndex(where: {sourceURL.absoluteString == (String(format: Api_Names.main2, kPort8080) + Api_Names.download_manual + ($0.manual_file_name ?? ""))}) ?? 0]
+            
+            DispatchQueue.main.async{
+                outer: if success{
+                    self._RemoveDuplicateManual()
+                    Sync.shared.Log_Event(event: .manual_downloaded, type: .manual, id: "\(download?.manual.manual_id ?? 0)", {s,m in})
+                    self._SelectedIndex = indexPath
+                    if self._Type == .downloads{
+                        (self.mCollectionView.cellForItem(at: indexPath) as! PDFListCollectionViewCell)._Configure(download: nil)
+                        self._Reload()
+                    }
+                    for (_,dl) in self._Download_Manager.downloadService.activeDownloads.enumerated(){
+                        if dl.value.isDownloading {
+                            break outer
+                        }
+                    }
+                    self._Type = .files
+                    self.mManualTypeSegment.selectedSegmentIndex = 1
+                }
+            }
+        }
+        
+        _Download_Manager.didWriteData = {session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite in
+            guard let sourceURL = downloadTask.originalRequest?.url else { return }
+            let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
+            var estimatedTime:Double = 0
+            if download?.speed.speed != 0{
+                estimatedTime = Double((download?.speed.totalBytesExpectedToWrite ?? 0) - (download?.speed.totalBytesWritten ?? 0)) / Double(download?.speed.speed ?? 1)
+            }else{
+                estimatedTime = 0
+            }
+            DispatchQueue.main.async{
+                if let cell = self.mCollectionView.cellForItem(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListCollectionViewCell{
+                    cell._UpdateDisplay((download?.speed.bytesWritten ?? 0), (download?.speed.totalBytesWritten ?? 0), (download?.speed.totalBytesExpectedToWrite ?? 0), download?.speed.speed ?? 1, estimatedTime.toString())
+                }
+                if let cell = self.mTableView.cellForRow(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListTableViewCell{
+                    cell._UpdateDisplay((download?.speed.bytesWritten ?? 0), (download?.speed.totalBytesWritten ?? 0), (download?.speed.totalBytesExpectedToWrite ?? 0), download?.speed.speed ?? 1, estimatedTime.toString())
+                }
+            }
+        }
     }
     
     
@@ -403,45 +478,11 @@ extension LibraryListViewController:DownloadDelegate{
                 self.mTableView.reloadRows(at: [indexPath], with: .automatic)
                 let manual = _Downloads[indexPath.row]
                 let relURL = Api_Names.download_manual + (manual.manual_file_name ?? "")
-                _Download_Manager.didFinishishDownload = {session,downloadTask,location,success in
-                    guard let sourceURL = downloadTask.originalRequest?.url else { return }
-                    let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
-                    self._Download_Manager.downloadService.activeDownloads[sourceURL] = nil
-                    DispatchQueue.main.async{
-                        let name = self._Downloads[indexPath.row].manual_title
-                        self._RemoveDuplicateManual()
-                        self._ReloadCells(at: [[0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]])
-                        if success{
-                            self._Reload()
-                            self._Type = .files
-                            self._SelectedIndex = [0,self._Files.firstIndex(where: {m in m.manual_title == name}) ?? 0]
-                            self.mManualTypeSegment.selectedSegmentIndex = 1
-                            self.mTableView.reloadSections(IndexSet(integer: 0), with: .none)
-                            self.mCollectionView.reloadSections(IndexSet(integer: 0))
-                        }
-                        Sync.Log_Event(event: .manual_downloaded, type: .manual, id: "\(manual.manual_id ?? 0)", {s,m in})
-                    }
+                if let _ = self._Download_Manager.downloadService.activeDownloads[URL(string: String(format: Api_Names.main2, kPort8080) + relURL)!]{
+                    _Download_Manager.resumeDownload(manual, relURL)
+                }else{
+                    _Download_Manager.startDownload(manual, relURL)
                 }
-                _Download_Manager.didWriteData = {session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite,speed in
-                    guard let sourceURL = downloadTask.originalRequest?.url else { return }
-                    let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
-                    var estimatedTime:Double = 0
-                    if speed != 0{
-                        estimatedTime = Double(totalBytesExpectedToWrite - totalBytesWritten) / Double(speed)
-                    }else{
-                        estimatedTime = 0
-                    }
-                    DispatchQueue.main.async{
-                        if let cell = self.mCollectionView.cellForItem(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListCollectionViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
-                        }
-                        if let cell = self.mTableView.cellForRow(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListTableViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
-                        }
-                    }
-                }
-                
-                _Download_Manager.startDownload(manual, relURL)
                 self._ReloadCells(at: [indexPath])
             }
         case .files:
@@ -461,7 +502,7 @@ extension LibraryListViewController:DownloadDelegate{
     
     func downloadDidStop(_ cell: PDFListTableViewCell) {
         if let indexPath = self.mTableView.indexPath(for: cell){
-            _Download_Manager.cancelDownload(_Downloads[indexPath.row], Api_Names.download_manual + (self._Downloads[indexPath.row].manual_file_name ?? ""))
+            _Download_Manager.pauseDownload(_Downloads[indexPath.row], Api_Names.download_manual + (self._Downloads[indexPath.row].manual_file_name ?? ""))
             self._ReloadCells(at: [indexPath])
         }
     }
@@ -561,45 +602,11 @@ extension LibraryListViewController:CollectionDownloadDelegate{
                 self.mCollectionView.reloadItems(at: [indexPath])
                 let manual = _Downloads[indexPath.row]
                 let relURL = Api_Names.download_manual + (manual.manual_file_name ?? "")
-                _Download_Manager.didFinishishDownload = {session,downloadTask,location,success in
-                    guard let sourceURL = downloadTask.originalRequest?.url else { return }
-                    let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
-                    self._Download_Manager.downloadService.activeDownloads[sourceURL] = nil
-                    DispatchQueue.main.async{
-                        let name = self._Downloads[indexPath.row].manual_title
-                        self._RemoveDuplicateManual()
-                        self._ReloadCells(at: [[0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]])
-                        if success{
-                            self._Reload()
-                            self._Type = .files
-                            self._SelectedIndex = [0,self._Files.firstIndex(where: {m in m.manual_title == name}) ?? 0]
-                            self.mManualTypeSegment.selectedSegmentIndex = 1
-                            self.mCollectionView.reloadSections(IndexSet.init(integer: 0))
-                            self.mTableView.reloadSections(IndexSet(integer: 0), with: .none)
-                        }
-                        Sync.Log_Event(event: .manual_downloaded, type: .manual, id: "\(download?.manual.manual_id ?? 0)", {s,m in})
-                    }
+                if let _ = self._Download_Manager.downloadService.activeDownloads[URL(string: String(format: Api_Names.main2, kPort8080) + relURL)!]?.resumeData{
+                    _Download_Manager.resumeDownload(manual, relURL)
+                }else{
+                    _Download_Manager.startDownload(manual, relURL)
                 }
-                _Download_Manager.didWriteData = {session,downloadTask,bytesWritten,totalBytesWritten,totalBytesExpectedToWrite,speed in
-                    guard let sourceURL = downloadTask.originalRequest?.url else { return }
-                    let download = self._Download_Manager.downloadService.activeDownloads[sourceURL]
-                    var estimatedTime:Double = 0
-                    if speed != 0{
-                        estimatedTime = Double(totalBytesExpectedToWrite - totalBytesWritten) / Double(speed)
-                    }else{
-                        estimatedTime = 0
-                    }
-                    DispatchQueue.main.async{
-                        if let cell = self.mCollectionView.cellForItem(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListCollectionViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
-                        }
-                        if let cell = self.mTableView.cellForRow(at: [0,(self._Downloads.firstIndex(where: {$0.manual_file_name == download?.manual.manual_file_name}) ?? 0)]) as? PDFListTableViewCell{
-                            cell._UpdateDisplay(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite, speed, estimatedTime.toString())
-                        }
-                    }
-                }
-                
-                _Download_Manager.startDownload(manual, relURL)
                 self._ReloadCells(at: [indexPath])
             }
         case .files:
@@ -620,7 +627,7 @@ extension LibraryListViewController:CollectionDownloadDelegate{
     
     func downloadDidStop(_ cell: PDFListCollectionViewCell) {
         if let indexPath = self.mCollectionView.indexPath(for: cell){
-            _Download_Manager.cancelDownload(_Downloads[indexPath.row], Api_Names.download_manual + (self._Downloads[indexPath.row].manual_file_name ?? ""))
+            _Download_Manager.pauseDownload(_Downloads[indexPath.row], Api_Names.download_manual + (self._Downloads[indexPath.row].manual_file_name ?? ""))
             self._ReloadCells(at: [indexPath])
         }
     }

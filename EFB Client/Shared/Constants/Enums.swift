@@ -40,23 +40,14 @@ public enum Color:String{
     case dark = "18253A"
     case selected = "4C6FD0"
     case gray = "BFC1C1"
+    case defaultGreen = "81AE62"
+    case defaultRed = "793E2A"
+    case defaultYellow = "EEB84F"
 }
 
 public enum Notification_Name:String{
-    case sync_all = "sync_all"
-    case `default` = "default"
-    case notif_seen = "notif_seen"
-    case notif_seened = "notif_seened"
-    case msg_seen = "msg_seen"
-    case msg_seened = "msg_seened"
-    case tabbar_height = "tabbar_height"
-    case hide_statusBar = "hide_statusBar"
     case revision = "revision"
-    case syncing = "syncing"
-    case sync_finished = "sync_finished"
-    case to_login = "to_login"
     case notification_recieved = "notification_recieved"
-    case logout = "logout"
 }
 
 public enum FontType:String{

@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         InstanceID.instanceID().instanceID(handler: {token,err in
             App_Constants.Instance.SettingsSave(.FCMToken, token?.token ?? "")
-            Sync.syncFCMToken()
+            Sync.shared.syncFCMToken()
         })
         return true
     }
@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Sync.syncUser({s,m in})
+        Sync.shared.syncUser()
     }
     
     // MARK: - Core Data stack
@@ -133,11 +133,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate{
 
 extension AppDelegate: MessagingDelegate{
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
-        Sync.syncMessages(completed: {
-            Sync.syncNotifications(completed: {
-                Sync.syncBadgeIcon()
-            }, errorHandle: {m in})
-        }, errorHandle: {m in})
+        Sync.shared.syncMessages()
+        Sync.shared.syncNotifications()
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {

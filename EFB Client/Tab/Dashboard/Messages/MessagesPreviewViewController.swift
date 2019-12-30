@@ -49,14 +49,15 @@ extension MessagesPreviewViewController{
     
     private func _SeenMessage(){
         if !((_Message?.message_read_date_time ?? "").isEmpty){
-//            return
+            return
         }
         HttpClient.http()._Post(relativeUrl: Api_Names.message_seen, body: Message_Seen_Body(messageId: self._Message?.message_id ?? 0), callback: {(s,m,r:Edit?) in
             if s{
-                Sync.Log_Event(event: .message_seen, type: .message, id: "\(self._Message?.message_id ?? 0)", {s,m1 in
+                Sync.shared.Log_Event(event: .message_seen, type: .message, id: "\(self._Message?.message_id ?? 0)", {s,m1 in
                     if s{
-                        App_Constants.Instance.UpdateEntity(.message, self._Message,"\("\(Date())".defaultToDate())", self.kMessageReadDateTime, "message_id", self._Message?.message_id ?? 0)
-                        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.msg_seened), object: nil)
+                        App_Constants.Instance.UpdateEntity(.message, self._Message, "\("\(Date())".defaultToDate())", self.kMessageReadDateTime, "message_id", self._Message?.message_id ?? 0)
+                        Sync.shared.messages.accept(App_Constants.Instance.LoadAllFormCore(.message))
+                        Sync.shared.syncBadgeIcon()
                     }
                 })
             }
@@ -67,10 +68,11 @@ extension MessagesPreviewViewController{
         if self._Seened_Notifications.contains(where: {$0.log_type_id == _Notification?.notification_id}){
             return
         }
-        Sync.Log_Event(event: .notification_seen, type: .notification, id: "\(self._Notification?.notification_id ?? 0)", {s,m in
+        Sync.shared.Log_Event(event: .notification_seen, type: .notification, id: "\(self._Notification?.notification_id ?? 0)", {s,m in
             if s{
                 App_Constants.Instance.SaveToCore(Log(log_id: nil, create_date_time: "\(Date())", log_description: self.kLogDesc, log_device: self.kLogDevice, log_event: self.kLogEvent, logip: self.kLogIP, user_id: 0, log_type: self.kLogType, log_type_id: self._Notification?.notification_id ?? 0), .log_notification)
-                NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.notif_seened), object: nil)
+                Sync.shared.synced_notifications.accept(App_Constants.Instance.LoadAllFormCore(.log_notification))
+                Sync.shared.syncBadgeIcon()
             }
         })
     }

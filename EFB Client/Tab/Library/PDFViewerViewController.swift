@@ -27,14 +27,20 @@ class PDFViewerViewController: UIViewController {
     @IBOutlet weak var mSearchViewBottom: NSLayoutConstraint!
     @IBOutlet weak var mPDFOutlineButton: UIButton!
     
-    private var _Selections:[PDFSelection] = []
+    private var _Selections:[PDFSelection] = []{
+        didSet{
+            self.mSearchNextButton.isEnabled = _CurrentSearchedPageIndex >= 0 && _CurrentSearchedPageIndex < self._Selections.count - 1
+            self.mSearchNextButton.isEnabled ? (self.mSearchNextButton.tintColor = .white) : (self.mSearchNextButton.tintColor = .gray)
+            self.mSearchPrevButton.isEnabled = self._CurrentSearchedPageIndex > 0
+            self.mSearchPrevButton.isEnabled ? (self.mSearchPrevButton.tintColor = .white) : (self.mSearchPrevButton.tintColor = .gray)
+        }
+    }
     private var _CurrentSearchedPageIndex = -1{
         didSet{
             self.mSearchNextButton.isEnabled = _CurrentSearchedPageIndex >= 0 && _CurrentSearchedPageIndex < self._Selections.count - 1
             self.mSearchNextButton.isEnabled ? (self.mSearchNextButton.tintColor = .white) : (self.mSearchNextButton.tintColor = .gray)
             self.mSearchPrevButton.isEnabled = self._CurrentSearchedPageIndex > 0
             self.mSearchPrevButton.isEnabled ? (self.mSearchPrevButton.tintColor = .white) : (self.mSearchPrevButton.tintColor = .gray)
-            
         }
     }
     public var _Manual:Manual?
@@ -56,17 +62,14 @@ class PDFViewerViewController: UIViewController {
     }
 
     @IBAction func _BackButtonTapped(_ sender: Any) {
-        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden: false])
-        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [kIsHidden: false])
+        App_Constants.UI.tabbarIsHidden.accept(false)
+        App_Constants.UI.statusBarIsHidden.accept(false)
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func _SearchButtonTapped(_ sender: Any) {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.mSearchView.isHidden = false
-        }, completion: {f in
-            self.mSearchTextField.becomeFirstResponder()
-        })
+        self.mSearchView.isHidden = false
+        self.mSearchTextField.becomeFirstResponder()
     }
     
     @IBAction func _OutlineButtonTapped(_ sender: Any) {
@@ -95,22 +98,24 @@ class PDFViewerViewController: UIViewController {
     
     @IBAction func _SearchNextButtonTapped(_ sender: Any) {
         self._CurrentSearchedPageIndex += 1
-        self.mPDFView.go(to: self._Selections[self._CurrentSearchedPageIndex].pages.first ?? PDFPage())
-        for selected in self._Selections{
-            selected.color = .yellow
+        for ann in self.mPDFView.currentPage?.annotations ?? []{
+            self.mPDFView.currentPage?.removeAnnotation(ann)
         }
-        self._Selections[_CurrentSearchedPageIndex].color = .orange
-        self.mPDFView.setCurrentSelection(self._Selections[_CurrentSearchedPageIndex], animate: true)
+        self.mPDFView.go(to: self._Selections[self._CurrentSearchedPageIndex].pages.first ?? PDFPage())
+        let annot = PDFAnnotation.init(bounds: self._Selections[self._CurrentSearchedPageIndex].bounds(for: self._Selections[self._CurrentSearchedPageIndex].pages.first ?? PDFPage()), forType: .highlight, withProperties: nil)
+        annot.color = .orange
+        self.mPDFView.currentPage?.addAnnotation(annot)
     }
     
     @IBAction func _SearchPrevButtonTapped(_ sender: Any) {
         self._CurrentSearchedPageIndex -= 1
         self.mPDFView.go(to: self._Selections[self._CurrentSearchedPageIndex].pages.first ?? PDFPage())
-        for selected in self._Selections{
-            selected.color = .yellow
+        for ann in self.mPDFView.currentPage?.annotations ?? []{
+            self.mPDFView.currentPage?.removeAnnotation(ann)
         }
-        self._Selections[_CurrentSearchedPageIndex].color = .orange
-        self.mPDFView.setCurrentSelection(self._Selections[_CurrentSearchedPageIndex], animate: true)
+        let annot = PDFAnnotation.init(bounds: self._Selections[self._CurrentSearchedPageIndex].bounds(for: self._Selections[self._CurrentSearchedPageIndex].pages.first ?? PDFPage()), forType: .highlight, withProperties: nil)
+        annot.color = .orange
+        self.mPDFView.currentPage?.addAnnotation(annot)
     }
 }
 
@@ -129,7 +134,7 @@ extension PDFViewerViewController{
         self._CurrentSearchedPageIndex = -1
         NotificationCenter.default.addObserver(self, selector: #selector(_KeyboardHeightChanged(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         NotificationCenter.default.addObserver(self,selector: #selector(_PDFPageChanged(_:)),name: Notification.Name.PDFViewPageChanged,object: nil)
-        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden:true])
+        App_Constants.UI.tabbarIsHidden.accept(true)
         autoreleasepool{[weak self] in
             guard let weak = self else{return}
             let tap = UITapGestureRecognizer.init(target: self, action: #selector(_ViewTapped(_:)))
@@ -140,8 +145,8 @@ extension PDFViewerViewController{
     
     @objc private func _KeyboardHeightChanged(_ notification: Notification){
         if let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue{
-            UIView.animate(withDuration: 0.5, animations: {
-                self.mSearchViewBottom.constant == 0 ? (self.mSearchViewBottom.constant = frame.cgRectValue.height) : (self.mSearchViewBottom.constant = 0)
+            UIView.animate(withDuration: notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.5, animations: {
+                self.mSearchViewBottom.constant = self.view.frame.height-frame.cgRectValue.origin.y
             })
         }
     }
@@ -151,7 +156,7 @@ extension PDFViewerViewController{
     }
     
     @objc private func _ViewTapped(_ sender: UITapGestureRecognizer){
-        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [self.kIsHidden: (self.mTopView.alpha != 0.0)])
+        App_Constants.UI.statusBarIsHidden.accept(self.mTopView.alpha != 0.0)
         UIView.animate(withDuration: 0.5, animations: {
             self.mTopView.alpha = self.mTopView.alpha == 1 ? 0 : 1
             self.mPDFThumbnailView.alpha = self.mPDFThumbnailView.alpha == 1 ? 0 : 1
@@ -179,6 +184,7 @@ extension PDFViewerViewController{
             weak.mPDFView.document = doc
             weak.mPDFView.goToFirstPage(self)
             weak.mPDFView.autoScales = true
+            weak.mPDFView.document?.delegate = self
             weak.mPageLabel.text = String(format: weak.kPageCounter, 1, doc.pageCount)
         }
     }
@@ -187,23 +193,16 @@ extension PDFViewerViewController{
         autoreleasepool{[weak self] in
             guard let weak = self else{return}
             weak._RemoveAllAnnotations()
-            let selections = mPDFView.document?.findString(text ?? "", withOptions: [.caseInsensitive])
-            weak._Selections = selections ?? []
-            weak._CurrentSearchedPageIndex = weak._Selections.isEmpty ? -1 : 0
-            for selected in weak._Selections{
-                selected.color = .yellow
-            }
-            weak.mPDFView.highlightedSelections = weak._Selections
-            !weak._Selections.isEmpty ? (weak.mPDFView.go(to: weak._Selections[weak._CurrentSearchedPageIndex].pages.first ?? PDFPage())) : ()
-            !weak._Selections.isEmpty ? (weak._Selections[_CurrentSearchedPageIndex].color = .orange) : ()
-            !weak._Selections.isEmpty ? (weak.mPDFView.setCurrentSelection(weak._Selections[_CurrentSearchedPageIndex], animate: true)) : ()
+            weak.mPDFView.document?.beginFindString(text ?? "", withOptions: [.caseInsensitive])
         }
     }
     
     private func _RemoveAllAnnotations(){
+        self.mPDFView.document?.cancelFindString()
         self._Selections = []
-        self.mPDFView.highlightedSelections = []
-        self.mPDFView.currentSelection = nil
+        for annot in self.mPDFView.currentPage?.annotations ?? []{
+            self.mPDFView.currentPage?.removeAnnotation(annot)
+        }
     }
     
 }
@@ -221,10 +220,10 @@ extension PDFViewerViewController: UITextFieldDelegate{
 extension PDFViewerViewController: UINavigationControllerDelegate{
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if viewController is LibraryListModelViewController{
-            NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden: false])
-            NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil, userInfo: [self.kIsHidden: false])
+            App_Constants.UI.tabbarIsHidden.accept(false)
+            App_Constants.UI.statusBarIsHidden.accept(false)
         }else if viewController is PDFViewerViewController{
-            NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil, userInfo: [kIsHidden: true])
+            App_Constants.UI.tabbarIsHidden.accept(true)
             self.mPDFView.autoScales = true
             self.view.layoutSubviews()
             self.view.layoutIfNeeded()
@@ -234,8 +233,25 @@ extension PDFViewerViewController: UINavigationControllerDelegate{
 
 extension PDFViewerViewController: ExpandableViewDelegate{
     func goToOutline(_ outline: PDFOutline) {
-        self.presentedViewController?.dismiss(animated: true, completion: nil)
-        self.mPDFView.go(to: outline.destination ?? PDFDestination())
+        if let presented = self.presentedViewController as? UINavigationController{
+            presented.dismiss(animated: true, completion: nil)
+            self.mPDFView.go(to: outline.destination ?? PDFDestination())
+        }
     }
     
+}
+
+extension PDFViewerViewController:PDFDocumentDelegate{
+    func didMatchString(_ instance: PDFSelection) {
+        self._Selections.append(instance)
+        if instance.pages.contains(self.mPDFView.currentPage ?? PDFPage()) && self.mPDFView.currentPage?.annotations.isEmpty ?? true{
+            self._CurrentSearchedPageIndex = self._Selections.firstIndex(of: instance) ?? 0
+            for ann in self.mPDFView.currentPage?.annotations ?? []{
+                self.mPDFView.currentPage?.removeAnnotation(ann)
+            }
+            let annot = PDFAnnotation.init(bounds: self._Selections[self._CurrentSearchedPageIndex].bounds(for: self._Selections[self._CurrentSearchedPageIndex].pages.first ?? PDFPage()), forType: .highlight, withProperties: nil)
+            annot.color = .orange
+            self.mPDFView.currentPage?.addAnnotation(annot)
+        }
+    }
 }

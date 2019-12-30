@@ -2,6 +2,8 @@
 
 import UIKit
 import Alamofire
+import RxSwift
+import RxCocoa
 
 enum MessageType{
     case message
@@ -13,10 +15,13 @@ class MessagesViewController: UIViewController {
     @IBOutlet weak var mTableView: UITableView!
     
     public var _Type:MessageType = .message
+    public var _DidShowNotif:BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    public var _DidShowMessage:BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private var _SelectedIndex:IndexPath = [0,0]
     private var _Messages:[Message] = []
     private var _Notification:[Notification_Model] = []
     private var _Seened_Notifications:[Log] = []
+    private var disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,34 +48,34 @@ extension MessagesViewController{
         switch _Type{
         case .message:
             self._LoadMessages()
-            NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.msg_seened), object: nil)
-            NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.msg_seened), object: nil, queue: nil, using: {n in
-                self._LoadMessages()
-                Sync.syncBadgeIcon()
-            })
         case .notification:
             self._LoadNotifications()
-            NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notif_seened), object: nil)
-            NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.notif_seened), object: nil, queue: nil, using: {n in
-                self._LoadNotifications()
-                Sync.syncBadgeIcon()
-            })
         }
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.sync_all), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(_Reload), name: App_Constants.Instance.Notification_Name(.sync_all), object: nil)
+
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notification_recieved), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_NotificationRecieved), name: App_Constants.Instance.Notification_Name(.notification_recieved), object: nil)
     }
     
     private func _LoadMessages(){
-        self._Messages = App_Constants.Instance.LoadAllFormCore(.message) ?? []
-        self.mTableView.reloadData()
+        Sync.shared.messages.asObservable().subscribe(onNext: {[weak self] messages in
+            guard let weak = self else{return}
+            weak._Messages = messages ?? []
+            weak.mTableView.reloadData()
+        }).disposed(by: disposeBag)
     }
     
     private func _LoadNotifications(){
-        self._Notification = App_Constants.Instance.LoadAllFormCore(.notification) ?? []
-        self._Seened_Notifications = App_Constants.Instance.LoadAllFormCore(.log_notification) ?? []
-        self.mTableView.reloadData()
+        Sync.shared.notifications.asObservable().subscribe(onNext: {[weak self] notifications in
+            guard let weak = self else{return}
+            weak._Notification = notifications ?? []
+            weak.mTableView.reloadData()
+        }).disposed(by: disposeBag)
+        
+        Sync.shared.synced_notifications.asObservable().subscribe(onNext: {[weak self] logs in
+            guard let weak = self else{return}
+            weak._Seened_Notifications = logs ?? []
+            weak.mTableView.reloadData()
+        }).disposed(by: disposeBag)
     }
     
     @objc private func _Reload(){
@@ -101,11 +106,11 @@ extension MessagesViewController{
         case .message:
             if !(_Messages[indexPath.row].message_read_date_time?.isEmpty ?? true){
                 App_Constants.UI.performSegue(self, .preview)
-                NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.msg_seen), object: nil)
+                self._DidShowMessage.accept(true)
             }else{
                 if App_Constants.Instance.isReachable(){
                     App_Constants.UI.performSegue(self, .preview)
-                    NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.msg_seen), object: nil)
+                    self._DidShowMessage.accept(true)
                 }else{
                     App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.no_connection))
                 }
@@ -113,11 +118,11 @@ extension MessagesViewController{
         case .notification:
             if _Seened_Notifications.contains(where: {$0.log_type_id == self._Notification[indexPath.row].notification_id}){
                 App_Constants.UI.performSegue(self, .preview)
-                NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.notif_seen), object: nil)
+                self._DidShowNotif.accept(true)
             }else{
                 if App_Constants.Instance.isReachable(){
                     App_Constants.UI.performSegue(self, .preview)
-                    NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.notif_seen), object: nil)
+                    self._DidShowNotif.accept(true)
                 }else{
                     App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.no_connection))
                 }

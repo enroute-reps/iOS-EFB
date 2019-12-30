@@ -83,10 +83,17 @@ PODS:
   - nanopb/encode (0.3.9011)
   - Protobuf (3.11.1)
   - RPCircularProgress (0.5.0)
+  - RxCocoa (5.0.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.0.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.1)
   - SDWebImage (5.4.0):
     - SDWebImage/Core (= 5.4.0)
   - SDWebImage/Core (5.4.0)
   - SwiftyGif (5.2.0)
+  - SWXMLHash (5.0.1)
   - Toast-Swift (5.0.1)
   - TransitionButton (0.5.2)
 
@@ -97,8 +104,11 @@ DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Messaging
   - RPCircularProgress (~> 0.5.0)
+  - RxCocoa (~> 5)
+  - RxSwift (~> 5)
   - SDWebImage
   - SwiftyGif
+  - SWXMLHash (~> 5.0.0)
   - Toast-Swift
   - TransitionButton
 
@@ -122,8 +132,12 @@ SPEC REPOS:
     - nanopb
     - Protobuf
     - RPCircularProgress
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - SDWebImage
     - SwiftyGif
+    - SWXMLHash
     - Toast-Swift
     - TransitionButton
 
@@ -146,11 +160,15 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Protobuf: 20d79da7f20b5928b80043b05080b816e802659e
   RPCircularProgress: 4499d4a1453dfbd3fe5bd8c6f344fd51cff3ad00
+  RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
+  RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
+  RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
   SDWebImage: 5bf6aec6481ae2a062bdc59f9d6c1d1e552090e0
   SwiftyGif: b85c6b33a9411859d9e1db998b6a8214aea942df
+  SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   TransitionButton: fb271583d9c9e4bb116b97103047e5157653f233
 
-PODFILE CHECKSUM: 9922f4527c5280ee33d79ad0438d7ec6dd359766
+PODFILE CHECKSUM: 3d80cb144234f29158659a509176c545d646b2cc
 
 COCOAPODS: 1.8.4

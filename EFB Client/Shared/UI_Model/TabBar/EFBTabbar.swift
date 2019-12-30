@@ -18,12 +18,17 @@ class EFBTabbar: UIView {
     @IBOutlet weak var mSpaceView2: UIView!
     @IBOutlet weak var mDashboardButton: UIButton!
     @IBOutlet weak var mLibraryButton: UIButton!
+    @IBOutlet weak var mWeatherView: UIView!
+    @IBOutlet weak var mWeatherImage: UIImageView!
+    @IBOutlet weak var mWeatherLabel: UILabel!
+    @IBOutlet weak var mWeatherButton: UIButton!
     
     
     private var view: UIView!
     private var selectedIndex:Int = 0
     private var user:EFBUser?
     public var isLibraryAvailable:Bool = true
+    public var isWeatherAvailable:Bool = true
 
     public var currentIndex = 0
     public var delegate:EFBBarDelegate?
@@ -59,6 +64,16 @@ class EFBTabbar: UIView {
         delegate?.TabBar(self.currentIndex)
     }
 
+    @IBAction func _WeatherButtonTapped(_ sender: Any) {
+        if !isWeatherAvailable{
+            App_Constants.UI.Make_Alert("", self.user?.user_status == 2 ? App_Constants.Instance.Text(.email_not_verified) : String(format: App_Constants.Instance.Text(.expire_library_message), 0))
+            return
+        }
+        self.selectedIndex = 2
+        self.currentIndex = 2
+        TabChanged(self.mWeatherImage, self.mWeatherLabel)
+        delegate?.TabBar(self.currentIndex)
+    }
 }
 
 extension EFBTabbar {
@@ -81,9 +96,15 @@ extension EFBTabbar {
         
         self.user = App_Constants.Instance.LoadUser()
 //        self.isLibraryAvailable = (user?.licence?.formattedDate()?.toDate() ?? Date()) >= Date() && user?.user_status != 2
+//        self.isWeatherAvailable = (user?.licence?.formattedDate()?.toDate() ?? Date()) >= Date() && user?.user_status != 2
         if !self.isLibraryAvailable{
             self.mLibraryImage.tintColor = .gray
             self.mLibraryLabel.textColor = .gray
+        }
+        
+        if !self.isWeatherAvailable{
+            self.mWeatherImage.tintColor = .gray
+            self.mWeatherLabel.textColor = .gray
         }
     }
     
@@ -94,6 +115,10 @@ extension EFBTabbar {
             self.mLibraryImage.tintColor = App_Constants.Instance.Color(.dark)
             self.mLibraryLabel.textColor = App_Constants.Instance.Color(.dark)
         }
+        if isWeatherAvailable{
+            self.mWeatherImage.tintColor = App_Constants.Instance.Color(.dark)
+            self.mWeatherLabel.textColor = App_Constants.Instance.Color(.dark)
+        }
         selectedImage.tintColor = .white
         selectedLabel.textColor = .white
     }
@@ -103,6 +128,8 @@ extension EFBTabbar {
             _DashboardButtonTapped(self)
         }else if index == 1 && isLibraryAvailable{
             _LibraryButtonTapped(self)
+        }else if index == 2 && isWeatherAvailable{
+            _WeatherButtonTapped(self)
         }
         delegate?.TabBar(index)
     }

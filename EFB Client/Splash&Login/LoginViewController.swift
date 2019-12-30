@@ -2,6 +2,7 @@
 
 import UIKit
 import TransitionButton
+import RxSwift
 
 class LoginViewController: UIViewController {
     
@@ -19,6 +20,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var mRetypeEmailTextField: UITextField!
     @IBOutlet weak var mVerifyEmailButton: TransitionButton!
     
+    private var disposeBag:DisposeBag = DisposeBag()
     
     
     override func viewDidLoad() {
@@ -32,28 +34,13 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func getAccess(_ sender: UIButton) {
+        
         self.mLoginButton.startAnimation()
         self.view.endEditing(true)
         HttpClient.default._PostHeader(relativeUrl: Api_Names.login, body: LoginBody(username:usernameField.text ?? "",password: passwordField.text ?? ""), callback: {(s,m,r) in
             if s{
                 App_Constants.Instance.SettingsSave(.Token, r!)
-                Sync.syncUser({success,message in
-                    if success{
-                        self.usernameField.text = ""
-                        self.passwordField.text = ""
-                        let user = App_Constants.Instance.LoadUser()?.user_status
-                        if user == Constants.kEmailNotVerified{
-                            self._BeginVerifyEmail()
-                        }else{
-                          App_Constants.UI.performSegue(self, .login)
-                        }
-                    }else{
-                        App_Constants.UI.Make_Toast(with: message ?? "")
-                    }
-                    DispatchQueue.main.async{
-                        self.mLoginButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
-                    }
-                })
+                Sync.shared.syncUser()
             }else{
                 self.mLoginButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
                 App_Constants.UI.Make_Toast(with: App_Constants.Instance.Text(.no_connection))
@@ -75,7 +62,7 @@ class LoginViewController: UIViewController {
                 self.mRetypeEmailTextField.text = ""
                 self.mVerifyEmailButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
                 App_Constants.UI.Make_Toast(with: "Verification email was sent to you.", in: 4, in: .top)
-                App_Constants.UI.performSegue(self, .login)
+                App_Constants.UI.changeRootController("main")
             }else{
                 self.mVerifyEmailButton.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
                 App_Constants.UI.Make_Alert("", m)
@@ -103,6 +90,26 @@ extension LoginViewController{
         mRetypeEmailTextField.delegate = self
         usernameField.delegate = self
         passwordField.delegate = self
+        Sync.shared.sync_finished.accept(false)
+        Sync.shared.sync_finished.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else {return}
+            if s{
+                weak.usernameField.text = ""
+                weak.passwordField.text = ""
+                weak.mLoginButton.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
+            }
+        }).disposed(by: disposeBag)
+        
+        Sync.shared.user.asObservable().subscribe(onNext: {[weak self] user in
+            guard let weak = self else {return}
+            if let user = user{
+                if user.user_status ?? 0 == Constants.kEmailNotVerified{
+                    weak._BeginVerifyEmail()
+                }else{
+                    App_Constants.UI.changeRootController("main")
+                }
+            }
+        }).disposed(by: disposeBag)
     }
     
     private func _BeginVerifyEmail(){

@@ -30,8 +30,11 @@ class PDFListCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        self.mProgressView.enableIndeterminate()
+        if !self.mDownloadView.isHidden{
+            mProgressView.enableIndeterminate()
+        }
     }
+
     
     @IBAction func _CancelButtonTapped(_ sender: Any) {
         self.mProgressView.enableIndeterminate(false, completion: {
@@ -50,6 +53,12 @@ extension PDFListCollectionViewCell{
     
     func _Configure(download: Download_Model?){
         self.mDownloadView.isHidden = !(download?.isDownloading ?? false)
+        if self.mDownloadView.isHidden{
+            self.mProgressView.layer.removeAllAnimations()
+            self.mProgressView.enableIndeterminate(false, completion: nil)
+        }else{
+            self.mProgressView.enableIndeterminate()
+        }
         self.mPDFStateButton.isHidden = (download?.isDownloading ?? false)
     }
     

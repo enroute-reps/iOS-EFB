@@ -1084,7 +1084,7 @@
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forward" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MMb-oU-aQ9">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forward" translatesAutoresizingMaskIntoConstraints="NO" id="MMb-oU-aQ9">
                                                             <rect key="frame" x="708" y="10" width="48" height="48"/>
                                                         </imageView>
                                                     </subviews>
@@ -1207,7 +1207,7 @@
         <!--Tab View Controller-->
         <scene sceneID="QRi-xc-zLu">
             <objects>
-                <viewController id="ThP-GE-rTv" customClass="TabViewController" customModule="Enroute_EFB" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="main" id="ThP-GE-rTv" customClass="TabViewController" customModule="Enroute_EFB" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pCa-LF-7UX">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1280,19 +1280,13 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ko0-yd-cpa">
                                         <rect key="frame" x="192" y="15" width="384" height="45"/>
                                         <subviews>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Library" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="DPf-Vy-HME">
-                                                <rect key="frame" x="0.0" y="0.0" width="384" height="45"/>
-                                                <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="PnI-4p-guY">
                                                 <rect key="frame" x="0.0" y="0.0" width="384" height="46"/>
                                                 <segments>
                                                     <segment title="Downloads"/>
                                                     <segment title="Files"/>
                                                 </segments>
-                                                <color key="tintColor" red="0.29762169719999998" green="0.38640594480000001" blue="0.77487313749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="selectedSegmentTintColor" red="0.29803921570000003" green="0.43529411759999997" blue="0.81568627449999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="_ManualTypeValueChanged:" destination="5q1-3H-isX" eventType="valueChanged" id="PcW-8C-yZH"/>
@@ -1300,17 +1294,12 @@
                                                 </connections>
                                             </segmentedControl>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.094117647060000004" green="0.1450980392" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="PnI-4p-guY" firstAttribute="centerY" secondItem="Ko0-yd-cpa" secondAttribute="centerY" id="4gI-9V-sZ8"/>
                                             <constraint firstItem="PnI-4p-guY" firstAttribute="width" secondItem="Ko0-yd-cpa" secondAttribute="width" id="62g-zu-oPc"/>
-                                            <constraint firstItem="DPf-Vy-HME" firstAttribute="height" secondItem="Ko0-yd-cpa" secondAttribute="height" id="NQ5-sc-ot5"/>
                                             <constraint firstAttribute="height" constant="45" id="OA3-WH-h0j"/>
-                                            <constraint firstItem="DPf-Vy-HME" firstAttribute="centerY" secondItem="Ko0-yd-cpa" secondAttribute="centerY" id="TeJ-9C-he2"/>
-                                            <constraint firstItem="DPf-Vy-HME" firstAttribute="centerX" secondItem="Ko0-yd-cpa" secondAttribute="centerX" id="VR3-1h-Rmi"/>
                                             <constraint firstItem="PnI-4p-guY" firstAttribute="centerX" secondItem="Ko0-yd-cpa" secondAttribute="centerX" id="aJm-Db-5q4"/>
-                                            <constraint firstItem="DPf-Vy-HME" firstAttribute="width" secondItem="Ko0-yd-cpa" secondAttribute="width" id="aXm-oF-zSj"/>
-                                            <constraint firstItem="DPf-Vy-HME" firstAttribute="centerY" secondItem="Ko0-yd-cpa" secondAttribute="centerY" id="sgB-Ea-QUe"/>
                                             <constraint firstItem="PnI-4p-guY" firstAttribute="height" secondItem="Ko0-yd-cpa" secondAttribute="height" id="zif-Oh-7ux"/>
                                         </constraints>
                                     </view>
@@ -1330,14 +1319,14 @@
                                 <rect key="frame" x="0.0" y="83" width="768" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgl-uz-K8n">
-                                        <rect key="frame" x="688" y="-10" width="60" height="60"/>
-                                        <state key="normal" image="grid"/>
+                                        <rect key="frame" x="718" y="5" width="30" height="30"/>
+                                        <state key="normal" image="grid-layout"/>
                                         <connections>
                                             <action selector="_GridButtonTapped:" destination="h9s-36-a38" eventType="touchUpInside" id="Omv-ez-f1s"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnT-cu-8iB">
-                                        <rect key="frame" x="616" y="-10" width="60" height="60"/>
+                                        <rect key="frame" x="676" y="5" width="30" height="30"/>
                                         <state key="normal" image="list"/>
                                         <connections>
                                             <action selector="_ListButtonTapped:" destination="h9s-36-a38" eventType="touchUpInside" id="aCi-dY-GZj"/>
@@ -1350,13 +1339,21 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZtY-yw-rn4">
-                                        <rect key="frame" x="118" y="-4" width="48" height="48"/>
+                                        <rect key="frame" x="118" y="8" width="24" height="24"/>
                                         <state key="normal" image="down"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="opj-Kw-7an">
-                                        <rect key="frame" x="12" y="0.0" width="154" height="40"/>
+                                        <rect key="frame" x="12" y="0.0" width="130" height="40"/>
                                         <connections>
                                             <action selector="_SortButtonTapped:" destination="h9s-36-a38" eventType="touchUpInside" id="u6V-K4-w7g"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PZs-oP-fmh">
+                                        <rect key="frame" x="569" y="2.5" width="95" height="35"/>
+                                        <fontDescription key="fontDescription" name="KohinoorBangla-Regular" family="Kohinoor Bangla" pointSize="16"/>
+                                        <state key="normal" title="Download All"/>
+                                        <connections>
+                                            <action selector="_DownloadAllButtonTapped:" destination="h9s-36-a38" eventType="touchUpInside" id="Vct-uo-ZsA"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1365,7 +1362,9 @@
                                     <constraint firstItem="or8-s1-hH2" firstAttribute="leading" secondItem="gBo-g7-48w" secondAttribute="leading" constant="12" id="3Dp-QA-lp0"/>
                                     <constraint firstItem="opj-Kw-7an" firstAttribute="centerY" secondItem="gBo-g7-48w" secondAttribute="centerY" id="3HN-Ip-hG9"/>
                                     <constraint firstItem="opj-Kw-7an" firstAttribute="leading" secondItem="or8-s1-hH2" secondAttribute="leading" id="3b3-MK-8pZ"/>
+                                    <constraint firstItem="PZs-oP-fmh" firstAttribute="centerY" secondItem="gBo-g7-48w" secondAttribute="centerY" id="7Z5-rI-5ea"/>
                                     <constraint firstItem="dnT-cu-8iB" firstAttribute="height" secondItem="dgl-uz-K8n" secondAttribute="height" id="95e-2a-eUj"/>
+                                    <constraint firstItem="dnT-cu-8iB" firstAttribute="leading" secondItem="PZs-oP-fmh" secondAttribute="trailing" constant="12" id="9nj-uK-niK"/>
                                     <constraint firstItem="or8-s1-hH2" firstAttribute="centerY" secondItem="gBo-g7-48w" secondAttribute="centerY" id="B9p-9h-vVJ"/>
                                     <constraint firstItem="dgl-uz-K8n" firstAttribute="leading" secondItem="dnT-cu-8iB" secondAttribute="trailing" constant="12" id="IH0-UP-iHA"/>
                                     <constraint firstItem="opj-Kw-7an" firstAttribute="trailing" secondItem="ZtY-yw-rn4" secondAttribute="trailing" id="OtG-5z-pr1"/>
@@ -1376,6 +1375,7 @@
                                     <constraint firstItem="dnT-cu-8iB" firstAttribute="width" secondItem="dgl-uz-K8n" secondAttribute="width" id="hsy-fW-qSF"/>
                                     <constraint firstItem="ZtY-yw-rn4" firstAttribute="centerY" secondItem="gBo-g7-48w" secondAttribute="centerY" id="kQ0-70-13m"/>
                                     <constraint firstItem="dnT-cu-8iB" firstAttribute="centerY" secondItem="gBo-g7-48w" secondAttribute="centerY" id="pKi-gr-m24"/>
+                                    <constraint firstItem="PZs-oP-fmh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZtY-yw-rn4" secondAttribute="trailing" constant="8" symbolic="YES" id="qGp-Uy-zHj"/>
                                     <constraint firstItem="dgl-uz-K8n" firstAttribute="centerY" secondItem="gBo-g7-48w" secondAttribute="centerY" id="wQc-Q5-z6S"/>
                                 </constraints>
                             </view>
@@ -1405,7 +1405,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q67-Ge-Zvx">
-                                                    <rect key="frame" x="708" y="12" width="48" height="48"/>
+                                                    <rect key="frame" x="732" y="12" width="24" height="24"/>
                                                     <color key="tintColor" red="0.83921568629999999" green="0.019607843140000001" blue="0.019607843140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <state key="normal" image="check"/>
                                                     <connections>
@@ -1524,7 +1524,7 @@
                                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fzn-gn-0aA">
-                                                            <rect key="frame" x="67" y="2" width="123" height="36"/>
+                                                            <rect key="frame" x="128.5" y="2" width="61.5" height="22"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" image="revision">
@@ -1687,6 +1687,7 @@
                     <connections>
                         <outlet property="mBackButton" destination="EI1-W2-PlV" id="geI-Pp-Z8h"/>
                         <outlet property="mCollectionView" destination="aV7-xf-3zt" id="rxD-ge-mQf"/>
+                        <outlet property="mDownloadAllButton" destination="PZs-oP-fmh" id="K4x-3X-PcB"/>
                         <outlet property="mGridButton" destination="dgl-uz-K8n" id="szR-or-xtH"/>
                         <outlet property="mListButton" destination="dnT-cu-8iB" id="j52-4H-dLa"/>
                         <outlet property="mManualTypeSegment" destination="PnI-4p-guY" id="nzD-6q-oVE"/>
@@ -1897,7 +1898,7 @@
                     <view key="view" contentMode="scaleToFill" id="Nf0-Tk-FOT">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" red="0.1215686275" green="0.19215686269999999" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="f49-kv-oqJ"/>
                     </view>
                     <navigationItem key="navigationItem" id="GMY-8d-3va"/>
@@ -2009,7 +2010,7 @@
         <image name="dashboard" width="125" height="125"/>
         <image name="down" width="24" height="24"/>
         <image name="forward" width="24" height="24"/>
-        <image name="grid" width="24" height="24"/>
+        <image name="grid-layout" width="24" height="24"/>
         <image name="intro.gif" width="1490" height="1990"/>
         <image name="list" width="30" height="30"/>
         <image name="logo-white" width="178" height="125"/>
@@ -2028,7 +2029,7 @@
         <image name="tab-library" width="125" height="125"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cJT-h7-TuQ"/>
+        <segue reference="7Gp-gz-wid"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

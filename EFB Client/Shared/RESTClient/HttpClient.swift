@@ -2,6 +2,7 @@
 
 import Foundation
 import Alamofire
+import SWXMLHash
 
 class HttpClient:NSObject{
     
@@ -43,12 +44,11 @@ class HttpClient:NSObject{
                     }catch{
                         callback(false,App_Constants.Instance.Text(.try_again),nil)
                     }
-                case .failure:
-                    callback(false,App_Constants.Instance.Text(.try_again),nil)
+                case .failure(let err):
+                    callback(false,err.localizedDescription,nil)
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                 }
             })
@@ -71,8 +71,7 @@ class HttpClient:NSObject{
                     callback(false,App_Constants.Instance.Text(.try_again),nil)
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                 }
             })
@@ -104,8 +103,7 @@ class HttpClient:NSObject{
                     callback(false,App_Constants.Instance.Text(.try_again),nil)
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                 }
             })
@@ -136,8 +134,7 @@ class HttpClient:NSObject{
                     callback(false,App_Constants.Instance.Text(.try_again),nil)
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                 }
             })
@@ -167,8 +164,7 @@ class HttpClient:NSObject{
                     callback(false,App_Constants.Instance.Text(.try_again),nil)
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                 }
             })
@@ -188,8 +184,7 @@ class HttpClient:NSObject{
                 }
                 if(response.response?.statusCode == 401) {
                     App_Constants.Instance.RemoveAllRecords()
-                    let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                    UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                    App_Constants.UI.changeRootController("login")
                 }
                 
             }
@@ -217,8 +212,7 @@ class HttpClient:NSObject{
                     }
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                     
                 }
@@ -247,8 +241,7 @@ class HttpClient:NSObject{
                     }
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                     
                 }
@@ -277,8 +270,7 @@ class HttpClient:NSObject{
                     }
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                 }
             })
@@ -297,8 +289,7 @@ class HttpClient:NSObject{
                 callback(false,App_Constants.Instance.Text(.try_again),nil)
                 if(response.response?.statusCode == 401) {
                     App_Constants.Instance.RemoveAllRecords()
-                    let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                    UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                    App_Constants.UI.changeRootController("login")
                 }
                 
             }
@@ -323,8 +314,7 @@ class HttpClient:NSObject{
                 callback(false,App_Constants.Instance.Text(.try_again),false)
                 if(response.response?.statusCode == 401) {
                     App_Constants.Instance.RemoveAllRecords()
-                    let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                    UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                    App_Constants.UI.changeRootController("login")
                 }
             }
         })
@@ -349,8 +339,7 @@ class HttpClient:NSObject{
                 callback(false,App_Constants.Instance.Text(.try_again),nil)
                 if(response.response?.statusCode == 401) {
                     App_Constants.Instance.RemoveAllRecords()
-                    let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                    UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                    App_Constants.UI.changeRootController("login")
                 }
             }
         })
@@ -373,8 +362,7 @@ class HttpClient:NSObject{
                 callback(false,App_Constants.Instance.Text(.try_again),nil)
                 if(response.response?.statusCode == 401) {
                     App_Constants.Instance.RemoveAllRecords()
-                    let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                    UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                    App_Constants.UI.changeRootController("login")
                 }
             }
         })
@@ -397,8 +385,7 @@ class HttpClient:NSObject{
                 callback(false,App_Constants.Instance.Text(.try_again),nil)
                 if(response.response?.statusCode == 401) {
                     App_Constants.Instance.RemoveAllRecords()
-                    let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                    UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                    App_Constants.UI.changeRootController("login")
                 }
             }
         })
@@ -417,12 +404,23 @@ class HttpClient:NSObject{
                     callback(false,App_Constants.Instance.Text(.try_again))
                     if(response.response?.statusCode == 401) {
                         App_Constants.Instance.RemoveAllRecords()
-                        let AppRunViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "splash") as! UINavigationController
-                        UIApplication.shared.keyWindow?.rootViewController = AppRunViewController
+                        App_Constants.UI.changeRootController("login")
                     }
                 }
             })
         }
+    }
+    
+    public func _GetXML(relativeUrl: String,callback:@escaping (Bool,String,XMLIndexer?)->Void){
+        Alamofire.request(Api_Names.weather + relativeUrl, method: .get, encoding: JSONEncoding.default, headers: nil).validate(statusCode: 200..<300).responseString(completionHandler: {response in
+            switch response.result{
+            case .success:
+                let parse = SWXMLHash.parse(response.data!)
+                callback(true, "", parse)
+            case .failure(let err):
+                callback(false,err.localizedDescription,nil)
+            }
+        })
     }
     
 }

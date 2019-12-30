@@ -1,6 +1,9 @@
 
 
 import UIKit
+import RxSwift
+import RxCocoa
+
 
 public var kMessageId = "messageId"
 public var kNotificationId = "notificationId"
@@ -24,7 +27,9 @@ class TabViewController: UIViewController {
     private var _User:EFBUser?
     private var _Dashboard:DashboardViewController?
     private var _Library:UINavigationController?
+    private var _Weather:WeatherViewController?
     private let kIsHidden = "isHidden"
+    private var disposeBag = DisposeBag()
     
     
     
@@ -47,37 +52,30 @@ class TabViewController: UIViewController {
 extension TabViewController{
     
     private func _Initialize(){
+        
         self._User = App_Constants.Instance.LoadUser()
         self._Dashboard = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dashboard") as? DashboardViewController
         self._Library = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "fileManager") as? UINavigationController
+        self._Weather = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "weather") as? WeatherViewController
         self.mTabbar.delegate = self
         App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Dashboard!)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(_TabBarNotification(_:)), name: App_Constants.Instance.Notification_Name(.tabbar_height), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(_StatusBarNotification(_:)), name: App_Constants.Instance.Notification_Name(.hide_statusBar), object: nil)
+        App_Constants.UI.statusBarIsHidden.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            weak.statusBarIsHidden = s
+            UIView.animate(withDuration: 0.5, animations: {
+                weak.setNeedsStatusBarAppearanceUpdate()
+            })
+        }).disposed(by: disposeBag)
+        
+        App_Constants.UI.tabbarIsHidden.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                weak.mTabbarHeight.constant = s ? 0 : 55
+                weak.view.layoutIfNeeded()
+            }, completion: nil)
+        }).disposed(by: disposeBag)
         NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notification_recieved), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_NotificationRecieved), name: App_Constants.Instance.Notification_Name(.notification_recieved), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.logout), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(_NotificationLogout(_:)), name: App_Constants.Instance.Notification_Name(.logout), object: nil)
-    }
-    
-    @objc private func _TabBarNotification(_ notification: NSNotification){
-        if let isHidden = notification.userInfo?[kIsHidden] as? Bool{
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.mTabbarHeight.constant = isHidden ? 0 : 55
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
-    
-    @objc private func _StatusBarNotification(_ notification: Notification){
-        if let isHidden = notification.userInfo?[kIsHidden] as? Bool{
-            self.statusBarIsHidden = isHidden
-            UIView.animate(withDuration: 0.5, animations: {
-                self.setNeedsStatusBarAppearanceUpdate()
-            })
-        }
     }
     
     @objc private func _NotificationRecieved(_ notification: NSNotification){
@@ -88,27 +86,20 @@ extension TabViewController{
         }
     }
     
-    @objc private func _NotificationLogout(_ notification: NSNotification){
-        self.navigationController?.popToRootViewController(animated: true)
-        NotificationCenter.default.removeObserver(self._Dashboard!)
-        NotificationCenter.default.removeObserver(self._Library!)
-        NotificationCenter.default.removeObserver(self)
-        App_Constants.Instance.RemoveAllRecords()
-    }
-    
 }
 
 extension TabViewController: EFBBarDelegate{
     func TabBar(_ index: Int) {
         switch index{
         case 0:
-            App_Constants.UI.RemoveChildView([self._Library!])
+            App_Constants.UI.RemoveChildView([self._Library!, self._Weather!])
             App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Dashboard!)
         case 1:
-            App_Constants.UI.RemoveChildView([self._Dashboard!])
+            App_Constants.UI.RemoveChildView([self._Dashboard!, self._Weather!])
             App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Library!)
         case 2:
-            App_Constants.UI.RemoveChildView([])
+            App_Constants.UI.RemoveChildView([self._Dashboard!, self._Library!])
+            App_Constants.UI.AddChildView(mother: self, self.mMainView, self._Weather!)
         default:
             break
         }

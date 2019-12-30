@@ -2,6 +2,7 @@
 
 import UIKit
 import SwiftyGif
+import RxSwift
 
 class SplashViewController: UIViewController {
     
@@ -15,10 +16,10 @@ class SplashViewController: UIViewController {
         didSet{
             if syncDidEnd && gifDidEnd{
                 self._RemoveImage()
-                App_Constants.UI.performSegue(self, canGoDirect ? .direct : .login)
+                App_Constants.UI.changeRootController(canGoDirect ? "main" : "login")
             }else if gifDidEnd && !canGoDirect{
                 self._RemoveImage()
-                App_Constants.UI.performSegue(self, .login)
+                App_Constants.UI.changeRootController("login")
             }
         }
     }
@@ -26,16 +27,23 @@ class SplashViewController: UIViewController {
         didSet{
             if syncDidEnd && gifDidEnd{
                 self._RemoveImage()
-                App_Constants.UI.performSegue(self, canGoDirect ? .direct : .login)
+                App_Constants.UI.changeRootController(canGoDirect ? "main" : "login")
             }
         }
     }
     private var canGoDirect = false
     private let kIntroGif = "intro.gif"
+    private var disposeBag = DisposeBag()
+    private var subscribe:Disposable?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self._Initialize()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        subscribe?.dispose()
     }
     
     override func viewDidLoad() {
@@ -53,6 +61,8 @@ extension SplashViewController{
         if App_Constants.Instance.Account_Check(){
             self._Sync()
             canGoDirect = true
+        }else{
+            canGoDirect = false
         }
     }
     
@@ -71,9 +81,13 @@ extension SplashViewController{
     }
     
     private func _Sync(){
-        Sync.syncUser({ completed,m in
-            self.syncDidEnd = true
+        Sync.shared.syncUser()
+        self.subscribe = Sync.shared.sync_finished.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            weak.syncDidEnd = s
         })
+        subscribe?.disposed(by: disposeBag)
+        
     }
     
     private func _RemoveImage(){

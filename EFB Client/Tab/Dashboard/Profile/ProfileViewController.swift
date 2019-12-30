@@ -1,6 +1,7 @@
 
 
 import UIKit
+import RxSwift
 
 class ProfileViewController: UIViewController {
     
@@ -22,8 +23,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var mChangePassButton: UIButton!
     
     private var kUnrecorded = "Unrecorded"
-    private var _User:EFBUser?
-    private var _Org:Organization?
+    private var disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,29 +64,28 @@ extension ProfileViewController{
         mImageView.round = true
         mImage.round = true
         mImageView.border()
-        self._SetUser()
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.sync_all), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(_SetUser), name: App_Constants.Instance.Notification_Name(.sync_all), object: nil)
-    }
-    
-    @objc private func _SetUser(){
-        self._User = App_Constants.Instance.LoadUser()
-        self._Org = App_Constants.Instance.LoadFromCore(.organization)
-        self.mNameLabel.text = "\(self._User?.first_name ?? "") \(self._User?.last_name ?? "")"
-        self.mRoleLabel.text = self._User?.job_title ?? kUnrecorded
-        self.mNationalIDLabel.text = self._User?.national_id ?? kUnrecorded
-        self.mPersonalIDLabel.text = self._User?.personel_id ?? kUnrecorded
-        self.mCellphoneLabel.text = self._User?.cell_phone ?? kUnrecorded
-        self.mLinePhoneLabel.text = self._User?.stationary_phone ?? kUnrecorded
-        self.mEmailLabel.text = self._User?.email_address ?? kUnrecorded
-        self.mCerExpireDateLabel.text = (self._User?.licence ?? "").formattedDate() ?? kUnrecorded
-        autoreleasepool{
-            let interval = (self._User?.licence?.defaultToDate() ?? Date()).timeIntervalSinceNow
-            let distance = abs(Int((interval) / (24*60*60)))
-            self.mCerExpireDateLabel.textColor = (distance <= 30 && distance > 10) ? (.orange) : (distance <= 10 ? (App_Constants.Instance.Color(.red)) : (.white))
-        }
-        self.mCerIssue.text = self._Org?.organization_name ?? kUnrecorded
-        self.mImage.sd_setImage(with: URL(string:  Api_Names.Main + Api_Names.image + (self._User?.profile_image ?? "")), completed: nil)
+        Sync.shared.user.asObservable().subscribe(onNext: {[weak self] user in
+            guard let weak = self else{return}
+            weak.mNameLabel.text = "\(user?.first_name ?? "") \(user?.last_name ?? "")"
+            weak.mRoleLabel.text = user?.job_title ?? weak.kUnrecorded
+            weak.mNationalIDLabel.text = user?.national_id ?? weak.kUnrecorded
+            weak.mPersonalIDLabel.text = user?.personel_id ?? weak.kUnrecorded
+            weak.mCellphoneLabel.text = user?.cell_phone ?? weak.kUnrecorded
+            weak.mLinePhoneLabel.text = user?.stationary_phone ?? weak.kUnrecorded
+            weak.mEmailLabel.text = user?.email_address ?? weak.kUnrecorded
+            weak.mCerExpireDateLabel.text = (user?.licence ?? "").formattedDate() ?? weak.kUnrecorded
+            autoreleasepool{
+                let interval = (user?.licence?.defaultToDate() ?? Date()).timeIntervalSinceNow
+                let distance = abs(Int((interval) / (24*60*60)))
+                weak.mCerExpireDateLabel.textColor = (distance <= 90 && distance > 30) ? (App_Constants.Instance.Color(.defaultYellow)) : (distance <= 30 ? (App_Constants.Instance.Color(.defaultRed)) : (.white))
+            }
+            weak.mImage.sd_setImage(with: URL(string:  Api_Names.Main + Api_Names.image + (user?.profile_image ?? "")), completed: nil)
+        }).disposed(by: disposeBag)
+        
+        Sync.shared.organization.asObservable().subscribe(onNext: {[weak self] org in
+            guard let weak = self else{return}
+            weak.mCerIssue.text = org?.organization_name ?? weak.kUnrecorded
+        }).disposed(by: disposeBag)
     }
     
 }

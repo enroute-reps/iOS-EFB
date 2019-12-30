@@ -4,6 +4,8 @@ import UIKit
 import SDWebImage
 import Combine
 import Alamofire
+import RxSwift
+import RxCocoa
 
 let kMain = "Main"
 let kSplash = "login"
@@ -36,17 +38,16 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var mExpireAlertLabel: UILabel!
     @IBOutlet weak var mEmailVerificationView: UIView!
     
+    private var _User:EFBUser?
     private var _Message:UINavigationController?
     private var _Notification:UINavigationController?
-    private var _User:EFBUser?
-    private var _Org:Organization?
+    private var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self._Initialize()
-        _Notifications()
         //fcm token
-        Sync.syncFCMToken()
+        Sync.shared.syncFCMToken()
     }
     
 
@@ -89,17 +90,8 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func _SyncButtonTapped(_ sender: Any) {
-        App_Constants.UI._Rotate(self.mSyncButton)
-        self.mSyncButton.isUserInteractionEnabled = false
-        Sync.syncUser({ r,m  in
-            if r{
-                self._Initialize()
-            }else{
-                App_Constants.UI.Make_Alert("", m ?? "")
-            }
-            App_Constants.UI._StopRotate(self.mSyncButton)
-            self.mSyncButton.isUserInteractionEnabled = true
-        })
+        Sync.shared.syncUser()
+
     }
     
     @IBAction func _LogoutButtonTapped(_ sender: Any) {
@@ -115,10 +107,12 @@ class DashboardViewController: UIViewController {
                         button2.isHidden = false
                     })
                     if s{
-                        weak._RemoveNotificationObservers()
-                        button.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: nil)
-                        controller?.dismiss(animated: true, completion: nil)
-                        NotificationCenter.default.post(name: App_Constants.Instance.Notification_Name(.logout), object: nil)
+                        button.stopAnimation(animationStyle: .normal, revertAfterDelay: 0, completion: {
+                            controller?.dismiss(animated: true, completion: {
+                                App_Constants.Instance.RemoveAllRecords()
+                                App_Constants.UI.changeRootController("login")
+                            })
+                        })
                     }else{
                         button.stopAnimation(animationStyle: .shake, revertAfterDelay: 0, completion: nil)
                         if NetworkReachabilityManager()?.isReachable ?? false{
@@ -139,12 +133,12 @@ class DashboardViewController: UIViewController {
     }
     
     @IBAction func _MessagesBackButtonTapped(_ sender: Any) {
-        self.mMessageBackButton.isHidden = true
+        (self._Message?.viewControllers.first as! MessagesViewController)._DidShowMessage.accept(false)
         self._Message?.popViewController(animated: true)
     }
     
     @IBAction func _NotificationsBackButtonTapped(_ sender: Any) {
-        self.mNotificationsBackButton.isHidden = true
+        (self._Notification?.viewControllers.first as! MessagesViewController)._DidShowNotif.accept(false)
         self._Notification?.popViewController(animated: true)
     }
     
@@ -154,6 +148,53 @@ extension DashboardViewController{
     
     private func _Initialize(){
         //UI
+        Sync.shared.user.asObservable().subscribe(onNext: { [weak self] user in
+            guard let weak = self else{return}
+            weak._User = user
+            weak.mUserImage.sd_setImage(with: URL(string: "\(Api_Names.Main)\(Api_Names.image)\(user?.profile_image ?? "")"), completed: nil)
+            weak.mUsernameLabel.text = "\(user?.first_name ?? "") \(user?.last_name ?? "")"
+            weak.mUserRoleLabel.text = "\(user?.job_title ?? App_Constants.Instance.Text(.unknown))"
+            // Expire Alert
+            autoreleasepool{
+                let Days30ToInterval:TimeInterval = 2592000
+                let interval = (user?.licence?.defaultToDate() ?? Date()).timeIntervalSinceNow
+                weak.mExpireAlertLabel.isHidden = ((interval - Days30ToInterval) / (24*60*60) >= 1)
+                weak.mExpireAlertLabel.textColor = App_Constants.Instance.Color(.defaultRed)
+                weak.mExpireAlertLabel.text = String(format: App_Constants.Instance.Text(.expire_library_message), Int(interval / (24*60*60) + 1))
+            }
+            //check email verification
+            weak.mEmailVerificationView.isHidden = !(user?.user_status == Constants.kEmailNotVerified)
+        }).disposed(by: disposeBag)
+        Sync.shared.organization.asObservable().subscribe(onNext: {[weak self] org in
+            guard let weak = self else{return}
+            weak.mAirlineLabel.text = "\(org?.organization_name ?? App_Constants.Instance.Text(.unknown))"
+            weak.mAirlineImage.sd_setImage(with: URL(string: "\(Api_Names.Main)\(Api_Names.org_image)\(org?.organization_logo ?? "")"), completed: nil)
+        }).disposed(by: disposeBag)
+        
+        Sync.shared.sync_started.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            if s{
+                App_Constants.UI._Rotate(weak.mSyncButton)
+                UIDevice.current.vibrate()
+                weak.mSyncButton.isUserInteractionEnabled = false
+            }
+        }).disposed(by: disposeBag)
+        
+        Sync.shared.sync_completed.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            if s{
+                App_Constants.UI.Make_Toast(on: weak.view, with: App_Constants.Instance.Text(.sync_completed))
+            }
+        }).disposed(by: disposeBag)
+        
+        Sync.shared.sync_finished.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            if s{
+                App_Constants.UI._StopRotate(weak.mSyncButton)
+                weak.mSyncButton.isUserInteractionEnabled = true
+            }
+        }).disposed(by: disposeBag)
+        
         self._Message = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "messages") as? UINavigationController
         self._Notification = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "messages") as? UINavigationController
         self.mMessagesView.cornerRadius = 5
@@ -170,68 +211,27 @@ extension DashboardViewController{
         self.mAirlineImage.round = true
         self.mProfileView.cornerRadius = 10
         self.mProfileView.border(1,App_Constants.Instance.Color(.light))
-        self._User = App_Constants.Instance.LoadUser()
-        self._Org = App_Constants.Instance.LoadFromCore(.organization)
-        self.mUserImage.sd_setImage(with: URL(string: "\(Api_Names.Main)\(Api_Names.image)\(self._User?.profile_image ?? "")"), completed: nil)
-        self.mAirlineImage.sd_setImage(with: URL(string: "\(Api_Names.Main)\(Api_Names.org_image)\(self._Org?.organization_logo ?? "")"), completed: nil)
-        self.mUsernameLabel.text = "\(self._User?.first_name ?? "") \(self._User?.last_name ?? "")"
-        self.mAirlineLabel.text = "\(self._Org?.organization_name ?? App_Constants.Instance.Text(.unknown))"
-        self.mUserRoleLabel.text = "\(self._User?.job_title ?? App_Constants.Instance.Text(.unknown))"
         (self._Message?.viewControllers.first as! MessagesViewController)._Type = .message
+        (self._Message?.viewControllers.first as! MessagesViewController)._DidShowMessage.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            weak.mMessageBackButton.isHidden = !s
+        }).disposed(by: disposeBag)
         (self._Notification?.viewControllers.first as! MessagesViewController)._Type = .notification
+        (self._Notification?.viewControllers.first as! MessagesViewController)._DidShowNotif.asObservable().subscribe(onNext: {[weak self] s in
+            guard let weak = self else{return}
+            weak.mNotificationsBackButton.isHidden = !s
+        }).disposed(by: disposeBag)
         App_Constants.UI.AddChildView(mother: self, self.mMessagesMainView, _Message!)
         App_Constants.UI.AddChildView(mother: self, self.mNotificationsMainView, _Notification!)
-        // Expire Alert
-        autoreleasepool{
-            let Days30ToInterval:TimeInterval = 2592000
-            let interval = (self._User?.licence?.defaultToDate() ?? Date()).timeIntervalSinceNow
-            self.mExpireAlertLabel.isHidden = ((interval - Days30ToInterval) / (24*60*60) >= 1)
-            self.mExpireAlertLabel.text = String(format: App_Constants.Instance.Text(.expire_library_message), Int(interval / (24*60*60) + 1))
-        }
-        //check email verification
-        self.mEmailVerificationView.isHidden = !(self._User?.user_status == Constants.kEmailNotVerified)
         //Legal Check
         _CheckLegal()
     }
     
-    private func _Notifications(){
-        self._RemoveNotificationObservers()
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.msg_seen), object: nil, queue: nil, using: {nf in
-            self.mMessageBackButton.isHidden = false
-        })
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.notif_seen), object: nil, queue: nil, using: {nf in
-            self.mNotificationsBackButton.isHidden = false
-        })
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.syncing), object: nil, queue: nil, using: {notification in
-            DispatchQueue.main.async{
-                App_Constants.UI._Rotate(self.mSyncButton)
-                UIDevice.current.vibrate()
-                self.mSyncButton.isUserInteractionEnabled = false
-            }
-        })
-        NotificationCenter.default.addObserver(forName: App_Constants.Instance.Notification_Name(.sync_finished), object: nil, queue: nil, using: {notification in
-            DispatchQueue.main.async{
-                App_Constants.UI._StopRotate(self.mSyncButton)
-                App_Constants.UI.Make_Toast(on: self.view, with: App_Constants.Instance.Text(.sync_completed))
-                self.mSyncButton.isUserInteractionEnabled = true
-                self._Initialize()
-            }
-        })
-    }
-    
-    private func _RemoveNotificationObservers(){
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.msg_seen), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.notif_seen), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.syncing), object: nil)
-        NotificationCenter.default.removeObserver(self, name: App_Constants.Instance.Notification_Name(.sync_finished), object: nil)
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     private func _Logout(_ callback: @escaping (Bool)->Void){
         autoreleasepool{
-            Sync.Logout({s in
+            Sync.shared.Logout({s in
                 if s{
-                    Sync.Log_Event(event: .logout, type: .logout, id: "\(self._User?.user_id ?? 0)", {s,m in callback(s)})
+                    Sync.shared.Log_Event(event: .logout, type: .logout, id: "\(self._User?.user_id ?? 0)", {s,m in callback(s)})
                 }else{
                     callback(false)
                     App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.logout_failed))
@@ -254,7 +254,7 @@ extension DashboardViewController{
     
     private func _CheckLegal(){
         self.view.superview?.superview?.isUserInteractionEnabled = false
-        Sync.LastLegalNotes({s,m,r in
+        Sync.shared.LastLegalNotes({s,m,r in
             if s{
                 self.view.superview?.superview?.isUserInteractionEnabled = true
                 guard let lastUpdate = App_Constants.Instance.SettingsLoad(.legal_time) as? String else{

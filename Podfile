@@ -14,7 +14,9 @@ target 'EFB Client' do
   pod 'Firebase/Messaging'
   pod 'SDWebImage'
   pod 'TransitionButton'
-  # Pods for EFB Client
+  pod 'SWXMLHash', '~> 5.0.0'
+  pod 'RxSwift', '~> 5'
+  pod 'RxCocoa', '~> 5'
 
   target 'EFB ClientTests' do
     inherit! :search_paths

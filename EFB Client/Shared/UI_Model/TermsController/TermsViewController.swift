@@ -41,7 +41,7 @@ class TermsViewController: UIViewController {
         mRightButton.startAnimation()
         self.mLeftButton.isHidden = true
         self.view.isUserInteractionEnabled = false
-        Sync.Log_Event(event: .legal_accepted, type: .legal, id: "\(App_Constants.Instance.LoadUser()?.user_id ?? 0)", {s,m in
+        Sync.shared.Log_Event(event: .legal_accepted, type: .legal, id: "\(App_Constants.Instance.LoadUser()?.user_id ?? 0)", {s,m in
             self.view.isUserInteractionEnabled = true
             UIView.animate(withDuration: 0.3, animations: {
                 self.mLeftButton.isHidden = false

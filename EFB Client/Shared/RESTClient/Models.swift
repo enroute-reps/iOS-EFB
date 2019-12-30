@@ -152,6 +152,46 @@ struct Legal:Codable{
     public var licenceAgreement:String?
 }
 
+struct WeatherResponse:Codable{
+    public var request_index:Int?
+    public var data_source:String?
+    public var request:String?
+    public var errors:String?
+    public var warnings:String?
+    public var time_taken_ms:Int?
+    public var data:[Weather]?
+}
+
+
+struct Weather:Codable{
+    public var raw_text:String?
+    public var station_id:String?
+    public var observation_time:String?
+    public var latitude:Double?
+    public var longitude:Double?
+    public var temp_c:Double?
+    public var dewpoint_c:Double?
+    public var wind_dir_degrees:Double?
+    public var wind_speed_kt:Double?
+    public var visibility_statute_mi:Double?
+    public var altim_in_hg:Double?
+    public var quality_control_flags:WeatherQualityControlFlags?
+    public var sky_condition:WeatherSkyCondition?
+    public var flight_category:String?
+    public var metar_type:String?
+    public var elevation_m:Double?
+}
+
+
+struct WeatherQualityControlFlags:Codable{
+    public var no_signal:Bool?
+}
+
+struct WeatherSkyCondition:Codable{
+    public var sky_cover:String?
+    public var cloud_base_ft_agl:Int?
+}
+
 struct LoginBody:Codable{
     public var username:String
     public var password:String

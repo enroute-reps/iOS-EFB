@@ -8,8 +8,8 @@ public let kPort4000 = 4000
 
 public class Api_Names:NSObject{
     
-    public static let main = "https://Enrouteservice.com:\(kPort4000)/"
-    public static let Main = "https://Enrouteservice.com:\(kPort8080)/"
+    public static let main = "https://enrouteservice.com:\(kPort4000)/"
+    public static let Main = "https://enrouteservice.com:\(kPort8080)/"
     public static let main2 = "https://enrouteservice.com:%d/"
     
     public static var main1:String{
@@ -19,6 +19,8 @@ public class Api_Names:NSObject{
     public static var Main1:String{
         get{return ((App_Constants.Instance.SettingsLoad(.server) as? String)?.isEmpty ?? true) ? "https://Enrouteservice.com:\(kPort8080)" : App_Constants.Instance.SettingsLoad(.auto_lock) as? String ?? Main}
     }
+    
+    public static let weather:String = "https://aviationweather.gov/adds/dataserver_current/httpparam?"
     
     public static let login = "users/login"
     public static let info = "users/info"

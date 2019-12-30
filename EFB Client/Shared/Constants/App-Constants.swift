@@ -6,6 +6,8 @@ import Toast_Swift
 import CoreData
 import QuartzCore
 import Firebase
+import RxSwift
+import RxCocoa
 
 class App_Constants:NSObject{
     
@@ -15,11 +17,13 @@ class App_Constants:NSObject{
     private var _Token:String = ""
     public var _BGSessionCompletion:(()->Void)?
     
+    
     public func _Initialize(){
         self._Token = Token_Return()
         self.RegisterForNotification()
         self.Reachability()
         SettingBundleManager.shared.settingInit()
+        FilesManager.default.clearAll(Constants.kManualDirectory)
     }
     
     //MARK: - Network Reachability
@@ -28,7 +32,7 @@ class App_Constants:NSObject{
             let reachability = NetworkReachabilityManager()
             reachability?.listener = {_ in
                 if (reachability?.isReachable ?? false){
-                    Sync.syncUser({r,m in })
+                    Sync.shared.syncUser()
                 }else{
                     App_Constants.UI.Make_Alert("", App_Constants.Instance.Text(.no_connection))
                 }
@@ -83,7 +87,6 @@ class App_Constants:NSObject{
         SettingsRemove(.Token)
         SettingsRemove(.FCMToken)
         SettingsRemove(.IsFirstStart)
-        SettingsRemove(.UserId)
         SettingsRemove(.UserInfo)
         SettingsRemove(.legal_time)
         ClearEntity(.manual)
@@ -91,7 +94,6 @@ class App_Constants:NSObject{
         ClearEntity(.notification)
         ClearEntity(.organization)
         ClearEntity(.user)
-        FilesManager.default.clearAll(Constants.kManualDirectory)
         _Token = self.Token_Return()
     }
     
@@ -179,6 +181,7 @@ class App_Constants:NSObject{
             request.returnsObjectsAsFaults = false
             do{
                 let result = try (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext.fetch(request)
+                guard !result.isEmpty else {return nil}
                 do{
                     if JSONSerialization.isValidJSONObject(result.last!){
                         let json = try JSONSerialization.data(withJSONObject: result.last!, options: .prettyPrinted)
@@ -279,6 +282,9 @@ class App_Constants:NSObject{
 
 class UI_Constants:NSObject{
     
+    public var statusBarIsHidden:BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    public var tabbarIsHidden:BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    
     func performSegue(_ ct: UIViewController, _ segueId: SegueId){
         DispatchQueue.main.async{
             ct.performSegue(withIdentifier: segueId.rawValue, sender: ct)
@@ -334,6 +340,14 @@ class UI_Constants:NSObject{
     
     func _StopRotate(_ view:UIView){
         view.layer.removeAllAnimations()
+    }
+    
+    func changeRootController(_ storyboardId: String){
+        guard let window = UIApplication.shared.keyWindow else {return}
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: storyboardId)
+        window.rootViewController = vc
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {}, completion: {f in})
     }
     
 }
